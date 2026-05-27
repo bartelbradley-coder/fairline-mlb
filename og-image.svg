@@ -30,22 +30,22 @@
     <!-- Stat 1 -->
     <rect x="0" y="0" width="220" height="110" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1"/>
     <text x="110" y="48" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle" font-weight="700" letter-spacing="2">2026 SEASON</text>
-    <text x="110" y="92" font-family="Georgia, serif" font-size="36" fill="#f1f5f9" text-anchor="middle" font-weight="700">28W–13L</text>
+    <text x="110" y="92" font-family="Georgia, serif" font-size="36" fill="#f1f5f9" text-anchor="middle" font-weight="700">166W–138L</text>
 
     <!-- Stat 2 -->
     <rect x="240" y="0" width="220" height="110" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1"/>
     <text x="350" y="48" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle" font-weight="700" letter-spacing="2">P&amp;L UNITS</text>
-    <text x="350" y="92" font-family="Georgia, serif" font-size="36" fill="#22c55e" text-anchor="middle" font-weight="700">+19.5u</text>
+    <text x="350" y="92" font-family="Georgia, serif" font-size="36" fill="#22c55e" text-anchor="middle" font-weight="700">+56.7u</text>
 
     <!-- Stat 3 -->
     <rect x="480" y="0" width="220" height="110" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1"/>
     <text x="590" y="48" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle" font-weight="700" letter-spacing="2">AVG CLV</text>
-    <text x="590" y="92" font-family="Georgia, serif" font-size="36" fill="#22c55e" text-anchor="middle" font-weight="700">+0.72%</text>
+    <text x="590" y="92" font-family="Georgia, serif" font-size="36" fill="#22c55e" text-anchor="middle" font-weight="700">+0.46%</text>
 
     <!-- Stat 4 -->
     <rect x="720" y="0" width="220" height="110" rx="12" fill="#1e293b" stroke="#334155" stroke-width="1"/>
-    <text x="830" y="48" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle" font-weight="700" letter-spacing="2">BACKTEST ROI</text>
-    <text x="830" y="92" font-family="Georgia, serif" font-size="36" fill="#f59e0b" text-anchor="middle" font-weight="700">+10.4%</text>
+    <text x="830" y="48" font-family="Arial, sans-serif" font-size="13" fill="#64748b" text-anchor="middle" font-weight="700" letter-spacing="2">SEASON ROI</text>
+    <text x="830" y="92" font-family="Georgia, serif" font-size="36" fill="#f59e0b" text-anchor="middle" font-weight="700">+18.6%</text>
   </g>
 
   <!-- Description -->
