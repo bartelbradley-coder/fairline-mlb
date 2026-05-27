@@ -1,16 +1,18 @@
 {
   "date": "2026-05-27",
-  "generated_at": "11:40 AM CT \u00b7 May 27",
+  "generated_at": "11:50 AM CT \u00b7 May 27",
   "picks": [
     {
       "game": "ATL @ BOS",
       "pick": "ATL",
+      "side": "AWAY",
       "pick_type": "MONEYLINE",
       "meta": "SP: Bryce Elder",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5879,
       "market_prob": 0.4836,
       "edge": 0.0953,
+      "ev_per_100": 19.34,
       "odds": 103,
       "best_odds": 103,
       "best_book": "Best Book",
@@ -22,17 +24,29 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.008
+        },
+        {
+          "label": "Starter Advantage",
+          "value": -0.005
+        }
+      ]
     },
     {
       "game": "MIN @ CHW",
       "pick": "CHW",
+      "side": "HOME",
       "pick_type": "MONEYLINE",
       "meta": "SP: Davis Martin",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5984,
       "market_prob": 0.5,
       "edge": 0.0886,
+      "ev_per_100": 17.38,
       "odds": -104,
       "best_odds": -104,
       "best_book": "Best Book",
@@ -44,17 +58,29 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Defense (OAA)",
+          "value": 0.0081
+        },
+        {
+          "label": "Home Field",
+          "value": 0.008
+        }
+      ]
     },
     {
       "game": "STL @ MIL",
       "pick": "STL",
+      "side": "AWAY",
       "pick_type": "MONEYLINE",
       "meta": "SP: Dustin May",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.4464,
       "market_prob": 0.3902,
       "edge": 0.048,
+      "ev_per_100": 12.05,
       "odds": 151,
       "best_odds": 151,
       "best_book": "Best Book",
@@ -66,17 +92,33 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.041
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": 0.0078
+        },
+        {
+          "label": "Starter Advantage",
+          "value": 0.005
+        }
+      ]
     },
     {
       "game": "SEA @ OAK",
       "pick": "OAK",
+      "side": "HOME",
       "pick_type": "MONEYLINE",
       "meta": "SP: Jeffrey Springs",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5132,
       "market_prob": 0.4692,
       "edge": 0.0347,
+      "ev_per_100": 7.26,
       "odds": 109,
       "best_odds": 109,
       "best_book": "Best Book",
@@ -88,17 +130,29 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": 0.029
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": 0.014
+        }
+      ]
     },
     {
       "game": "MIA @ TOR",
       "pick": "MIA",
+      "side": "AWAY",
       "pick_type": "MONEYLINE",
       "meta": "SP: Eury P\u00e9rez",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.4521,
       "market_prob": 0.4169,
       "edge": 0.0266,
+      "ev_per_100": 6.24,
       "odds": 135,
       "best_odds": 135,
       "best_book": "Best Book",
@@ -110,17 +164,25 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.016
+        }
+      ]
     },
     {
       "game": "PHI @ SD",
       "pick": "SD",
+      "side": "HOME",
       "pick_type": "MONEYLINE",
       "meta": "SP: Walker Buehler",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.4694,
       "market_prob": 0.44,
       "edge": 0.021,
+      "ev_per_100": 4.68,
       "odds": 123,
       "best_odds": 123,
       "best_book": "Best Book",
@@ -132,17 +194,29 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": 0.017
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": 0.0154
+        }
+      ]
     },
     {
       "game": "COL @ LAD",
       "pick": "COL",
+      "side": "AWAY",
       "pick_type": "MONEYLINE",
       "meta": "SP: Tomoyuki Sugano",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.25,
       "market_prob": 0.2257,
       "edge": 0.0174,
+      "ev_per_100": 7.5,
       "odds": 330,
       "best_odds": 330,
       "best_book": "Best Book",
@@ -154,17 +228,33 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.045
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": -0.0165
+        },
+        {
+          "label": "Starter Advantage",
+          "value": -0.005
+        }
+      ]
     },
     {
       "game": "ARI @ SF",
       "pick": "ARI",
+      "side": "AWAY",
       "pick_type": "MONEYLINE",
       "meta": "SP: Michael Soroka",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5445,
       "market_prob": 0.521,
       "edge": 0.014,
+      "ev_per_100": 2.64,
       "odds": -113,
       "best_odds": -113,
       "best_book": "Best Book",
@@ -176,17 +266,33 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.034
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": 0.014
+        },
+        {
+          "label": "Starter Advantage",
+          "value": -0.005
+        }
+      ]
     },
     {
       "game": "CIN @ MET",
       "pick": "CIN",
+      "side": "AWAY",
       "pick_type": "MONEYLINE",
       "meta": "SP: Andrew Abbott",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5014,
       "market_prob": 0.478,
       "edge": 0.0136,
+      "ev_per_100": 2.79,
       "odds": 105,
       "best_odds": 105,
       "best_book": "Best Book",
@@ -198,17 +304,33 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.026
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": 0.014
+        },
+        {
+          "label": "Starter Advantage",
+          "value": 0.01
+        }
+      ]
     },
     {
       "game": "NYY @ KC",
       "pick": "KC",
+      "side": "HOME",
       "pick_type": "MONEYLINE",
       "meta": "SP: Noah Cameron",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.4355,
       "market_prob": 0.4152,
       "edge": 0.0118,
+      "ev_per_100": 2.78,
       "odds": 136,
       "best_odds": 136,
       "best_book": "Best Book",
@@ -220,17 +342,29 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": 0.008
+        },
+        {
+          "label": "Starter Advantage",
+          "value": -0.005
+        }
+      ]
     },
     {
       "game": "CHC @ PIT",
       "pick": "PIT",
+      "side": "HOME",
       "pick_type": "MONEYLINE",
       "meta": "SP: Bubba Chandler",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5435,
       "market_prob": 0.5351,
       "edge": 0.0065,
+      "ev_per_100": 1.2,
       "odds": -116,
       "best_odds": -116,
       "best_book": "Best Book",
@@ -242,17 +376,29 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Defense (OAA)",
+          "value": -0.0198
+        },
+        {
+          "label": "Home Field",
+          "value": 0.013
+        }
+      ]
     },
     {
       "game": "LAA @ DET",
       "pick": "DET",
+      "side": "HOME",
       "pick_type": "MONEYLINE",
       "meta": "SP: Casey Mize",
       "posted_at": "11:31 AM CT",
       "model_prob": 0.5164,
       "market_prob": 0.5071,
       "edge": 0.0018,
+      "ev_per_100": 0.36,
       "odds": -106,
       "best_odds": -106,
       "best_book": "Best Book",
@@ -264,9 +410,20 @@
       "sharp_movement": false,
       "steam_move": false,
       "model_total": null,
-      "market_total": null
+      "market_total": null,
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": 0.008
+        },
+        {
+          "label": "Starter Advantage",
+          "value": 0.007
+        }
+      ]
     }
   ],
+  "signal_count": 12,
   "yesterday_picks": [
     {
       "game": "WSH @ CLE",

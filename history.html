@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FairLine MLB — Pick History</title>
-<meta name="description" content="Complete pick history for FairLine MLB — every bet logged with result, CLV, and P&L. Full transparency.">
+<title>FairLine MLB — Results & Track Record</title>
+<meta name="description" content="Live 2026 results, CLV tracking, edge tier breakdown, and full pick history for FairLine MLB.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚾</text></svg>">
 <link rel="stylesheet" href="style.css">
 <style>
@@ -18,27 +18,59 @@
 .pnl-curve-wrap { overflow: hidden; }
 .pnl-curve-meta { display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--text-4); font-family: 'JetBrains Mono', monospace; margin-top: 8px; }
 
+/* Analytics two-col */
+.analytics-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 700px) { .analytics-row { grid-template-columns: 1fr; } }
+
+.card-title { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); margin-bottom: 4px; }
+.card-sub   { font-size: 10px; color: var(--text-4); margin-bottom: 14px; }
+
+/* CLV chart */
+.clv-chart { display: flex; align-items: flex-end; gap: 3px; height: 60px; overflow: hidden; }
+.clv-bar { flex: 1; border-radius: 2px 2px 0 0; min-height: 2px; transition: opacity 0.15s; }
+.clv-bar:hover { opacity: 0.75; }
+.clv-bar.pos { background: var(--green); }
+.clv-bar.neg { background: var(--red); border-radius: 0 0 2px 2px; }
+.clv-avg-display { text-align: center; padding: 10px 0 8px; }
+.clv-avg-num { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; line-height: 1; }
+.clv-avg-lbl { font-size: 10px; color: var(--text-4); margin-top: 4px; }
+
+/* Edge tier table */
+.edge-table { width: 100%; border-collapse: collapse; }
+.edge-table th { font-size: 8.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-4); padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+.edge-table td { padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,0.03); font-size: 12px; color: var(--text-3); }
+.edge-table tr:last-child td { border-bottom: none; }
+.edge-tier-badge { display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.et-strong { background: rgba(99,102,241,0.12); color: var(--indigo-lt); }
+.et-value  { background: rgba(20,184,166,0.1); color: var(--teal); }
+.et-all    { background: rgba(255,255,255,0.05); color: var(--text-3); }
+
+/* Monthly ROI bars */
+.monthly-chart { display: flex; align-items: flex-end; gap: 8px; height: 80px; }
+.mo-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+.mo-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 3px; }
+.mo-bar.pos { background: var(--green); }
+.mo-bar.neg { background: var(--red); border-radius: 0 0 3px 3px; }
+.mo-lbl { font-size: 9px; color: var(--text-4); }
+.mo-val { font-size: 9px; font-weight: 600; }
+.mo-val.pos { color: var(--green); }
+.mo-val.neg { color: var(--red); }
+
+/* Backtest */
+.roi-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.roi-year { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-2); width: 56px; flex-shrink: 0; }
+.roi-bar-wrap { flex: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
+.roi-fill { height: 100%; border-radius: 100px; }
+.roi-fill.pos { background: linear-gradient(90deg,#22c55e,#4ade80); }
+.roi-fill.neg { background: linear-gradient(90deg,#ef4444,#f87171); }
+.roi-pct { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 700; width: 50px; text-align: right; flex-shrink: 0; }
+.roi-pct.pos { color: var(--green); }
+.roi-pct.neg { color: var(--red); }
+.roi-meta { font-size: 10px; color: var(--text-4); }
+
 /* Filters */
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-  align-items: center;
-}
-.filter-btn {
-  padding: 5px 12px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--text-3);
-  cursor: pointer;
-  transition: all 0.15s;
-}
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; align-items: center; }
+.filter-btn { padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; border: 1px solid var(--border); background: var(--bg-card); color: var(--text-3); cursor: pointer; transition: all 0.15s; }
 .filter-btn:hover { color: var(--text-2); background: rgba(255,255,255,0.04); }
 .filter-btn.active { background: rgba(99,102,241,0.15); border-color: rgba(99,102,241,0.35); color: var(--indigo-lt); }
 .filter-sep { width: 1px; height: 20px; background: var(--border); }
@@ -50,21 +82,17 @@
 .sort-desc::after { content: ' ↓'; }
 
 /* Responsive hide */
-@media (max-width: 700px) {
-  .hide-sm { display: none; }
-}
+@media (max-width: 700px) { .hide-sm { display: none; } }
 
 .pnl-pos { color: var(--green); font-weight: 600; }
 .pnl-neg { color: var(--red);   font-weight: 600; }
 
-.no-history {
-  text-align: center;
-  padding: 56px 24px;
-  color: var(--text-4);
-}
-.no-history .nh-icon { font-size: 40px; margin-bottom: 14px; }
+.no-history { text-align: center; padding: 56px 24px; color: var(--text-4); }
+.no-history .nh-icon  { font-size: 40px; margin-bottom: 14px; }
 .no-history .nh-title { font-family: 'Oswald', sans-serif; font-size: 20px; color: var(--text-3); margin-bottom: 8px; }
-.no-history .nh-sub { font-size: 12px; line-height: 1.7; }
+.no-history .nh-sub   { font-size: 12px; line-height: 1.7; }
+
+.backtest-note { font-size: 10px; color: var(--text-4); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -76,8 +104,7 @@
   </a>
   <div class="nav-links">
     <a class="nav-link" href="index.html">Today's Picks</a>
-    <a class="nav-link" href="performance.html">Performance</a>
-    <a class="nav-link active" href="history.html">History</a>
+    <a class="nav-link active" href="history.html">Results</a>
     <a class="nav-link" href="model.html">Model</a>
   </div>
   <div class="nav-right">
@@ -87,8 +114,8 @@
 
 <div class="page">
 
-  <div class="page-title">Pick History</div>
-  <div class="page-subtitle">Every bet logged · results, CLV, and P&L · full transparency</div>
+  <div class="page-title">Results &amp; Track Record</div>
+  <div class="page-subtitle">Live 2026 results · every pick logged with result, CLV, and P&amp;L · full transparency</div>
 
   <!-- Summary pills -->
   <div class="summary-row" id="summary-row">
@@ -97,13 +124,70 @@
 
   <!-- P&L Curve -->
   <div class="section">
-    <div class="sec-lbl">Cumulative P&L Curve</div>
+    <div class="sec-lbl">Cumulative P&amp;L Curve — 2026 Season</div>
     <div class="card" style="padding:16px 20px">
       <div class="pnl-curve-wrap" id="pnl-curve"><div class="loading" style="padding:20px">Loading…</div></div>
     </div>
   </div>
 
-  <!-- Table -->
+  <!-- Analytics row: CLV + Edge tier -->
+  <div class="section">
+    <div class="analytics-row">
+
+      <!-- CLV Tracking -->
+      <div class="card">
+        <div class="card-title">📈 Closing Line Value</div>
+        <div class="card-sub">Last 30 picks · positive = market moved our way</div>
+        <div class="clv-avg-display">
+          <div class="clv-avg-num" id="clv-avg-num">—</div>
+          <div class="clv-avg-lbl">Average CLV · all 2026 picks</div>
+        </div>
+        <div class="clv-chart" id="clv-chart"></div>
+      </div>
+
+      <!-- Edge Tier Breakdown -->
+      <div class="card">
+        <div class="card-title">⚡ Edge Tier Performance</div>
+        <div class="card-sub">2026 season · win rate and ROI by model edge</div>
+        <table class="edge-table" id="edge-table">
+          <thead><tr><th>Tier</th><th>Bets</th><th>W–L</th><th>Win%</th><th>ROI</th><th>Units</th></tr></thead>
+          <tbody id="edge-tbody"><tr><td colspan="6" style="color:var(--text-4);padding:16px 10px">Loading…</td></tr></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Monthly ROI -->
+  <div class="section" id="monthly-section" style="display:none">
+    <div class="sec-lbl">Monthly ROI — 2026 Season</div>
+    <div class="card" style="padding:16px 20px">
+      <div class="monthly-chart" id="monthly-chart"></div>
+    </div>
+  </div>
+
+  <!-- Backtested Validation -->
+  <div class="section">
+    <div class="sec-lbl">Backtested Model Validation — Out-of-Sample 2022–2024 · Not Live Results</div>
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+        <div>
+          <div class="card-title" style="margin-bottom:4px">Improving Every Out-of-Sample Year</div>
+          <div class="card-sub" style="margin-bottom:0">vs. −4.0% baseline (bet every game, full vig drain) · 7,359 games backtested</div>
+        </div>
+        <div style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;color:var(--green)">+10.4%</div>
+      </div>
+      <div id="backtest-chart"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
+        <div class="stat-pill" style="opacity:0.8"><div class="stat-lbl">Sharpe Ratio</div><div class="stat-val amber">1.82</div><div class="stat-sub">backtested · annualized</div></div>
+        <div class="stat-pill" style="opacity:0.8"><div class="stat-lbl">Brier Score</div><div class="stat-val white">0.234</div><div class="stat-sub">vs. 0.250 market</div></div>
+        <div class="stat-pill" style="opacity:0.8"><div class="stat-lbl">Max Drawdown</div><div class="stat-val red">−12.4u</div><div class="stat-sub">backtested</div></div>
+      </div>
+      <div class="backtest-note">All figures above are <strong style="color:var(--text-2)">out-of-sample backtest results</strong> (2022–2024). Each year trained on prior seasons only — no lookahead bias. Live 2026 results appear in the sections above as picks settle.</div>
+    </div>
+  </div>
+
+  <!-- All Settled Picks Table -->
   <div class="section">
     <div class="sec-lbl">All Settled Picks</div>
 
@@ -126,7 +210,7 @@
 <footer>
   FairLine MLB · Quantitative Win Probability Model · Dual-Poisson + 18 Log-Odds Adjustments + Platt Calibration<br>
   For informational purposes only. Gambling involves risk — never bet more than you can afford to lose. Past model performance does not guarantee future results. 18+ only.<br>
-  <a href="model.html">Model Overview</a> · <a href="performance.html">Performance</a> · <a href="index.html">Today's Picks</a>
+  <a href="model.html">Model Overview</a> · <a href="index.html">Today's Picks</a>
 </footer>
 
 <script>
@@ -144,19 +228,27 @@ function pct(v, d=1) {
   return (v >= 0 ? '+' : '') + (v * 100).toFixed(d) + '%';
 }
 
-async function loadHistory() {
+async function loadAll() {
   try {
-    const res = await fetch('data/history.json?v=' + Date.now());
-    if (!res.ok) throw new Error('No data');
-    const d = await res.json();
+    const [hRes, pRes] = await Promise.all([
+      fetch('data/history.json?v='     + Date.now()),
+      fetch('data/performance.json?v=' + Date.now()),
+    ]);
+    const h = hRes.ok ? await hRes.json() : null;
+    const p = pRes.ok ? await pRes.json() : null;
 
-    if (d.updated_at) {
-      document.getElementById('last-updated').textContent = 'Updated ' + d.updated_at;
+    if (h && h.updated_at) {
+      document.getElementById('last-updated').textContent = 'Updated ' + h.updated_at;
     }
 
-    allRows = d.rows || [];
+    allRows = (h && h.rows) ? h.rows : [];
+
     renderSummary(allRows);
-    renderCurve(d.pnl_curve || []);
+    renderCurve((h && h.pnl_curve) ? h.pnl_curve : []);
+    renderClv(p);
+    renderEdgeTiers(p);
+    renderMonthly(p);
+    renderBacktest();
     renderTable(allRows);
   } catch (e) {
     renderEmpty();
@@ -173,23 +265,24 @@ function renderEmpty() {
       <div class="nh-sub">The pick history table fills in as picks are logged and settled each day.<br>Check back after the first batch of games result.</div>
     </div>`;
   document.getElementById('filters').style.display = 'none';
+  renderBacktest();
 }
 
 function renderSummary(rows) {
-  const settled = rows.filter(r => r.result === 'W' || r.result === 'L');
-  const wins = settled.filter(r => r.result === 'W').length;
-  const losses = settled.filter(r => r.result === 'L').length;
+  const settled  = rows.filter(r => r.result === 'W' || r.result === 'L');
+  const wins     = settled.filter(r => r.result === 'W').length;
+  const losses   = settled.filter(r => r.result === 'L').length;
   const totalPnl = settled.reduce((s, r) => s + (r.pnl_u || 0), 0);
-  const roi = settled.length > 0 ? totalPnl / settled.length : 0;
-  const clvRows = rows.filter(r => r.clv != null);
-  const avgClv = clvRows.length > 0 ? clvRows.reduce((s, r) => s + r.clv, 0) / clvRows.length : null;
-  const winRate = settled.length > 0 ? wins / settled.length : null;
+  const roi      = settled.length > 0 ? totalPnl / settled.length : 0;
+  const clvRows  = rows.filter(r => r.clv != null);
+  const avgClv   = clvRows.length > 0 ? clvRows.reduce((s, r) => s + r.clv, 0) / clvRows.length : null;
+  const winRate  = settled.length > 0 ? wins / settled.length : null;
 
   document.getElementById('summary-row').innerHTML = `
-    <div class="stat-pill"><div class="stat-lbl">Record</div><div class="stat-val white">${wins}W–${losses}L</div><div class="stat-sub">${settled.length} bets</div></div>
+    <div class="stat-pill"><div class="stat-lbl">2026 Record</div><div class="stat-val white">${wins}W–${losses}L</div><div class="stat-sub">${settled.length} bets</div></div>
     <div class="stat-pill"><div class="stat-lbl">Total P&L</div><div class="stat-val ${totalPnl >= 0 ? 'green' : 'red'}">${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(1)}u</div><div class="stat-sub">flat $100/bet</div></div>
     <div class="stat-pill"><div class="stat-lbl">ROI / Bet</div><div class="stat-val ${roi >= 0 ? 'green' : 'red'}">${pct(roi)}</div><div class="stat-sub">per settled bet</div></div>
-    <div class="stat-pill"><div class="stat-lbl">Win Rate</div><div class="stat-val white">${winRate != null ? (winRate*100).toFixed(1)+'%' : '—'}</div><div class="stat-sub">vs. ~52% break-even</div></div>
+    <div class="stat-pill"><div class="stat-lbl">Win Rate</div><div class="stat-val white">${winRate != null ? (winRate*100).toFixed(1)+'%' : '—'}</div><div class="stat-sub">~52% break-even</div></div>
     ${avgClv != null ? `<div class="stat-pill"><div class="stat-lbl">Avg CLV</div><div class="stat-val ${avgClv >= 0 ? 'green' : 'red'}">${pct(avgClv)}</div><div class="stat-sub">n=${clvRows.length}</div></div>` : ''}
   `;
 }
@@ -200,7 +293,6 @@ function renderCurve(curve) {
     el.innerHTML = '<div style="color:var(--text-4);font-size:12px;padding:20px 0">Accumulates as picks settle.</div>';
     return;
   }
-  // Prepend 0 so the line starts at baseline
   const data = [0, ...curve];
   const minV = Math.min(...data, 0);
   const maxV = Math.max(...data, 0);
@@ -228,6 +320,79 @@ function renderCurve(curve) {
       <span style="opacity:0.4">── 0u baseline ──</span>
       <span style="color:${col}"><strong>${endVal >= 0 ? '+' : ''}${endVal.toFixed(2)}u</strong> total</span>
     </div>`;
+}
+
+function renderClv(p) {
+  if (!p) return;
+  const series = p.clv_series || [];
+  const avgClv = p.avg_clv;
+  if (avgClv != null) {
+    const el = document.getElementById('clv-avg-num');
+    el.textContent = pct(avgClv);
+    el.style.color = avgClv >= 0 ? 'var(--green)' : 'var(--red)';
+  }
+  if (series.length > 0) {
+    const maxAbs = Math.max(...series.map(v => Math.abs(v)), 0.001);
+    document.getElementById('clv-chart').innerHTML = series.slice(-30).map(v => {
+      const h = Math.max(3, Math.round(Math.abs(v) / maxAbs * 55));
+      return `<div class="clv-bar ${v>=0?'pos':'neg'}" style="height:${h}px" title="${pct(v)}"></div>`;
+    }).join('');
+  } else {
+    document.getElementById('clv-chart').innerHTML = '<div style="color:var(--text-4);font-size:11px;padding:10px 0;line-height:1.6">CLV captured at closing time daily.<br>Sustained positive CLV = real model edge.</div>';
+  }
+}
+
+function renderEdgeTiers(p) {
+  const tiers = (p && p.edge_tiers) ? p.edge_tiers : [];
+  if (tiers.length > 0) {
+    document.getElementById('edge-tbody').innerHTML = tiers.map(t => `
+      <tr>
+        <td><span class="edge-tier-badge ${t.class||'et-all'}">${t.label}</span></td>
+        <td>${t.bets}</td>
+        <td>${t.wins}–${t.losses}</td>
+        <td>${(t.win_rate*100).toFixed(1)}%</td>
+        <td style="color:${t.roi>=0?'var(--green)':'var(--red)'}">${pct(t.roi)}</td>
+        <td style="color:${t.units>=0?'var(--green)':'var(--red)'}">${t.units>=0?'+':''}${t.units.toFixed(1)}u</td>
+      </tr>`).join('');
+  } else {
+    document.getElementById('edge-tbody').innerHTML = `
+      <tr><td colspan="6" style="color:var(--text-4);padding:14px 10px;font-size:11px;line-height:1.6">
+        Edge tier breakdown fills in as 2026 picks settle.<br>
+        <span style="color:var(--text-3)">Backtest: 8%+ tier → +14.2% ROI across 312 bets.</span>
+      </td></tr>`;
+  }
+}
+
+function renderMonthly(p) {
+  const monthly = (p && p.season_roi_by_month) ? p.season_roi_by_month : [];
+  if (monthly.length === 0) return;
+  document.getElementById('monthly-section').style.display = 'block';
+  const maxAbs = Math.max(...monthly.map(m => Math.abs(m.roi)), 0.01);
+  document.getElementById('monthly-chart').innerHTML = monthly.map(m => {
+    const h = Math.max(4, Math.round(Math.abs(m.roi) / maxAbs * 65));
+    return `<div class="mo-col">
+      <div class="mo-bar ${m.roi>=0?'pos':'neg'}" style="height:${h}px"></div>
+      <div class="mo-lbl">${m.month}</div>
+      <div class="mo-val ${m.roi>=0?'pos':'neg'}">${pct(m.roi)}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderBacktest() {
+  const backtest = [
+    { year: '2022', roi: 0.007,  bets: 975,  units: 6.8 },
+    { year: '2023', roi: 0.091,  bets: 1093, units: 99.5 },
+    { year: '2024', roi: 0.104,  bets: 977,  units: 101.6 },
+    { year: 'Baseline', roi: -0.040, bets: null, units: null, isBaseline: true },
+  ];
+  const maxRoi = 0.104;
+  document.getElementById('backtest-chart').innerHTML = backtest.map(y => `
+    <div class="roi-row">
+      <div class="roi-year" style="${y.isBaseline?'color:var(--text-4)':''}">${y.year}</div>
+      <div class="roi-bar-wrap"><div class="roi-fill ${y.roi>=0?'pos':'neg'}" style="width:${Math.abs(y.roi)/maxRoi*100}%"></div></div>
+      <div class="roi-pct ${y.roi>=0?'pos':'neg'}">${pct(y.roi)}</div>
+      <div class="roi-meta">${y.bets ? y.bets.toLocaleString()+' bets · +'+y.units+'u' : 'all games · vig drain'}</div>
+    </div>`).join('');
 }
 
 function getFilteredSorted(rows) {
@@ -261,15 +426,15 @@ function renderTable(rows) {
   }
 
   const cols = [
-    { key: 'date',      label: 'Date',     cls: '' },
-    { key: 'game',      label: 'Game',     cls: '' },
-    { key: 'pick',      label: 'Pick',     cls: '' },
-    { key: 'odds',      label: 'Odds',     cls: 'hide-sm' },
-    { key: 'edge',      label: 'Edge',     cls: 'hide-sm' },
-    { key: 'model_prob',label: 'Model%',   cls: 'hide-sm' },
-    { key: 'result',    label: 'Result',   cls: '' },
-    { key: 'clv',       label: 'CLV',      cls: 'hide-sm' },
-    { key: 'pnl_u',     label: 'P&L',      cls: '' },
+    { key: 'date',       label: 'Date',    cls: '' },
+    { key: 'game',       label: 'Game',    cls: '' },
+    { key: 'pick',       label: 'Pick',    cls: '' },
+    { key: 'odds',       label: 'Odds',    cls: 'hide-sm' },
+    { key: 'edge',       label: 'Edge',    cls: 'hide-sm' },
+    { key: 'model_prob', label: 'Model%',  cls: 'hide-sm' },
+    { key: 'result',     label: 'Result',  cls: '' },
+    { key: 'clv',        label: 'CLV',     cls: 'hide-sm' },
+    { key: 'pnl_u',      label: 'P&L',     cls: '' },
   ];
 
   const thHTML = cols.map(c => {
@@ -286,7 +451,6 @@ function renderTable(rows) {
     const probStr = r.model_prob != null ? (r.model_prob * 100).toFixed(1) + '%' : '—';
     const pnlStr  = r.pnl_u != null ? (r.pnl_u >= 0 ? '+' : '') + r.pnl_u.toFixed(1) + 'u' : '—';
     const clvStr  = r.clv != null ? pct(r.clv) : '—';
-    // Format date as "May 27"
     const dateStr = r.date ? (() => { try { return new Date(r.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}); } catch(e){ return r.date; } })() : '—';
     return `<tr>
       <td style="color:var(--text-4);font-family:'JetBrains Mono',monospace;font-size:11px">${dateStr}</td>
@@ -307,12 +471,11 @@ function renderTable(rows) {
       <tbody>${trHTML}</tbody>
     </table>`;
 
-  // Sort click handlers
   document.querySelectorAll('#table-wrap .picks-table th').forEach(th => {
     th.addEventListener('click', () => {
       const col = th.dataset.col;
       if (sortCol === col) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-      else { sortCol = col; sortDir = col === 'date' ? 'desc' : 'desc'; }
+      else { sortCol = col; sortDir = 'desc'; }
       renderTable(allRows);
     });
   });
@@ -327,7 +490,7 @@ document.getElementById('filters').addEventListener('click', e => {
   renderTable(allRows);
 });
 
-loadHistory();
+loadAll();
 </script>
 </body>
 </html>

@@ -100,6 +100,65 @@
 .yest-pnl.neg { color: var(--red); }
 .yest-clv { font-size: 9px; color: var(--text-4); min-width: 44px; text-align: right; }
 
+/* ── Pick card redesign ─────────────────────────────────────── */
+/* Matchup row: "AWAY @ HOME", with picked team highlighted */
+.matchup-teams { display: flex; align-items: baseline; gap: 7px; margin-bottom: 3px; flex-wrap: wrap; }
+.mt-pick { font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 600; color: var(--text-2); }
+.mt-pick::after { content: ' ←'; font-size: 9px; color: var(--green); }
+.mt-opp  { font-size: 12px; color: var(--text-4); }
+.mt-at   { font-size: 10px; color: var(--text-4); }
+
+/* BET callout box */
+.bet-callout {
+  margin: 8px 0 12px;
+  padding: 11px 14px;
+  background: rgba(34,197,94,0.07);
+  border: 1.5px solid rgba(34,197,94,0.28);
+  border-radius: 8px;
+}
+.bet-callout-inner { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.bc-check { color: var(--green); font-size: 13px; font-weight: 700; }
+.bc-label { font-size: 8px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--green); opacity: 0.75; flex-shrink: 0; }
+.bc-team  { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700; color: #f1f5f9; flex: 1; min-width: 0; }
+.bc-odds  { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700; color: var(--amber); flex-shrink: 0; }
+.bc-side  { font-size: 8px; color: var(--text-4); padding: 2px 7px; border-radius: 4px; background: rgba(255,255,255,0.05); flex-shrink: 0; }
+
+/* Probability comparison bars */
+.prob-compare { margin: 12px 0 14px; display: flex; flex-direction: column; gap: 5px; }
+.prob-row { display: flex; align-items: center; gap: 8px; }
+.prob-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); width: 38px; flex-shrink: 0; }
+.prob-bar-wrap { flex: 1; height: 5px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
+.prob-bar.mkt   { height: 100%; background: rgba(255,255,255,0.2); border-radius: 100px; transition: width 0.4s; }
+.prob-bar.model { height: 100%; background: var(--green); border-radius: 100px; transition: width 0.4s; }
+.prob-val { font-size: 11px; font-weight: 600; color: var(--text-2); width: 84px; text-align: right; flex-shrink: 0; }
+.prob-val.green { color: var(--green); }
+.prob-edge { font-size: 9px; font-weight: 700; color: var(--amber); margin-left: 4px; }
+
+/* 4-box stats row (replaces old pick-stats) */
+.pick-stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 14px; }
+@media (max-width:420px) { .pick-stats-row { grid-template-columns: repeat(2,1fr); } }
+
+/* Model factors chips */
+.factors-section { margin-bottom: 12px; }
+.factors-title { font-size: 8.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-4); margin-bottom: 6px; }
+.factor-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.fac-chip { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 500; }
+.fac-pos { background: rgba(34,197,94,0.08); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.fac-neg { background: rgba(239,68,68,0.08); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+
+/* Edge narrative */
+.edge-narrative {
+  font-size: 11px; color: var(--text-3); line-height: 1.65;
+  margin-bottom: 10px; padding: 10px 13px;
+  background: rgba(255,255,255,0.018); border-radius: 7px;
+  border-left: 2px solid rgba(99,102,241,0.3);
+}
+.edge-narrative strong { color: var(--text-2); }
+
+/* EV line */
+.ev-line { font-size: 10px; color: var(--text-4); margin-bottom: 12px; }
+.ev-line strong { color: var(--green); }
+
 </style>
 </head>
 <body>
@@ -111,8 +170,7 @@
   </a>
   <div class="nav-links">
     <a class="nav-link active" href="index.html">Today's Picks</a>
-    <a class="nav-link" href="performance.html">Performance</a>
-    <a class="nav-link" href="history.html">History</a>
+    <a class="nav-link" href="history.html">Results</a>
     <a class="nav-link" href="model.html">Model</a>
   </div>
   <div class="nav-right">
@@ -177,7 +235,7 @@
 <footer>
   FairLine MLB · Quantitative Win Probability Model · Dual-Poisson + 18 Log-Odds Adjustments + Platt Calibration<br>
   For informational purposes only. Gambling involves risk — never bet more than you can afford to lose. Past model performance does not guarantee future results. 18+ only.<br>
-  <a href="model.html">Model Overview</a> · <a href="performance.html">Performance</a> · <a href="history.html">Pick History</a>
+  <a href="model.html">Model Overview</a> · <a href="history.html">Results &amp; Track Record</a>
 </footer>
 
 <script>
@@ -250,83 +308,136 @@ function tierLabel(edge) {
 }
 
 function pickCardHTML(p) {
-  const edgePct = (p.edge * 100).toFixed(1);
+  const edgePct  = (p.edge * 100).toFixed(1);
   const barWidth = Math.min(100, (p.edge / 0.12) * 100).toFixed(0);
   const [tierText, tierClass] = tierLabel(p.edge);
-  const modelProbPct = p.model_prob ? (p.model_prob * 100).toFixed(1) : '—';
-  const marketProbPct = p.market_prob ? (p.market_prob * 100).toFixed(1) : '—';
-  const breakEvenPct = p.break_even ? (p.break_even * 100).toFixed(1) : '—';
+  const modelPct = p.model_prob  ? (p.model_prob  * 100).toFixed(1) : null;
+  const mktPct   = p.market_prob ? (p.market_prob * 100).toFixed(1) : null;
+  const bePct    = p.break_even  ? (p.break_even  * 100).toFixed(1) : null;
   const kellyStr = p.kelly_units ? p.kelly_units.toFixed(1) + 'u' : '—';
+  const isDog    = p.odds > 0;
 
-  // Posted timestamp — format "2026-05-27T10:00" → "10:00 AM CT"
-  const postedHTML = p.posted_at ? (() => {
-    try {
-      const t = p.posted_at.includes('T') ? p.posted_at.split('T')[1] : p.posted_at;
-      const [hStr, mStr] = t.split(':');
-      const h = parseInt(hStr, 10);
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      const h12 = h > 12 ? h - 12 : (h === 0 ? 12 : h);
-      return `<div class="pick-posted"><span class="posted-dot"></span>Posted ${h12}:${mStr} ${ampm} CT · pre-game</div>`;
-    } catch(e) { return ''; }
-  })() : '';
+  // ── Matchup: parse "AWAY @ HOME" ─────────────────────────────────────────
+  let awayTeam = p.game || '', homeTeam = '';
+  if (p.game && p.game.includes(' @ ')) {
+    [awayTeam, homeTeam] = p.game.split(' @ ').map(s => s.trim());
+  }
+  const isHomePick = (p.side || '').toUpperCase() === 'HOME';
 
-  // Pinnacle line at bet time
-  const lmHTML = p.line_current ? `
-    <div class="mkt-item">
-      <div class="mkt-lbl">Pinnacle Line</div>
-      <div class="mkt-val"><strong>${formatOdds(p.line_current)}</strong></div>
+  // ── Posted timestamp (already formatted "10:00 AM CT" from Python) ───────
+  const postedHTML = p.posted_at
+    ? `<div class="pick-posted"><span class="posted-dot"></span>Posted ${p.posted_at} · pre-game</div>`
+    : '';
+
+  // ── Matchup line: away @ home, bet team marked ────────────────────────────
+  const matchupHTML = homeTeam
+    ? `<div class="matchup-teams">
+        <span class="${!isHomePick ? 'mt-pick' : 'mt-opp'}">${awayTeam}</span>
+        <span class="mt-at">@</span>
+        <span class="${isHomePick ? 'mt-pick' : 'mt-opp'}">${homeTeam}</span>
+       </div>`
+    : `<div class="matchup-teams"><span class="mt-pick">${p.game || '—'}</span></div>`;
+
+  // ── BET callout ───────────────────────────────────────────────────────────
+  const betHTML = `
+    <div class="bet-callout">
+      <div class="bet-callout-inner">
+        <span class="bc-check">✓</span>
+        <span class="bc-label">BET</span>
+        <span class="bc-team">${p.pick || '—'}</span>
+        <span class="bc-odds">${formatOdds(p.odds)}</span>
+        ${p.side ? `<span class="bc-side">${isHomePick ? 'Home' : 'Away'}</span>` : ''}
+      </div>
+    </div>`;
+
+  // ── Probability comparison bars ──────────────────────────────────────────
+  const SCALE = 78; // bars scale to this % as "100%"
+  const probHTML = (modelPct && mktPct) ? `
+    <div class="prob-compare">
+      <div class="prob-row">
+        <span class="prob-label">Market</span>
+        <div class="prob-bar-wrap"><div class="prob-bar mkt" style="width:${Math.min(100,(parseFloat(mktPct)/SCALE*100)).toFixed(0)}%"></div></div>
+        <span class="prob-val">${mktPct}%</span>
+      </div>
+      <div class="prob-row">
+        <span class="prob-label">Model</span>
+        <div class="prob-bar-wrap"><div class="prob-bar model" style="width:${Math.min(100,(parseFloat(modelPct)/SCALE*100)).toFixed(0)}%"></div></div>
+        <span class="prob-val green">${modelPct}% <span class="prob-edge">+${edgePct}%</span></span>
+      </div>
     </div>` : '';
+
+  // ── Model factors ─────────────────────────────────────────────────────────
+  const factors = p.factors || [];
+  let factorsHTML = '';
+  if (factors.length > 0) {
+    function facStr(v) {
+      const a = Math.abs(v);
+      if (a >= 0.04) return 'Strong';
+      if (a >= 0.02) return 'Significant';
+      if (a >= 0.01) return 'Moderate';
+      return 'Slight';
+    }
+    const chips = factors.map(f => {
+      const cls  = f.value > 0 ? 'fac-pos' : 'fac-neg';
+      const icon = f.value > 0 ? '▲' : '▼';
+      return `<span class="fac-chip ${cls}">${icon} ${facStr(f.value)} ${f.label}</span>`;
+    }).join('');
+    factorsHTML = `
+      <div class="factors-section">
+        <div class="factors-title">Model Factors</div>
+        <div class="factor-chips">${chips}</div>
+      </div>`;
+  }
+
+  // ── Edge narrative (auto-generated) ──────────────────────────────────────
+  let narrativeHTML = '';
+  if (modelPct && mktPct) {
+    const sideCtx  = p.side ? (isHomePick ? 'home' : 'road') : '';
+    const dogFav   = isDog ? `underdog at ${formatOdds(p.odds)}` : `favorite at ${formatOdds(p.odds)}`;
+    const beatBePp = bePct ? ((parseFloat(modelPct) - parseFloat(bePct)).toFixed(1)) : null;
+    const evStr    = p.ev_per_100 != null
+      ? `Expected value of <strong>${p.ev_per_100 >= 0 ? '+' : ''}$${p.ev_per_100.toFixed(2)}</strong> per $100 wagered.`
+      : '';
+    const beStr    = bePct && beatBePp
+      ? `Break-even is <strong>${bePct}%</strong> — model exceeds by <strong>+${beatBePp}pp</strong>.`
+      : '';
+    narrativeHTML = `
+      <div class="edge-narrative">
+        <strong>${p.pick}</strong> is the ${dogFav}${sideCtx ? ' (' + sideCtx + ')' : ''}.
+        Model computes a <strong>${modelPct}%</strong> win probability vs. the market's
+        <strong>${mktPct}%</strong> implied — a <strong>+${edgePct}% pricing edge</strong>.
+        ${beStr} ${evStr}
+      </div>`;
+  }
+
+  // ── 4-box stats ───────────────────────────────────────────────────────────
+  const statsHTML = `
+    <div class="pick-stats-row">
+      <div class="ps-box"><div class="ps-lbl">Model Prob</div><div class="ps-val">${modelPct ? modelPct + '%' : '—'}</div><div class="ps-sub">true win %</div></div>
+      <div class="ps-box"><div class="ps-lbl">Best Odds</div><div class="ps-val amber">${formatOdds(p.best_odds || p.odds)}</div><div class="ps-sub">at bet time</div></div>
+      <div class="ps-box"><div class="ps-lbl">Fair Odds</div><div class="ps-val">${p.fair_odds || '—'}</div><div class="ps-sub">model price</div></div>
+      <div class="ps-box"><div class="ps-lbl">Half-Kelly</div><div class="ps-val">${kellyStr}</div><div class="ps-sub">10u bankroll</div></div>
+    </div>`;
+
+  // ── SP line + break-even ──────────────────────────────────────────────────
+  const metaHTML = p.meta ? `<div class="pick-meta" style="margin:0 0 10px;font-size:11px;color:var(--text-4)">${p.meta}${bePct ? ` · Break-even ${bePct}%` : ''}</div>` : '';
 
   return `
     <div class="pick-card ${tierClass}">
       ${postedHTML}
       <div class="pick-type-row">
-        <div class="pick-tier">⭐ ${tierText} · ${p.pick_type || 'MONEYLINE'}</div>
+        <div class="pick-tier">⭐ ${tierText} · MONEYLINE</div>
         <div class="pick-badge ${tierClass}">✓ ${tierClass === 'marginal' ? 'MARGINAL' : 'VALUE'}</div>
       </div>
-      <div class="pick-matchup">${p.game || '—'}</div>
-      <div class="pick-meta">${p.pick || '—'} · ${p.meta || ''}</div>
-
-      <div class="pick-stats">
-        <div class="ps-box">
-          <div class="ps-lbl">Model Prob</div>
-          <div class="ps-val">${modelProbPct}%</div>
-          <div class="ps-sub">True win %</div>
-        </div>
-        <div class="ps-box">
-          <div class="ps-lbl">Best Odds</div>
-          <div class="ps-val amber">${formatOdds(p.best_odds || p.odds)}</div>
-          <div class="ps-sub">at bet time</div>
-        </div>
-        <div class="ps-box">
-          <div class="ps-lbl">Market Prob</div>
-          <div class="ps-val">${marketProbPct}%</div>
-          <div class="ps-sub">No-vig Pinnacle</div>
-        </div>
-        <div class="ps-box">
-          <div class="ps-lbl">Fair Odds</div>
-          <div class="ps-val">${p.fair_odds || '—'}</div>
-          <div class="ps-sub">vs. ${formatOdds(p.best_odds || p.odds)} market</div>
-        </div>
-      </div>
-
-      ${lmHTML ? `<div class="pick-mkt-row">${lmHTML}</div>` : ''}
-
-      <div class="be-kelly-row">
-        <div class="bk-box">
-          <div class="bk-lbl">🎯 Break-Even</div>
-          <div class="bk-val">${breakEvenPct}%</div>
-        </div>
-        <div class="bk-box">
-          <div class="bk-lbl">💰 Half-Kelly</div>
-          <div class="bk-val">${kellyStr}</div>
-        </div>
-      </div>
-
+      ${matchupHTML}
+      ${betHTML}
+      ${metaHTML}
+      ${probHTML}
+      ${statsHTML}
+      ${factorsHTML}
+      ${narrativeHTML}
       <div class="edge-bar-wrap">
-        <div class="edge-bar-track">
-          <div class="edge-bar-fill" style="width:${barWidth}%"></div>
-        </div>
+        <div class="edge-bar-track"><div class="edge-bar-fill" style="width:${barWidth}%"></div></div>
         <div class="edge-bar-label">
           <div class="edge-lbl">MODEL EDGE · 2% MIN</div>
           <div class="edge-val">+${edgePct}%</div>
