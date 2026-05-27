@@ -343,9 +343,10 @@
 
 /* ── Mobile: compact pick card ── */
 @media (max-width: 520px) {
-  .prob-compare { gap: 3px; margin: 8px 0 10px; }
-  .prob-label { font-size: 8px; width: 32px; }
-  .prob-val { font-size: 10px; width: 60px; }
+  .prob-compare { margin: 8px 0 10px; }
+  .prob-track-lbl { font-size: 8px; }
+  .prob-track-lbl strong { font-size: 10px; }
+  .prob-track-edge-lbl { font-size: 9px; }
   .book-odds-row { flex-wrap: wrap; gap: 5px; padding: 6px 10px; }
   .bor-books { gap: 8px; }
   .bor-shop { margin-left: 0; margin-top: 2px; }
@@ -407,6 +408,16 @@
   display: inline-flex; align-items: center; gap: 3px; white-space: nowrap;
 }
 
+/* ── SP "as of" staleness disclaimer ── */
+.sp-as-of {
+  font-size: 9px; color: var(--amber);
+  opacity: 0.7;
+  margin-left: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: help;
+  white-space: nowrap;
+}
+
 /* ── Countdown chip ── */
 .countdown-chip { transition: color 0.3s; }
 .countdown-chip.starting-soon { color: var(--amber) !important; }
@@ -432,17 +443,38 @@
 .bc-odds  { font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700; color: var(--amber); flex-shrink: 0; }
 .bc-side  { font-size: 8px; color: var(--text-4); padding: 2px 7px; border-radius: 4px; background: rgba(255,255,255,0.05); flex-shrink: 0; }
 
-/* Probability comparison bars */
-.prob-compare { margin: 12px 0 14px; display: flex; flex-direction: column; gap: 5px; }
-.prob-row { display: flex; align-items: center; gap: 8px; }
-.prob-label { font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-4); width: 38px; flex-shrink: 0; display: flex; align-items: center; }
-.prob-bar-wrap { flex: 1; height: 5px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
-.prob-bar.mkt   { height: 100%; background: rgba(255,255,255,0.2); border-radius: 100px; transition: width 0.4s; }
-.prob-bar.model { height: 100%; background: var(--green); border-radius: 100px; transition: width 0.4s; }
-.prob-bar.edge  { height: 100%; background: linear-gradient(90deg, var(--amber), #fbbf24); border-radius: 100px; transition: width 0.4s; }
-.prob-val { font-size: 11px; font-weight: 600; color: var(--text-2); width: 84px; text-align: right; flex-shrink: 0; }
-.prob-val.green { color: var(--green); }
-.prob-val.amber { color: var(--amber); font-weight: 700; }
+/* Probability single-track: Market → Edge gap → Model, all on 0–100% axis */
+.prob-compare { margin: 12px 0 14px; }
+.prob-track-wrap {
+  position: relative; height: 7px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 100px; overflow: hidden; margin-bottom: 7px;
+}
+.prob-track-market {
+  position: absolute; left: 0; top: 0; bottom: 0;
+  background: rgba(255,255,255,0.18);
+  border-radius: 100px 0 0 100px;
+  transition: width 0.4s;
+}
+.prob-track-edge {
+  position: absolute; top: 0; bottom: 0;
+  background: linear-gradient(90deg, rgba(34,197,94,0.55), rgba(34,197,94,0.9));
+  transition: left 0.4s, width 0.4s;
+}
+.prob-track-labels {
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.prob-track-lbl { font-size: 9px; color: var(--text-4); letter-spacing: 0.03em; }
+.prob-track-lbl strong { color: var(--text-2); font-size: 11px; font-weight: 600; }
+.prob-track-lbl.model strong { color: var(--green); }
+.prob-track-edge-lbl {
+  font-size: 10px; font-weight: 700; color: var(--green);
+  letter-spacing: 0.04em;
+}
+.prob-track-subline {
+  font-size: 8px; color: var(--text-4); text-align: center;
+  margin-top: 3px; letter-spacing: 0.04em;
+}
 
 /* Tier section headers */
 .tier-header { display: flex; align-items: center; gap: 8px; margin: 18px 0 10px; padding: 0 2px; }
@@ -560,6 +592,7 @@
   <div class="model-info-strip">
     <strong>Edge</strong> = model win probability minus Pinnacle's no-vig market probability.
     Only picks ≥ 2% edge are shown. <strong>Picks post daily by 9:30 AM CT.</strong>
+    Starting pitcher info is captured at model run time — always verify current starters before betting.
     <span id="games-scanned-strip"></span>
   </div>
 
@@ -1120,12 +1153,14 @@ function pickCardHTML(p, isTopPick = false) {
         : (isLive ? `<div class="pick-posted">${liveHTML}</div>` : ''));
 
   // SP line — show both pitchers when available: "⚾ Gausman vs. Freeland"
+  // Includes "as of [time]" disclaimer since SP data is captured at model run time (~9 AM CT)
   const spText    = parseSP(p.meta);
   const oppSP     = p.opp_pitcher || null;
+  const spAsOf    = p.posted_at ? `<span class="sp-as-of" title="Starting pitcher info captured at model run time. Verify current starters before betting.">as of ${p.posted_at} CT ⚠</span>` : '';
   const spHTML = spText
     ? (oppSP
-        ? `<div class="sp-line">⚾ <strong>${spText}</strong> <span style="color:var(--text-4);font-size:10px">vs.</span> <strong>${oppSP}</strong></div>`
-        : `<div class="sp-line">⚾ <strong>${spText}</strong></div>`)
+        ? `<div class="sp-line">⚾ <strong>${spText}</strong> <span style="color:var(--text-4);font-size:10px">vs.</span> <strong>${oppSP}</strong>${spAsOf}</div>`
+        : `<div class="sp-line">⚾ <strong>${spText}</strong>${spAsOf}</div>`)
     : '';
 
   // Historical context: how has this pick type (side × dog/fav × odds range) performed this season
@@ -1213,26 +1248,23 @@ function pickCardHTML(p, isTopPick = false) {
       </div>
     </div>`;
 
-  // Probability comparison bars — 3 rows: Market / Model / Edge
-  const SCALE = 78;
-  const edgeBarW = Math.min(100, (p.edge / 0.12) * 100).toFixed(0);
+  // Probability single-track: Market → edge gap → Model, all on 0–100% win-probability axis
+  // Edge = Model − Market, shown as the highlighted gap between the two fills
+  const mktW  = parseFloat(mktPct).toFixed(1);   // left fill width (%)
+  const edgeW = parseFloat(edgePct).toFixed(1);  // gap width (%)
   const probHTML = (modelPct && mktPct) ? `
     <div class="prob-compare">
-      <div class="prob-row">
-        <span class="prob-label">Market<span class="tip" data-tip="Pinnacle no-vig implied probability — sharpest market benchmark">?</span></span>
-        <div class="prob-bar-wrap"><div class="prob-bar mkt" style="width:${Math.min(100,(parseFloat(mktPct)/SCALE*100)).toFixed(0)}%"></div></div>
-        <span class="prob-val">${mktPct}%</span>
+      <div class="prob-track-wrap"
+           title="Both bars on the same 0–100% win-probability scale. Green gap = model edge over market.">
+        <div class="prob-track-market" style="width:${mktW}%"></div>
+        <div class="prob-track-edge"   style="left:${mktW}%;width:${edgeW}%"></div>
       </div>
-      <div class="prob-row">
-        <span class="prob-label">Model<span class="tip" data-tip="Model's true win probability (Dual-Poisson + 18 adjustments + Platt calibration)">?</span></span>
-        <div class="prob-bar-wrap"><div class="prob-bar model" style="width:${Math.min(100,(parseFloat(modelPct)/SCALE*100)).toFixed(0)}%"></div></div>
-        <span class="prob-val green">${modelPct}%</span>
+      <div class="prob-track-labels">
+        <span class="prob-track-lbl" title="Pinnacle no-vig implied win probability — sharpest market benchmark">Market <strong>${mktPct}%</strong></span>
+        <span class="prob-track-edge-lbl">+${edgePct}% edge</span>
+        <span class="prob-track-lbl model" title="Model win probability (Dual-Poisson + 18 adjustments + Platt calibration)">Model <strong>${modelPct}%</strong></span>
       </div>
-      <div class="prob-row">
-        <span class="prob-label">Edge<span class="tip" data-tip="Model minus market — the pricing gap we're exploiting. 2% minimum threshold.">?</span></span>
-        <div class="prob-bar-wrap"><div class="prob-bar edge" style="width:${edgeBarW}%"></div></div>
-        <span class="prob-val amber">+${edgePct}%</span>
-      </div>
+      <div class="prob-track-subline">Win probability · market vs. model · same scale</div>
     </div>` : '';
 
   // Model factors
