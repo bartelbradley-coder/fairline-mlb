@@ -384,9 +384,22 @@
 .prob-bar-wrap { flex: 1; height: 5px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
 .prob-bar.mkt   { height: 100%; background: rgba(255,255,255,0.2); border-radius: 100px; transition: width 0.4s; }
 .prob-bar.model { height: 100%; background: var(--green); border-radius: 100px; transition: width 0.4s; }
+.prob-bar.edge  { height: 100%; background: linear-gradient(90deg, var(--amber), #fbbf24); border-radius: 100px; transition: width 0.4s; }
 .prob-val { font-size: 11px; font-weight: 600; color: var(--text-2); width: 84px; text-align: right; flex-shrink: 0; }
 .prob-val.green { color: var(--green); }
-.prob-edge { font-size: 9px; font-weight: 700; color: var(--amber); margin-left: 4px; }
+.prob-val.amber { color: var(--amber); font-weight: 700; }
+
+/* Tier section headers */
+.tier-header { display: flex; align-items: center; gap: 8px; margin: 18px 0 10px; padding: 0 2px; }
+.tier-header .tier-label { font-family: 'Oswald', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.tier-header .tier-edge-tag { font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 20px; letter-spacing: 0.04em; }
+.tier-header .tier-divider { flex: 1; height: 1px; background: var(--border); }
+.tier-header.strong-tier .tier-label { color: var(--amber); }
+.tier-header.strong-tier .tier-edge-tag { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+.tier-header.value-tier  .tier-label { color: var(--green); }
+.tier-header.value-tier  .tier-edge-tag { background: rgba(34,197,94,0.10); color: var(--green); border: 1px solid rgba(34,197,94,0.22); }
+.tier-header.marginal-tier .tier-label { color: var(--text-3); }
+.tier-header.marginal-tier .tier-edge-tag { background: rgba(255,255,255,0.05); color: var(--text-3); border: 1px solid var(--border); }
 
 /* 4-box stats row */
 .pick-stats-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; margin-bottom: 14px; }
@@ -911,10 +924,13 @@ function pickCardHTML(p, isTopPick = false) {
         ? `<div class="pick-posted"><span class="game-time-chip">⏱ ${gameTimeStr}</span>${liveHTML}</div>`
         : (isLive ? `<div class="pick-posted">${liveHTML}</div>` : ''));
 
-  // SP line (prominent, above matchup)
-  const spText = parseSP(p.meta);
+  // SP line — show both pitchers when available: "⚾ Gausman vs. Freeland"
+  const spText    = parseSP(p.meta);
+  const oppSP     = p.opp_pitcher || null;
   const spHTML = spText
-    ? `<div class="sp-line">⚾ SP: <strong>${spText}</strong></div>`
+    ? (oppSP
+        ? `<div class="sp-line">⚾ <strong>${spText}</strong> <span style="color:var(--text-4);font-size:10px">vs.</span> <strong>${oppSP}</strong></div>`
+        : `<div class="sp-line">⚾ <strong>${spText}</strong></div>`)
     : '';
 
   // Matchup line
@@ -974,8 +990,9 @@ function pickCardHTML(p, isTopPick = false) {
       <a class="bor-shop" href="https://www.covers.com/sports/mlb/matchups" target="_blank" rel="noopener">🔍 Shop all lines</a>
     </div>`;
 
-  // Probability comparison bars
+  // Probability comparison bars — 3 rows: Market / Model / Edge
   const SCALE = 78;
+  const edgeBarW = Math.min(100, (p.edge / 0.12) * 100).toFixed(0);
   const probHTML = (modelPct && mktPct) ? `
     <div class="prob-compare">
       <div class="prob-row">
@@ -986,7 +1003,12 @@ function pickCardHTML(p, isTopPick = false) {
       <div class="prob-row">
         <span class="prob-label">Model<span class="tip" data-tip="Model's true win probability (Dual-Poisson + 18 adjustments + Platt calibration)">?</span></span>
         <div class="prob-bar-wrap"><div class="prob-bar model" style="width:${Math.min(100,(parseFloat(modelPct)/SCALE*100)).toFixed(0)}%"></div></div>
-        <span class="prob-val green">${modelPct}% <span class="prob-edge">+${edgePct}%</span></span>
+        <span class="prob-val green">${modelPct}%</span>
+      </div>
+      <div class="prob-row">
+        <span class="prob-label">Edge<span class="tip" data-tip="Model minus market — the pricing gap we're exploiting. 2% minimum threshold.">?</span></span>
+        <div class="prob-bar-wrap"><div class="prob-bar edge" style="width:${edgeBarW}%"></div></div>
+        <span class="prob-val amber">+${edgePct}%</span>
       </div>
     </div>` : '';
 
@@ -1081,10 +1103,7 @@ function pickCardHTML(p, isTopPick = false) {
   const wx = formatWeather(p);
   const wxHTML = wx ? `<div class="wx-strip ${wx.highWind ? 'wx-high-wind' : ''}"><span class="wx-icon">${wx.text}</span></div>` : '';
 
-  // Posted Pinnacle line
-  const linePostHTML = p.line_open
-    ? `<div class="line-posted">Pinnacle at post: <strong>${formatOdds(p.line_open)}</strong> · <span class="tip" data-tip="Closing Line Value: did the market move toward our pick after we logged it? Positive CLV = real edge signal.">CLV</span> tracked at close</div>`
-    : '';
+  // (Pinnacle at post line removed — already shown in the Lines row above)
 
   // Mobile analysis toggle
   const analysisHTML = (factorsHTML || narrativeHTML) ? `
@@ -1122,14 +1141,6 @@ function pickCardHTML(p, isTopPick = false) {
       ${probHTML}
       ${statsHTML}
       ${analysisHTML}
-      ${linePostHTML}
-      <div class="edge-bar-wrap">
-        <div class="edge-bar-track"><div class="edge-bar-fill" style="width:${barWidth}%"></div></div>
-        <div class="edge-bar-label">
-          <div class="edge-lbl">MODEL EDGE · 2% MIN</div>
-          <div class="edge-val">+${edgePct}%</div>
-        </div>
-      </div>
     </div>`;
 }
 
@@ -1235,19 +1246,42 @@ function render(data, hist) {
     renderEmptyState(data, hist, marginal);
   } else {
     _mainPicksRef = main;
-    // Identify the top pick only when there are 2+ picks AND the top edge is ≥ 8%
-    const topIdx = main.reduce((best, p, i) => p.edge > main[best].edge ? i : best, 0);
-    const spotlightTop = main.length >= 2 && main[topIdx].edge >= 0.08;
+    // Split into strong (≥8%) and value (2–8%) tiers
+    const strong = main.filter(p => p.edge >= 0.08);
+    const value  = main.filter(p => p.edge  < 0.08);
+    // Spotlight only the single top pick when ≥ 8% edge and 2+ total picks
+    const topPick = main[0]; // already sorted by edge desc
+    const spotlightTop = main.length >= 2 && topPick.edge >= 0.08;
     const gridClass = main.length === 1 ? 'pick-grid single-pick' : 'pick-grid';
     // Share-all button (only if 2+ picks)
     const shareAllHTML = main.length >= 2
       ? `<div class="share-all-row"><button class="share-all-btn" onclick="shareAllPicks()">𝕏 Share All ${main.length} Picks</button></div>`
       : '';
+
+    function tierHeader(cls, icon, label, edgeTag) {
+      return `<div class="tier-header ${cls}">
+        <span class="tier-label">${icon} ${label}</span>
+        <span class="tier-edge-tag">${edgeTag}</span>
+        <span class="tier-divider"></span>
+      </div>`;
+    }
+
+    let picksHTML = '';
+    if (strong.length > 0) {
+      picksHTML += tierHeader('strong-tier', '🔥', 'Strong Value', '8%+ Edge');
+      picksHTML += strong.map(p => pickCardHTML(p, spotlightTop && p === topPick)).join('');
+    }
+    if (value.length > 0) {
+      // Only show the "Value" header when there's also a strong section above it
+      if (strong.length > 0) {
+        picksHTML += tierHeader('value-tier', '✅', 'Value', '2–8% Edge');
+      }
+      picksHTML += value.map(p => pickCardHTML(p, false)).join('');
+    }
+
     document.getElementById('picks-container').innerHTML =
       shareAllHTML +
-      `<div class="${gridClass}">` +
-      main.map((p, i) => pickCardHTML(p, spotlightTop && i === topIdx)).join('') +
-      '</div>';
+      `<div class="${gridClass}">` + picksHTML + '</div>';
     refreshKellyUSD();
     refreshBetButtons();
     refreshPersonalTracker();
@@ -1255,7 +1289,13 @@ function render(data, hist) {
 
   if (marginal.length > 0) {
     document.getElementById('marginal-section').style.display = 'block';
+    // Tier header for marginal section
     document.getElementById('marginal-container').innerHTML =
+      `<div class="tier-header marginal-tier" style="margin-top:0">
+        <span class="tier-label">⚠️ Marginal</span>
+        <span class="tier-edge-tag">Below 2% Threshold</span>
+        <span class="tier-divider"></span>
+      </div>` +
       '<div class="pick-grid">' + marginal.map(p => pickCardHTML(p, false)).join('') + '</div>';
     refreshKellyUSD();
   }
