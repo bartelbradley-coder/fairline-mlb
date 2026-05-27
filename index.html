@@ -699,24 +699,27 @@ function pickCardHTML(p) {
       </div>`;
   }
 
-  // Edge narrative
+  // Edge narrative — use backend-generated text (real xFIP, OAA, bullpen stats),
+  // fall back to a lean summary only when narrative field is absent.
   let narrativeHTML = '';
-  if (modelPct && mktPct) {
-    const sideCtx  = p.side ? (isHomePick ? 'home' : 'road') : '';
-    const dogFav   = isDog ? `underdog at ${formatOdds(p.odds)}` : `favorite at ${formatOdds(p.odds)}`;
-    const beatBePp = bePct ? ((parseFloat(modelPct) - parseFloat(bePct)).toFixed(1)) : null;
-    const evStr    = p.ev_per_100 != null
-      ? `Expected value of <strong>${p.ev_per_100 >= 0 ? '+' : ''}$${p.ev_per_100.toFixed(2)}</strong> per $100 wagered.`
+  if (p.narrative && p.narrative.trim()) {
+    // Rich narrative from Python — just render it
+    const evStr = p.ev_per_100 != null
+      ? ` EV: <strong>${p.ev_per_100 >= 0 ? '+' : ''}$${p.ev_per_100.toFixed(2)}</strong>/100 wagered.`
       : '';
-    const beStr = bePct && beatBePp
-      ? `Break-even is <strong>${bePct}%</strong> — model exceeds by <strong>+${beatBePp}pp</strong>.`
+    narrativeHTML = `
+      <div class="edge-narrative">${p.narrative}${evStr}</div>`;
+  } else if (modelPct && mktPct) {
+    // Fallback for picks exported before narrative field was added
+    const dogFav = isDog ? `underdog at ${formatOdds(p.odds)}` : `favorite at ${formatOdds(p.odds)}`;
+    const evStr  = p.ev_per_100 != null
+      ? ` EV: <strong>${p.ev_per_100 >= 0 ? '+' : ''}$${p.ev_per_100.toFixed(2)}</strong>/100.`
       : '';
     narrativeHTML = `
       <div class="edge-narrative">
-        <strong>${p.pick}</strong> is the ${dogFav}${sideCtx ? ' (' + sideCtx + ')' : ''}.
-        Model computes a <strong>${modelPct}%</strong> win probability vs. the market's
-        <strong>${mktPct}%</strong> implied — a <strong>+${edgePct}% pricing edge</strong>.
-        ${beStr} ${evStr}
+        <strong>${p.pick}</strong> is the ${dogFav}.
+        Model: <strong>${modelPct}%</strong> win probability vs. market's <strong>${mktPct}%</strong>
+        — <strong>+${edgePct}% pricing edge</strong>.${evStr}
       </div>`;
   }
 

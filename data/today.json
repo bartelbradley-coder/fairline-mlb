@@ -1,6 +1,6 @@
 {
   "date": "2026-05-27",
-  "generated_at": "12:09 PM CT \u00b7 May 27",
+  "generated_at": "1:00 PM CT \u00b7 May 27",
   "picks": [
     {
       "game": "ATL @ BOS",
@@ -10,9 +10,9 @@
       "meta": "SP: Bryce Elder",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T22:45:00Z",
-      "temp_f": 73.1,
-      "wind_speed_mph": 6.0,
-      "wind_dir_degrees": 301.0,
+      "temp_f": 73.3,
+      "wind_speed_mph": 7.0,
+      "wind_dir_degrees": 320.0,
       "is_domed": false,
       "model_prob": 0.5879,
       "market_prob": 0.4836,
@@ -39,7 +39,8 @@
           "label": "Starter Advantage",
           "value": -0.005
         }
-      ]
+      ],
+      "narrative": "The pricing gap is driven primarily by team quality: the model's Poisson run-expectancy framework prices ATL's win probability significantly higher than the market's moneyline implies, based on RS/RA differential and recent offensive/defensive form \u2014 the small adjustment factors are secondary to this base quality signal."
     },
     {
       "game": "MIN @ CHW",
@@ -50,7 +51,7 @@
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T23:40:00Z",
       "temp_f": 59.3,
-      "wind_speed_mph": 6.9,
+      "wind_speed_mph": 5.5,
       "wind_dir_degrees": 21.0,
       "is_domed": false,
       "model_prob": 0.5984,
@@ -78,7 +79,8 @@
           "label": "Home Field",
           "value": 0.008
         }
-      ]
+      ],
+      "narrative": "The pricing gap is driven primarily by team quality: the model's Poisson run-expectancy framework prices CHW's win probability significantly higher than the market's moneyline implies, based on RS/RA differential and recent offensive/defensive form \u2014 the small adjustment factors are secondary to this base quality signal."
     },
     {
       "game": "STL @ MIL",
@@ -121,7 +123,8 @@
           "label": "Starter Advantage",
           "value": 0.005
         }
-      ]
+      ],
+      "narrative": "Despite playing on the road, STL's model quality signals outweigh the home-field headwind \u2014 the market's implied probability under-prices STL's true win probability once RS/RA quality differential is fully accounted for."
     },
     {
       "game": "SEA @ OAK",
@@ -132,8 +135,8 @@
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T19:05:00Z",
       "temp_f": 64.5,
-      "wind_speed_mph": 12.5,
-      "wind_dir_degrees": 272.0,
+      "wind_speed_mph": 12.3,
+      "wind_dir_degrees": 273.0,
       "is_domed": false,
       "model_prob": 0.5132,
       "market_prob": 0.4692,
@@ -160,7 +163,8 @@
           "label": "Defense (OAA)",
           "value": 0.014
         }
-      ]
+      ],
+      "narrative": "Home field is OAK's primary edge: 2026 park data and home-game performance signals combine to produce a log-odds boost the flat moneyline underweights. Defense (OAA) reinforces the primary signal \u2014 stacked favorable adjustments across multiple model layers tend to produce more durable edges than single-factor picks."
     },
     {
       "game": "MIA @ TOR",
@@ -195,7 +199,8 @@
           "label": "Home Field",
           "value": -0.016
         }
-      ]
+      ],
+      "narrative": "Despite playing on the road, MIA's model quality signals outweigh the home-field headwind \u2014 the market's implied probability under-prices MIA's true win probability once RS/RA quality differential is fully accounted for."
     },
     {
       "game": "PHI @ SD",
@@ -205,9 +210,9 @@
       "meta": "SP: Walker Buehler",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T20:10:00Z",
-      "temp_f": 65.7,
-      "wind_speed_mph": 8.8,
-      "wind_dir_degrees": 264.0,
+      "temp_f": 66.7,
+      "wind_speed_mph": 10.1,
+      "wind_dir_degrees": 270.0,
       "is_domed": false,
       "model_prob": 0.4694,
       "market_prob": 0.44,
@@ -234,7 +239,8 @@
           "label": "Defense (OAA)",
           "value": 0.0154
         }
-      ]
+      ],
+      "narrative": "Home field is SD's primary edge: 2026 park data and home-game performance signals combine to produce a log-odds boost the flat moneyline underweights. Defense (OAA) reinforces the primary signal \u2014 stacked favorable adjustments across multiple model layers tend to produce more durable edges than single-factor picks."
     },
     {
       "game": "COL @ LAD",
@@ -244,9 +250,9 @@
       "meta": "SP: Tomoyuki Sugano",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-28T02:10:00Z",
-      "temp_f": 54.1,
-      "wind_speed_mph": 3.5,
-      "wind_dir_degrees": 230.0,
+      "temp_f": 56.4,
+      "wind_speed_mph": 5.4,
+      "wind_dir_degrees": 268.0,
       "is_domed": false,
       "model_prob": 0.25,
       "market_prob": 0.2257,
@@ -277,7 +283,8 @@
           "label": "Starter Advantage",
           "value": -0.005
         }
-      ]
+      ],
+      "narrative": "Despite playing on the road, COL's model quality signals outweigh the home-field headwind \u2014 the market's implied probability under-prices COL's true win probability once RS/RA quality differential is fully accounted for. Defense (OAA) partially offsets the primary signal \u2014 stacked favorable adjustments across multiple model layers tend to produce more durable edges than single-factor picks."
     },
     {
       "game": "ARI @ SF",
@@ -288,8 +295,8 @@
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T19:45:00Z",
       "temp_f": 62.2,
-      "wind_speed_mph": 16.6,
-      "wind_dir_degrees": 270.0,
+      "wind_speed_mph": 15.2,
+      "wind_dir_degrees": 267.0,
       "is_domed": false,
       "model_prob": 0.5445,
       "market_prob": 0.521,
@@ -320,7 +327,8 @@
           "label": "Starter Advantage",
           "value": -0.005
         }
-      ]
+      ],
+      "narrative": "Despite playing on the road, ARI's model quality signals outweigh the home-field headwind \u2014 the market's implied probability under-prices ARI's true win probability once RS/RA quality differential is fully accounted for. Defense (OAA) reinforces the primary signal \u2014 stacked favorable adjustments across multiple model layers tend to produce more durable edges than single-factor picks."
     },
     {
       "game": "CIN @ MET",
@@ -330,9 +338,9 @@
       "meta": "SP: Andrew Abbott",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T23:10:00Z",
-      "temp_f": 75.4,
-      "wind_speed_mph": 5.4,
-      "wind_dir_degrees": 318.0,
+      "temp_f": 75.1,
+      "wind_speed_mph": 7.3,
+      "wind_dir_degrees": 317.0,
       "is_domed": false,
       "model_prob": 0.5014,
       "market_prob": 0.478,
@@ -363,7 +371,8 @@
           "label": "Starter Advantage",
           "value": 0.01
         }
-      ]
+      ],
+      "narrative": "Despite playing on the road, CIN's model quality signals outweigh the home-field headwind \u2014 the market's implied probability under-prices CIN's true win probability once RS/RA quality differential is fully accounted for. Defense (OAA) reinforces the primary signal \u2014 stacked favorable adjustments across multiple model layers tend to produce more durable edges than single-factor picks."
     },
     {
       "game": "NYY @ KC",
@@ -373,9 +382,9 @@
       "meta": "SP: Noah Cameron",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T23:40:00Z",
-      "temp_f": 75.9,
-      "wind_speed_mph": 5.6,
-      "wind_dir_degrees": 106.0,
+      "temp_f": 75.3,
+      "wind_speed_mph": 5.1,
+      "wind_dir_degrees": 124.0,
       "is_domed": false,
       "model_prob": 0.4355,
       "market_prob": 0.4152,
@@ -402,7 +411,8 @@
           "label": "Starter Advantage",
           "value": -0.005
         }
-      ]
+      ],
+      "narrative": "Home field is KC's primary edge: 2026 park data and home-game performance signals combine to produce a log-odds boost the flat moneyline underweights."
     },
     {
       "game": "CHC @ PIT",
@@ -412,9 +422,9 @@
       "meta": "SP: Bubba Chandler",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T22:40:00Z",
-      "temp_f": 69.3,
-      "wind_speed_mph": 3.2,
-      "wind_dir_degrees": 219.0,
+      "temp_f": 69.2,
+      "wind_speed_mph": 4.7,
+      "wind_dir_degrees": 262.0,
       "is_domed": false,
       "model_prob": 0.5435,
       "market_prob": 0.5351,
@@ -441,7 +451,8 @@
           "label": "Home Field",
           "value": 0.013
         }
-      ]
+      ],
+      "narrative": "Defensive metrics are PIT's top model signal today, contributing the largest single log-odds adjustment to the pricing edge. Home Field reinforces the primary signal \u2014 stacked favorable adjustments across multiple model layers tend to produce more durable edges than single-factor picks."
     },
     {
       "game": "LAA @ DET",
@@ -451,9 +462,9 @@
       "meta": "SP: Casey Mize",
       "posted_at": "11:31 AM CT",
       "game_time": "2026-05-27T22:40:00Z",
-      "temp_f": 66.0,
-      "wind_speed_mph": 8.8,
-      "wind_dir_degrees": 32.0,
+      "temp_f": 64.8,
+      "wind_speed_mph": 7.3,
+      "wind_dir_degrees": 45.0,
       "is_domed": false,
       "model_prob": 0.5164,
       "market_prob": 0.5071,
@@ -480,7 +491,8 @@
           "label": "Starter Advantage",
           "value": 0.007
         }
-      ]
+      ],
+      "narrative": "Home field is DET's primary edge: 2026 park data and home-game performance signals combine to produce a log-odds boost the flat moneyline underweights."
     }
   ],
   "signal_count": 12,
