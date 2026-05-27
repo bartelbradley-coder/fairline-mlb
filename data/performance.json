@@ -1,0 +1,20 @@
+{
+  "updated_at": "9:55 AM PT \u00b7 May 27",
+  "season": {
+    "wins": 0,
+    "losses": 0,
+    "units": 0.0,
+    "bets": 0,
+    "roi": 0
+  },
+  "last30": {
+    "wins": 0,
+    "losses": 0,
+    "units": 0.0
+  },
+  "avg_clv": null,
+  "clv_count": 0,
+  "clv_series": [],
+  "season_roi_by_month": [],
+  "edge_tiers": []
+}
