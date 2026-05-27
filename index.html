@@ -359,6 +359,34 @@
   .top-pick-banner { font-size: 8px; }
 }
 
+/* ── Model info strip ── */
+.model-info-strip {
+  font-size: 11px; color: var(--text-4); line-height: 1.6;
+  padding: 8px 14px; margin-bottom: 14px;
+  background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 8px;
+}
+.model-info-strip strong { color: var(--text-3); }
+
+/* ── Line-move callout banner ── */
+.line-move-callout {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 10px; color: var(--green);
+  background: rgba(34,197,94,0.07); border: 1px solid rgba(34,197,94,0.22);
+  border-radius: 6px; padding: 6px 11px; margin: 4px 0 10px;
+}
+
+/* ── Parlay helper section ── */
+.parlay-section {
+  margin-top: 16px; padding: 14px 16px;
+  background: rgba(99,102,241,0.06); border: 1px solid rgba(99,102,241,0.2);
+  border-radius: 10px;
+}
+.parlay-header { font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--indigo-lt); margin-bottom: 8px; }
+.parlay-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.parlay-odds { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; color: var(--amber); }
+.parlay-detail { font-size: 11px; color: var(--text-3); line-height: 1.5; }
+.parlay-warn { font-size: 10px; color: var(--text-4); margin-top: 6px; line-height: 1.5; }
+
 /* ── Stale / completed card ── */
 .pick-card.card-stale { opacity: 0.62; }
 
@@ -509,6 +537,7 @@
   <div class="nav-links">
     <a class="nav-link active" href="index.html">Today's Picks</a>
     <a class="nav-link" href="history.html">Results</a>
+    <a class="nav-link" href="performance.html">Performance</a>
     <a class="nav-link" href="model.html">Model</a>
   </div>
   <div class="nav-right">
@@ -521,11 +550,18 @@
 
   <div class="page-header">
     <div class="page-title" id="page-date">Today's Value Bets</div>
-    <div class="page-subtitle">Dual-Poisson model · <span id="signal-count">—</span> live signals · edge vs. no-vig Pinnacle</div>
+    <div class="page-subtitle">Dual-Poisson model · <span id="games-scanned">—</span> games scanned · <span id="signal-count">—</span> cleared 2% threshold · edge vs. no-vig Pinnacle</div>
   </div>
 
   <!-- Record strip (includes season stats, streak, sparkline) -->
   <div class="record-strip" id="record-strip"></div>
+
+  <!-- Model info strip (always-visible) -->
+  <div class="model-info-strip">
+    <strong>Edge</strong> = model win probability minus Pinnacle's no-vig market probability.
+    Only picks ≥ 2% edge are shown. <strong>Picks post daily by 9:30 AM CT.</strong>
+    <span id="games-scanned-strip"></span>
+  </div>
 
   <!-- Bankroll calculator widget -->
   <div class="bankroll-widget" id="bankroll-widget">
@@ -955,6 +991,39 @@ function tierLabel(edge) {
   return ['MARGINAL', 'marginal'];
 }
 
+// ── Parlay odds math ─────────────────────────────────────────────────────────
+function mlToDecimal(ml) {
+  return ml > 0 ? ml / 100 + 1 : 100 / Math.abs(ml) + 1;
+}
+function decimalToML(dec) {
+  if (dec >= 2) return '+' + Math.round((dec - 1) * 100);
+  return String(Math.round(-100 / (dec - 1)));
+}
+function parlaySection(picks) {
+  if (picks.length < 2) return '';
+  const combined = picks.reduce((prod, p) => prod * mlToDecimal(p.odds), 1);
+  const parlayML = decimalToML(combined);
+  const payout100 = Math.round((combined - 1) * 100);
+  const legLines  = picks.map(p =>
+    `<span style="color:var(--text-2)">${p.pick}</span> <span style="color:var(--amber)">${formatOdds(p.odds)}</span>`
+  ).join(' <span style="color:var(--text-4)">+</span> ');
+  return `<div class="parlay-section">
+    <div class="parlay-header">🎲 If You Parlayed All ${picks.length} Picks</div>
+    <div class="parlay-row">
+      <div>
+        <div style="font-size:9px;color:var(--text-4);margin-bottom:2px">Combined odds</div>
+        <div class="parlay-odds">${parlayML}</div>
+      </div>
+      <div class="parlay-detail">
+        ${legLines}<br>
+        <span style="color:var(--text-4)">$100 bet wins</span> <strong style="color:var(--green)">$${payout100}</strong>
+        · $200 wins <strong style="color:var(--green)">$${payout100 * 2}</strong>
+      </div>
+    </div>
+    <div class="parlay-warn">⚠️ Parlays concentrate variance. Half-Kelly sizing on each pick individually is the mathematically sound approach — this is for reference only.</div>
+  </div>`;
+}
+
 // ── Historical context lookup ─────────────────────────────────────────────────
 // Returns a function: pick → HTML string (or null if not enough data)
 function buildHistContextFn(histRows) {
@@ -1106,10 +1175,21 @@ function pickCardHTML(p, isTopPick = false) {
     if (!p.line_open || !p.odds) return '';
     const diff = p.odds - p.line_open;
     if (Math.abs(diff) < 5) return '';
-    const dir     = diff > 0 ? 'up' : 'down';
-    const label   = diff > 0 ? `📈 +${Math.abs(diff)} pts` : `📉 ${diff} pts`;
-    const tip     = diff > 0 ? 'Line moved in our favor since posting' : 'Line moved against us since posting';
+    const dir   = diff > 0 ? 'up' : 'down';
+    const label = diff > 0 ? `📈 +${Math.abs(diff)} pts` : `📉 ${diff} pts`;
+    const tip   = diff > 0 ? 'Line moved in our favor since posting' : 'Line moved against us since posting';
     return `<span class="line-move ${dir}" title="${tip}">${label}</span>`;
+  }
+
+  // Strong line move callout — shown inside the card when market confirms our pick
+  function lineMoveBannerHTML() {
+    if (!p.line_open || !p.odds) return '';
+    const diff = p.odds - p.line_open;
+    if (diff < 10) return '';
+    return `<div class="line-move-callout">
+      📈 Line moved <strong>+${diff} pts</strong> in our favor since posting
+      — market is confirming this edge.
+    </div>`;
   }
 
   // Book odds comparison row (Pinnacle reference + best available + shop link)
@@ -1280,6 +1360,7 @@ function pickCardHTML(p, isTopPick = false) {
       ${matchupHTML}
       ${betHTML}
       ${oddsRowHTML}
+      ${lineMoveBannerHTML()}
       ${wxHTML}
       ${metaHTML}
       ${probHTML}
@@ -1312,6 +1393,14 @@ function render(data, hist) {
   }
   if (data.signal_count != null) {
     document.getElementById('signal-count').textContent = data.signal_count;
+  }
+  if (data.games_today != null) {
+    document.getElementById('games-scanned').textContent = data.games_today;
+    // Also update the strip if games_today differs from signal_count
+    const strip = document.getElementById('games-scanned-strip');
+    if (strip && data.games_today > 0) {
+      strip.textContent = ` · Today: ${data.games_today} games analyzed.`;
+    }
   }
 
   // Record strip: season stats + streak + mini sparkline
@@ -1429,7 +1518,8 @@ function render(data, hist) {
 
     document.getElementById('picks-container').innerHTML =
       shareAllHTML +
-      `<div class="${gridClass}">` + picksHTML + '</div>';
+      `<div class="${gridClass}">` + picksHTML + '</div>' +
+      parlaySection(main);
     refreshKellyUSD();
     refreshBetButtons();
     refreshPersonalTracker();
