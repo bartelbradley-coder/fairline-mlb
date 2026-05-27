@@ -93,6 +93,40 @@
 .no-history .nh-sub   { font-size: 12px; line-height: 1.7; }
 
 .backtest-note { font-size: 10px; color: var(--text-4); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); line-height: 1.5; }
+
+/* Streak + breakdown pills */
+.breakdown-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px; }
+.streak-pill { padding: 10px 16px; border-radius: 10px; font-family:'Oswald',sans-serif; font-size:22px; font-weight:700; display:flex; align-items:center; gap:8px; }
+.streak-pill.W { background:rgba(34,197,94,0.1); color:var(--green); }
+.streak-pill.L { background:rgba(239,68,68,0.1); color:var(--red); }
+.streak-pill .sp-label { font-family:inherit; font-size:10px; font-weight:400; color:var(--text-4); margin-top:2px; }
+
+.split-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+@media (max-width:600px) { .split-grid { grid-template-columns:repeat(2,1fr); } }
+
+/* Calibration chart */
+.calib-wrap { display:flex; align-items:flex-end; gap:10px; height:110px; margin-top:8px; }
+.calib-col { display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; }
+.calib-bar-wrap { width:100%; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:80px; gap:2px; }
+.calib-bar { width:70%; border-radius:3px 3px 0 0; transition:height 0.3s; }
+.calib-actual { background:var(--green); }
+.calib-ideal  { background:rgba(255,255,255,0.12); border-radius:3px; }
+.calib-lbl    { font-size:9px; color:var(--text-4); text-align:center; }
+.calib-pct    { font-size:9px; font-weight:600; color:var(--text-2); }
+.calib-n      { font-size:8px; color:var(--text-4); }
+
+/* Calendar heatmap */
+.calendar-wrap { display:flex; gap:3px; overflow-x:auto; padding-bottom:4px; }
+.cal-week { display:flex; flex-direction:column; gap:3px; }
+.cal-day { width:14px; height:14px; border-radius:2px; cursor:default; transition:opacity 0.15s; }
+.cal-day:hover { opacity:0.75; }
+.cal-day.no-picks { background:rgba(255,255,255,0.04); }
+.cal-day.win      { background:var(--green); }
+.cal-day.loss     { background:var(--red); }
+.cal-day.break-even { background:rgba(255,255,255,0.15); }
+.cal-legend { display:flex; align-items:center; gap:10px; margin-top:8px; font-size:9px; color:var(--text-4); }
+.cal-legend-item { display:flex; align-items:center; gap:4px; }
+.cal-legend-swatch { width:10px; height:10px; border-radius:2px; }
 </style>
 </head>
 <body>
@@ -130,6 +164,12 @@
     </div>
   </div>
 
+  <!-- Streak + Breakdown stats (#4) -->
+  <div class="section" id="breakdown-section" style="display:none">
+    <div class="sec-lbl">Streak &amp; Splits</div>
+    <div id="streak-breakdown"></div>
+  </div>
+
   <!-- Analytics row: CLV + Edge tier -->
   <div class="section">
     <div class="analytics-row">
@@ -163,6 +203,28 @@
     <div class="sec-lbl">Monthly ROI — 2026 Season</div>
     <div class="card" style="padding:16px 20px">
       <div class="monthly-chart" id="monthly-chart"></div>
+    </div>
+  </div>
+
+  <!-- Calibration chart (#3) -->
+  <div class="section" id="calib-section" style="display:none">
+    <div class="sec-lbl">Model Calibration — Predicted vs. Actual Win Rate</div>
+    <div class="card" style="padding:16px 20px">
+      <div class="card-sub">Each bar shows actual win rate for picks in that model probability bucket. Bars near the diagonal line = well-calibrated model.</div>
+      <div class="calib-wrap" id="calib-chart"></div>
+    </div>
+  </div>
+
+  <!-- Calendar heatmap (#9) -->
+  <div class="section" id="calendar-section" style="display:none">
+    <div class="sec-lbl">Daily P&amp;L — Last 12 Weeks</div>
+    <div class="card" style="padding:16px 20px">
+      <div class="calendar-wrap" id="calendar-wrap"></div>
+      <div class="cal-legend">
+        <span class="cal-legend-item"><span class="cal-legend-swatch" style="background:var(--green)"></span>Profitable day</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch" style="background:var(--red)"></span>Loss day</span>
+        <span class="cal-legend-item"><span class="cal-legend-swatch" style="background:rgba(255,255,255,0.04)"></span>No picks</span>
+      </div>
     </div>
   </div>
 
@@ -245,6 +307,9 @@ async function loadAll() {
 
     renderSummary(allRows);
     renderCurve((h && h.pnl_curve) ? h.pnl_curve : []);
+    renderBreakdowns(allRows);
+    renderCalibration(allRows);
+    renderCalendar(allRows);
     renderClv(p);
     renderEdgeTiers(p);
     renderMonthly(p);
@@ -479,6 +544,147 @@ function renderTable(rows) {
       renderTable(allRows);
     });
   });
+}
+
+// ── Streak + Breakdowns (#4) ─────────────────────────────────────────────────
+function renderBreakdowns(rows) {
+  const settled = rows.filter(r => r.result === 'W' || r.result === 'L');
+  if (settled.length === 0) return;
+
+  // Current streak
+  const byDate = [...settled].sort((a, b) => b.date.localeCompare(a.date));
+  let streakCount = 0;
+  const streakResult = byDate[0].result;
+  for (const r of byDate) {
+    if (r.result === streakResult) streakCount++;
+    else break;
+  }
+
+  // Split stats helper
+  function splitStats(subset) {
+    const w = subset.filter(r => r.result === 'W').length;
+    const total = subset.length;
+    const pnl = subset.reduce((s, r) => s + (r.pnl_u || 0), 0);
+    const roi = total > 0 ? pnl / total : 0;
+    return { w, l: total - w, total, pnl: pnl.toFixed(1), roi };
+  }
+
+  const home   = splitStats(settled.filter(r => r.side === 'HOME'));
+  const away   = splitStats(settled.filter(r => r.side === 'AWAY'));
+  const dogs   = splitStats(settled.filter(r => r.odds > 0));
+  const favs   = splitStats(settled.filter(r => r.odds != null && r.odds <= 0));
+
+  function pill(label, stats, sub) {
+    const cls = parseFloat(stats.pnl) >= 0 ? 'green' : 'red';
+    return `<div class="stat-pill">
+      <div class="stat-lbl">${label}</div>
+      <div class="stat-val white">${stats.w}–${stats.l}</div>
+      <div class="stat-sub" style="color:var(--${cls})">${stats.pnl>=0?'+':''}${stats.pnl}u · ${(stats.roi*100).toFixed(1)}% ROI</div>
+    </div>`;
+  }
+
+  const streakCls = streakResult === 'W' ? 'W' : 'L';
+  document.getElementById('breakdown-section').style.display = 'block';
+  document.getElementById('streak-breakdown').innerHTML = `
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
+      <div class="streak-pill ${streakCls}">
+        ${streakResult}${streakCount}
+        <div class="sp-label">Current streak</div>
+      </div>
+    </div>
+    <div class="split-grid">
+      ${home.total > 0  ? pill('Home Picks', home)  : ''}
+      ${away.total > 0  ? pill('Away Picks', away)  : ''}
+      ${dogs.total > 0  ? pill('Underdog Plays', dogs) : ''}
+      ${favs.total > 0  ? pill('Favorite Plays', favs) : ''}
+    </div>`;
+}
+
+// ── Calibration Chart (#3) ────────────────────────────────────────────────────
+function renderCalibration(rows) {
+  const settled = rows.filter(r => r.result === 'W' || r.result === 'L' && r.model_prob != null);
+  if (settled.length < 8) return;
+  document.getElementById('calib-section').style.display = 'block';
+
+  // Build 5pp buckets from 0.40 to 0.75+
+  const buckets = {};
+  for (const r of settled) {
+    if (r.model_prob == null) continue;
+    const lo = Math.floor(r.model_prob * 20) / 20; // 0.40, 0.45, 0.50 …
+    const key = lo.toFixed(2);
+    if (!buckets[key]) buckets[key] = { wins: 0, n: 0, mid: lo + 0.025 };
+    buckets[key].n++;
+    if (r.result === 'W') buckets[key].wins++;
+  }
+
+  const keys = Object.keys(buckets).sort();
+  if (keys.length < 2) return;
+
+  const bars = keys.map(k => {
+    const b = buckets[k];
+    const actual = b.wins / b.n;
+    return { label: `${Math.round(b.mid * 100)}%`, actual, ideal: b.mid, n: b.n };
+  });
+
+  const maxH = 80;
+  document.getElementById('calib-chart').innerHTML = bars.map(b => {
+    const actualH = Math.round(b.actual * maxH);
+    const idealH  = Math.round(b.ideal  * maxH);
+    return `<div class="calib-col">
+      <div class="calib-bar-wrap">
+        <div class="calib-bar calib-actual" style="height:${actualH}px" title="Actual: ${(b.actual*100).toFixed(0)}%"></div>
+        <div class="calib-bar calib-ideal"  style="height:${idealH}px"  title="Ideal: ${(b.ideal*100).toFixed(0)}%"></div>
+      </div>
+      <div class="calib-lbl">${b.label}</div>
+      <div class="calib-pct">${(b.actual*100).toFixed(0)}%</div>
+      <div class="calib-n">n=${b.n}</div>
+    </div>`;
+  }).join('') +
+  `<div style="display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:22px;gap:4px;font-size:9px;color:var(--text-4)">
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--green);border-radius:2px;flex-shrink:0"></span>Actual</span>
+    <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:rgba(255,255,255,0.12);border-radius:2px;flex-shrink:0"></span>Ideal</span>
+  </div>`;
+}
+
+// ── Calendar Heatmap (#9) ─────────────────────────────────────────────────────
+function renderCalendar(rows) {
+  const settled = rows.filter(r => r.result === 'W' || r.result === 'L');
+  if (settled.length === 0) return;
+  document.getElementById('calendar-section').style.display = 'block';
+
+  // Daily P&L map
+  const dayMap = {};
+  for (const r of settled) {
+    if (!r.date) continue;
+    dayMap[r.date] = (dayMap[r.date] || 0) + (r.pnl_u || 0);
+  }
+
+  // Build 12 weeks ending today
+  const today = new Date();
+  today.setHours(12, 0, 0, 0);
+  const days = [];
+  for (let i = 83; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const ds = d.toISOString().slice(0, 10);
+    const pnl = dayMap[ds];
+    const lbl = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+    let cls = 'no-picks';
+    if (pnl != null) cls = pnl > 0.05 ? 'win' : pnl < -0.05 ? 'loss' : 'break-even';
+    days.push({ ds, pnl, lbl, cls });
+  }
+
+  // Group into weeks (columns of 7)
+  const weeks = [];
+  for (let i = 0; i < days.length; i += 7) {
+    weeks.push(days.slice(i, i + 7));
+  }
+
+  const wrap = document.getElementById('calendar-wrap');
+  wrap.innerHTML = weeks.map(week => `
+    <div class="cal-week">
+      ${week.map(d => `<div class="cal-day ${d.cls}" title="${d.lbl}${d.pnl != null ? ': ' + (d.pnl>=0?'+':'') + d.pnl.toFixed(1) + 'u' : ''}"></div>`).join('')}
+    </div>`).join('');
 }
 
 // Filter buttons

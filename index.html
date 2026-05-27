@@ -100,6 +100,68 @@
 .yest-pnl.neg { color: var(--red); }
 .yest-clv { font-size: 9px; color: var(--text-4); min-width: 44px; text-align: right; }
 
+/* Yesterday top-performer callout */
+.yesterday-callout {
+  display: flex; align-items: center; gap: 10px;
+  margin: 0 0 10px;
+  padding: 10px 14px;
+  background: rgba(34,197,94,0.06);
+  border-radius: 8px;
+  border-left: 2px solid rgba(34,197,94,0.3);
+}
+.yc-icon  { font-size: 16px; flex-shrink: 0; }
+.yc-text  { flex: 1; font-size: 11px; color: var(--text-2); line-height: 1.5; }
+.yc-result { font-family: 'Oswald', sans-serif; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+.yc-result.W { color: var(--green); }
+.yc-result.L { color: var(--red); }
+
+/* Weather strip on pick card */
+.wx-strip {
+  font-size: 10px; color: var(--text-4);
+  display: flex; align-items: center; gap: 6px;
+  margin: 4px 0 10px;
+}
+.wx-strip .wx-icon { opacity: 0.6; }
+.wx-high-wind { color: var(--amber) !important; }
+
+/* Game time chip */
+.game-time-chip {
+  display: inline-block;
+  font-size: 9px; font-family: 'JetBrains Mono', monospace;
+  color: var(--text-4); background: rgba(255,255,255,0.04);
+  padding: 2px 7px; border-radius: 4px; margin-left: 6px;
+  vertical-align: middle;
+}
+
+/* Line movement */
+.line-posted { font-size: 9px; color: var(--text-4); margin-bottom: 10px; }
+.line-posted strong { color: var(--text-3); }
+
+/* Auto-refresh countdown */
+.refresh-indicator {
+  font-size: 9px; color: var(--text-4);
+  font-family: 'JetBrains Mono', monospace;
+  margin-left: 8px; display: none;
+}
+
+/* Mobile: collapsible analysis */
+.analysis-toggle {
+  display: none;
+  width: 100%; margin: 8px 0;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border); border-radius: 6px;
+  font-size: 10px; color: var(--text-4); cursor: pointer;
+  text-align: left;
+}
+.analysis-toggle::after { content: ' ▶'; font-size: 8px; }
+.analysis-toggle.open::after { content: ' ▼'; }
+@media (max-width: 600px) {
+  .analysis-toggle { display: block; }
+  .pick-analysis { display: none; }
+  .pick-analysis.open { display: block; }
+}
+
 /* ── Pick card redesign ─────────────────────────────────────── */
 /* Matchup row: "AWAY @ HOME", with picked team highlighted */
 .matchup-teams { display: flex; align-items: baseline; gap: 7px; margin-bottom: 3px; flex-wrap: wrap; }
@@ -175,6 +237,7 @@
   </div>
   <div class="nav-right">
     <span class="nav-updated" id="last-updated">—</span>
+    <span class="refresh-indicator" id="refresh-indicator">—</span>
   </div>
 </nav>
 
@@ -256,29 +319,7 @@ function renderEmptyState(data) {
 
   let yestHTML = '';
   if (yestPicks.length > 0) {
-    const totalPnl = yestPicks.reduce((sum, p) => sum + (p.pnl_u || 0), 0);
-    const wins = yestPicks.filter(p => p.result === 'W').length;
-    const losses = yestPicks.filter(p => p.result === 'L').length;
-    yestHTML = `
-      <div class="yest-section">
-        <div class="yest-title">Yesterday's Results · ${wins}W–${losses}L · ${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(1)}u</div>
-        ${yestPicks.map(p => {
-          const pnlClass = (p.pnl_u || 0) >= 0 ? 'pos' : 'neg';
-          const pnlStr = p.pnl_u != null ? ((p.pnl_u >= 0 ? '+' : '') + p.pnl_u.toFixed(1) + 'u') : '—';
-          const clvStr = p.clv != null ? 'CLV ' + (p.clv >= 0 ? '+' : '') + (p.clv * 100).toFixed(1) + '%' : '';
-          return `<div class="yest-row">
-            <div>
-              <div class="yest-game">${p.game || '—'}</div>
-              <div class="yest-pick">${p.pick || ''}${p.odds ? ' · ' + formatOdds(p.odds) : ''}${p.edge ? ' · +' + (p.edge * 100).toFixed(1) + '% edge' : ''}</div>
-            </div>
-            <div class="yest-right">
-              <div class="yest-clv">${clvStr}</div>
-              <div class="yest-pnl ${pnlClass}">${pnlStr}</div>
-              <div class="yest-result ${p.result}">${p.result || '—'}</div>
-            </div>
-          </div>`;
-        }).join('')}
-      </div>`;
+    yestHTML = `<div class="yest-section card" style="padding:0;overflow:hidden;margin-top:20px">${buildYesterdayHTML(yestPicks)}</div>`;
   }
 
   const stripHTML = s ? `
@@ -299,6 +340,37 @@ function renderEmptyState(data) {
 function formatOdds(ml) {
   if (!ml && ml !== 0) return '—';
   return ml > 0 ? '+' + ml : String(ml);
+}
+
+function formatGameTime(utcStr) {
+  if (!utcStr) return null;
+  try {
+    const d = new Date(utcStr);
+    if (isNaN(d)) return null;
+    return d.toLocaleTimeString('en-US', {
+      hour: 'numeric', minute: '2-digit', timeZone: 'America/New_York'
+    }) + ' ET';
+  } catch(e) { return null; }
+}
+
+function windCompass(degrees) {
+  const dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return dirs[Math.round(degrees / 22.5) % 16];
+}
+
+function formatWeather(p) {
+  if (p.is_domed) return { text: '🏟 Indoor (Dome) — weather neutral', highWind: false };
+  if (p.temp_f == null && p.wind_speed_mph == null) return null;
+  const parts = [];
+  if (p.temp_f != null) parts.push(`${Math.round(p.temp_f)}°F`);
+  if (p.wind_speed_mph != null) {
+    const spd = Math.round(p.wind_speed_mph);
+    const dir = p.wind_dir_degrees != null ? windCompass(p.wind_dir_degrees) : '';
+    parts.push(spd > 0 ? `${spd}mph ${dir}` : 'Calm');
+  }
+  const highWind = (p.wind_speed_mph || 0) >= 15;
+  if (highWind) parts.push('⚡ High wind');
+  return { text: '🌤 ' + parts.join(' · '), highWind };
 }
 
 function tierLabel(edge) {
@@ -324,10 +396,12 @@ function pickCardHTML(p) {
   }
   const isHomePick = (p.side || '').toUpperCase() === 'HOME';
 
-  // ── Posted timestamp (already formatted "10:00 AM CT" from Python) ───────
+  // ── Posted timestamp + game time ─────────────────────────────────────────
+  const gameTimeStr = formatGameTime(p.game_time);
+  const gameTimeChip = gameTimeStr ? `<span class="game-time-chip">⏱ ${gameTimeStr}</span>` : '';
   const postedHTML = p.posted_at
-    ? `<div class="pick-posted"><span class="posted-dot"></span>Posted ${p.posted_at} · pre-game</div>`
-    : '';
+    ? `<div class="pick-posted"><span class="posted-dot"></span>Posted ${p.posted_at}${gameTimeChip}</div>`
+    : (gameTimeStr ? `<div class="pick-posted">${gameTimeChip}</div>` : '');
 
   // ── Matchup line: away @ home, bet team marked ────────────────────────────
   const matchupHTML = homeTeam
@@ -422,6 +496,24 @@ function pickCardHTML(p) {
   // ── SP line + break-even ──────────────────────────────────────────────────
   const metaHTML = p.meta ? `<div class="pick-meta" style="margin:0 0 10px;font-size:11px;color:var(--text-4)">${p.meta}${bePct ? ` · Break-even ${bePct}%` : ''}</div>` : '';
 
+  // ── Weather strip ─────────────────────────────────────────────────────────
+  const wx = formatWeather(p);
+  const wxHTML = wx ? `<div class="wx-strip ${wx.highWind ? 'wx-high-wind' : ''}"><span class="wx-icon">${wx.text}</span></div>` : '';
+
+  // ── Posted Pinnacle line ──────────────────────────────────────────────────
+  const linePostHTML = p.line_open
+    ? `<div class="line-posted">Pinnacle at post: <strong>${formatOdds(p.line_open)}</strong> · CLV tracked at close</div>`
+    : '';
+
+  // ── Mobile analysis toggle (wraps factors + narrative) ────────────────────
+  const cardId = 'card-' + (p.pick || '').replace(/\s/g,'') + (p.game || '').replace(/\s/g,'');
+  const analysisHTML = (factorsHTML || narrativeHTML) ? `
+    <button class="analysis-toggle" onclick="this.classList.toggle('open');document.getElementById('${cardId}').classList.toggle('open')">Model Analysis</button>
+    <div class="pick-analysis" id="${cardId}">
+      ${factorsHTML}
+      ${narrativeHTML}
+    </div>` : (factorsHTML + narrativeHTML);
+
   return `
     <div class="pick-card ${tierClass}">
       ${postedHTML}
@@ -431,11 +523,12 @@ function pickCardHTML(p) {
       </div>
       ${matchupHTML}
       ${betHTML}
+      ${wxHTML}
       ${metaHTML}
       ${probHTML}
       ${statsHTML}
-      ${factorsHTML}
-      ${narrativeHTML}
+      ${analysisHTML}
+      ${linePostHTML}
       <div class="edge-bar-wrap">
         <div class="edge-bar-track"><div class="edge-bar-fill" style="width:${barWidth}%"></div></div>
         <div class="edge-bar-label">
@@ -508,35 +601,90 @@ function render(data) {
       '<div class="pick-grid">' + marginal.map(pickCardHTML).join('') + '</div>';
   }
 
-  // Yesterday's results (shown below today's picks when we have today's data)
+  // Yesterday's results (with top performer callout)
   const yest = data.yesterday_picks || [];
   if (yest.length > 0) {
-    const yPnl = yest.reduce((s, p) => s + (p.pnl_u || 0), 0);
-    const yW = yest.filter(p => p.result === 'W').length;
-    const yL = yest.filter(p => p.result === 'L').length;
     document.getElementById('yesterday-section').style.display = 'block';
-    document.getElementById('yesterday-card').innerHTML =
-      `<div style="padding:14px 16px 6px"><span style="font-size:11px;font-weight:700;color:var(--text-2)">${yW}W–${yL}L</span> <span style="font-size:10px;color:var(--text-4)">· ${yPnl>=0?'+':''}${yPnl.toFixed(1)}u yesterday</span></div>` +
-      yest.map(p => {
-        const pnlCls = (p.pnl_u || 0) >= 0 ? 'pos' : 'neg';
-        const pnlStr = p.pnl_u != null ? ((p.pnl_u >= 0 ? '+' : '') + p.pnl_u.toFixed(1) + 'u') : '—';
-        const clvStr = p.clv != null ? 'CLV ' + (p.clv >= 0 ? '+' : '') + (p.clv * 100).toFixed(1) + '%' : '';
-        return `<div class="yest-row">
-          <div>
-            <div class="yest-game">${p.game || '—'}</div>
-            <div class="yest-pick">${p.pick || ''}${p.odds ? ' · ' + formatOdds(p.odds) : ''}${p.edge ? ' · +' + (p.edge*100).toFixed(1)+'% edge' : ''}</div>
-          </div>
-          <div class="yest-right">
-            <div class="yest-clv">${clvStr}</div>
-            <div class="yest-pnl ${pnlCls}">${pnlStr}</div>
-            <div class="yest-result ${p.result}">${p.result || '—'}</div>
-          </div>
-        </div>`;
-      }).join('') + '<div style="height:8px"></div>';
+    document.getElementById('yesterday-card').innerHTML = buildYesterdayHTML(yest);
   }
 }
 
+// ── Auto-refresh (#2) ────────────────────────────────────────────────────────
+let _nextRefreshAt = null;
+const REFRESH_MS = 30 * 60 * 1000; // 30 minutes
+
+function isLiveHour() {
+  const h = parseInt(new Date().toLocaleString('en-US', {
+    hour: 'numeric', hour12: false, timeZone: 'America/New_York'
+  }));
+  return h >= 9 && h < 23;
+}
+
+function startAutoRefresh() {
+  _nextRefreshAt = Date.now() + REFRESH_MS;
+  setTimeout(async () => {
+    if (isLiveHour()) await loadPicks();
+    startAutoRefresh();
+  }, REFRESH_MS);
+  updateRefreshUI();
+}
+
+function updateRefreshUI() {
+  const el = document.getElementById('refresh-indicator');
+  if (!el || !_nextRefreshAt) return;
+  const rem = Math.max(0, _nextRefreshAt - Date.now());
+  const m = Math.floor(rem / 60000);
+  const s = Math.floor((rem % 60000) / 1000);
+  el.style.display = 'inline';
+  el.textContent = `↻ ${m}:${s.toString().padStart(2,'0')}`;
+  setTimeout(updateRefreshUI, 5000);
+}
+
+// ── Yesterday top performer callout (#7) ────────────────────────────────────
+function buildYesterdayHTML(yest) {
+  if (!yest || yest.length === 0) return '';
+  const settled = yest.filter(p => p.result === 'W' || p.result === 'L');
+  const yPnl = settled.reduce((s, p) => s + (p.pnl_u || 0), 0);
+  const yW = settled.filter(p => p.result === 'W').length;
+  const yL = settled.filter(p => p.result === 'L').length;
+
+  // Top performer: highest P&L win
+  const topWin = [...settled.filter(p => p.result === 'W')]
+    .sort((a, b) => (b.pnl_u || 0) - (a.pnl_u || 0))[0];
+
+  const callout = topWin ? `
+    <div class="yesterday-callout">
+      <span class="yc-icon">🎯</span>
+      <div class="yc-text">
+        <strong>${topWin.pick}</strong>
+        ${topWin.odds ? formatOdds(topWin.odds) : ''} cashed
+        ${topWin.edge ? ` · ${(topWin.edge*100).toFixed(1)}% edge` : ''}
+        ${topWin.clv != null ? ` · CLV ${topWin.clv >= 0 ? '+' : ''}${(topWin.clv*100).toFixed(1)}%` : ''}
+      </div>
+      <span class="yc-result W">W</span>
+    </div>` : '';
+
+  return `<div style="padding:14px 16px 6px"><span style="font-size:11px;font-weight:700;color:var(--text-2)">${yW}W–${yL}L</span> <span style="font-size:10px;color:var(--text-4)">· ${yPnl>=0?'+':''}${yPnl.toFixed(1)}u yesterday</span></div>
+    <div style="padding:0 12px">${callout}</div>` +
+    settled.map(p => {
+      const pnlCls = (p.pnl_u || 0) >= 0 ? 'pos' : 'neg';
+      const pnlStr = p.pnl_u != null ? ((p.pnl_u>=0?'+':'')+p.pnl_u.toFixed(1)+'u') : '—';
+      const clvStr = p.clv != null ? 'CLV '+(p.clv>=0?'+':'')+(p.clv*100).toFixed(1)+'%' : '';
+      return `<div class="yest-row">
+        <div><div class="yest-game">${p.game||'—'}</div>
+          <div class="yest-pick">${p.pick||''}${p.odds?' · '+formatOdds(p.odds):''}${p.edge?' · +'+(p.edge*100).toFixed(1)+'% edge':''}</div>
+        </div>
+        <div class="yest-right">
+          <div class="yest-clv">${clvStr}</div>
+          <div class="yest-pnl ${pnlCls}">${pnlStr}</div>
+          <div class="yest-result ${p.result}">${p.result||'—'}</div>
+        </div>
+      </div>`;
+    }).join('') + '<div style="height:8px"></div>';
+}
+
 loadPicks();
+startAutoRefresh();
 
 // Glossary toggle
 document.getElementById('glossary-toggle').addEventListener('click', function() {
