@@ -84,6 +84,29 @@
 /* Responsive hide */
 @media (max-width: 700px) { .hide-sm { display: none; } }
 
+/* Month filter select */
+.month-select {
+  padding: 5px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-3);
+  font-size: 11px; font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 22px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23475569'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+.month-select:focus { outline: none; border-color: rgba(99,102,241,0.4); color: var(--text-2); }
+
+/* Edge tier row tinting */
+tr.row-strong td { background: rgba(99,102,241,0.04); }
+tr.row-value  td { background: rgba(20,184,166,0.03); }
+
 .pnl-pos { color: var(--green); font-weight: 600; }
 .pnl-neg { color: var(--red);   font-weight: 600; }
 
@@ -280,6 +303,7 @@ let allRows = [];
 let sortCol = 'date';
 let sortDir = 'desc';
 let activeFilter = 'all';
+let activeMonth = 'all';
 
 function formatOdds(ml) {
   if (!ml && ml !== 0) return '—';
@@ -314,6 +338,7 @@ async function loadAll() {
     renderEdgeTiers(p);
     renderMonthly(p);
     renderBacktest();
+    injectMonthFilter(allRows);
     renderTable(allRows);
   } catch (e) {
     renderEmpty();
@@ -466,6 +491,7 @@ function getFilteredSorted(rows) {
   else if (activeFilter === 'L') r = r.filter(x => x.result === 'L');
   else if (activeFilter === 'strong') r = r.filter(x => x.edge != null && x.edge >= 0.08);
   else if (activeFilter === 'value') r = r.filter(x => x.edge != null && x.edge >= 0.05 && x.edge < 0.08);
+  if (activeMonth !== 'all') r = r.filter(x => x.date && x.date.slice(0,7) === activeMonth);
 
   r.sort((a, b) => {
     let av = a[sortCol], bv = b[sortCol];
@@ -517,7 +543,8 @@ function renderTable(rows) {
     const pnlStr  = r.pnl_u != null ? (r.pnl_u >= 0 ? '+' : '') + r.pnl_u.toFixed(1) + 'u' : '—';
     const clvStr  = r.clv != null ? pct(r.clv) : '—';
     const dateStr = r.date ? (() => { try { return new Date(r.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}); } catch(e){ return r.date; } })() : '—';
-    return `<tr>
+    const rowClass = r.edge >= 0.08 ? 'row-strong' : r.edge >= 0.05 ? 'row-value' : '';
+    return `<tr class="${rowClass}">
       <td style="color:var(--text-4);font-family:'JetBrains Mono',monospace;font-size:11px">${dateStr}</td>
       <td style="color:var(--text-2);font-weight:500">${r.game || '—'}</td>
       <td>${r.pick || '—'}</td>
@@ -687,7 +714,36 @@ function renderCalendar(rows) {
     </div>`).join('');
 }
 
-// Filter buttons
+// ── Month filter injection ────────────────────────────────────────────────────
+function injectMonthFilter(rows) {
+  const months = [...new Set(
+    rows.filter(r => r.date).map(r => r.date.slice(0, 7))
+  )].sort().reverse();
+  if (months.length < 2) return; // not worth showing if only one month
+
+  const existing = document.getElementById('month-select');
+  if (existing) return; // already injected
+
+  const sel = document.createElement('select');
+  sel.id = 'month-select';
+  sel.className = 'month-select';
+  sel.innerHTML = '<option value="all">All months</option>' +
+    months.map(m => {
+      const [yr, mo] = m.split('-');
+      const label = new Date(yr, parseInt(mo) - 1, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      return `<option value="${m}">${label}</option>`;
+    }).join('');
+  sel.addEventListener('change', () => {
+    activeMonth = sel.value;
+    renderTable(allRows);
+  });
+
+  const filtersEl = document.getElementById('filters');
+  filtersEl.appendChild(document.createElement('div')).className = 'filter-sep';
+  filtersEl.appendChild(sel);
+}
+
+// ── Filter buttons ────────────────────────────────────────────────────────────
 document.getElementById('filters').addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
