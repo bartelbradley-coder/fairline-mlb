@@ -1,5 +1,5 @@
 {
-  "updated_at": "3:01 PM CT \u00b7 May 28",
+  "updated_at": "3:30 PM CT \u00b7 May 28",
   "season": {
     "wins": 325,
     "losses": 169,
@@ -107,11 +107,11 @@
       "game": "HOU @ TEX",
       "side": "AWAY",
       "team": "HOU",
-      "spread": "+1.5",
+      "spread": "1.5",
       "rl_prob": 0.6833,
       "rl_odds": -178,
       "rl_edge": 0.043,
-      "rl_clv": null,
+      "rl_clv": 0.0054,
       "result": "",
       "pnl": null
     },
@@ -124,7 +124,7 @@
       "rl_prob": 0.6802,
       "rl_odds": -181,
       "rl_edge": 0.0361,
-      "rl_clv": null,
+      "rl_clv": 0.0014,
       "result": "",
       "pnl": null
     },
