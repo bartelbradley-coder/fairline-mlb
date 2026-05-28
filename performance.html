@@ -65,16 +65,7 @@
 .clv-bar.pos { background: var(--green); }
 .clv-bar.neg { background: var(--red); border-radius: 0 0 2px 2px; }
 
-/* Monthly chart (reuse) */
-.monthly-chart { display: flex; align-items: flex-end; gap: 8px; height: 80px; }
-.mo-col { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
-.mo-bar { width: 100%; border-radius: 3px 3px 0 0; min-height: 3px; }
-.mo-bar.pos { background: var(--green); }
-.mo-bar.neg { background: var(--red); border-radius: 0 0 3px 3px; }
-.mo-lbl { font-size: 9px; color: var(--text-4); }
-.mo-val { font-size: 9px; font-weight: 600; }
-.mo-val.pos { color: var(--green); }
-.mo-val.neg { color: var(--red); }
+/* Monthly chart — SVG (zero-centered); legacy flex classes removed */
 
 /* Edge bar chart */
 .edge-bar-row { margin-bottom: 9px; }
@@ -285,6 +276,9 @@
         Away +1.5 at ≥5% model edge → <strong style="color:var(--green)">+22.3% ROI</strong> at −130 juice (vs. +13.8% blind baseline).
         Model win rate rises from 65.5% (≥0% edge) to 69.6% (≥10% edge), confirming genuine discriminatory power beyond base rate.
         Home −1.5 volume is low (&lt;40 bets at ≥8% edge over 3 seasons) — a narrow specialty bet when the model is very confident.
+      </div>
+      <div class="backtest-note" style="margin-top:8px;color:var(--text-4)">
+        ⚠ <strong style="color:var(--text-3)">Odds note:</strong> 2026 live results use ESPN opening RL lines as the benchmark, which run softer than sharp books like Pinnacle. Reported ROI is higher than what would be achievable at Pinnacle; practical edge is approximately 10–20 percentage points lower. Avg CLV vs. closing line: <strong style="color:var(--text-3)" id="rl-clv-note">—</strong>.
       </div>
     </div>
   </div>
@@ -537,6 +531,35 @@ function renderCLV(p) {
   }
 }
 
+function _monthlyChartSVG(monthly) {
+  const W = 400, padT = 26, padB = 40, padL = 12, padR = 12;
+  const innerW = W - padL - padR;
+  const chartH = 88; const halfH = chartH / 2;
+  const zeroY  = padT + halfH;
+  const totalH = padT + chartH + padB;
+  const maxAbs = Math.max(...monthly.map(m => Math.abs(m.roi)), 0.01);
+  const barSpacing = innerW / monthly.length;
+  const barW = Math.min(barSpacing * 0.68, 55);
+  let s = '';
+  monthly.forEach((m, i) => {
+    const cx   = padL + (i + 0.5) * barSpacing;
+    const barH = Math.max(3, Math.abs(m.roi) / maxAbs * halfH * 0.90);
+    const col  = m.roi >= 0 ? 'var(--green)' : 'var(--red)';
+    const barY = m.roi >= 0 ? zeroY - barH : zeroY;
+    const roiStr  = (m.roi >= 0 ? '+' : '') + (m.roi * 100).toFixed(1) + '%';
+    const labelY  = m.roi >= 0 ? barY - 6 : barY + barH + 13;
+    const unitsStr = (m.units >= 0 ? '+' : '') + m.units + 'u';
+    s += `<rect x="${(cx-barW/2).toFixed(1)}" y="${barY.toFixed(1)}" width="${barW.toFixed(1)}" height="${barH.toFixed(1)}" fill="${col}" fill-opacity="0.82" rx="2.5"><title>${m.month}: ${roiStr} ROI · ${m.bets} bets · ${unitsStr}</title></rect>`;
+    s += `<text x="${cx.toFixed(1)}" y="${labelY.toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="${col}">${roiStr}</text>`;
+    s += `<text x="${cx.toFixed(1)}" y="${(zeroY+halfH+14).toFixed(1)}" text-anchor="middle" font-size="9" fill="rgba(148,163,184,0.65)">${m.month}</text>`;
+    if (m.bets != null) s += `<text x="${cx.toFixed(1)}" y="${(zeroY+halfH+26).toFixed(1)}" text-anchor="middle" font-size="8" fill="rgba(148,163,184,0.38)">${m.bets}b</text>`;
+  });
+  return `<svg viewBox="0 0 ${W} ${totalH}" preserveAspectRatio="xMidYMid meet" style="display:block;width:100%;height:auto">
+    <line x1="${padL}" y1="${zeroY.toFixed(1)}" x2="${W-padR}" y2="${zeroY.toFixed(1)}" stroke="rgba(255,255,255,0.13)" stroke-width="1" stroke-dasharray="3 3"/>
+    ${s}
+  </svg>`;
+}
+
 function renderMonthly(p) {
   const MONTH_ORDER = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const monthly = [...((p && p.season_roi_by_month) || [])].sort((a, b) =>
@@ -547,15 +570,7 @@ function renderMonthly(p) {
     el.innerHTML = '<div style="color:var(--text-4);font-size:11px;padding:12px 0;line-height:1.7">Monthly ROI will appear here as 2026 picks settle.<br><span style="color:var(--text-3)">Backtested 2022–2024: +0.7% → +9.1% → +10.4%.</span></div>';
     return;
   }
-  const maxAbs = Math.max(...monthly.map(m => Math.abs(m.roi)), 0.01);
-  el.innerHTML = `<div class="monthly-chart">` + monthly.map(m => {
-    const h = Math.max(4, Math.round(Math.abs(m.roi) / maxAbs * 65));
-    return `<div class="mo-col">
-      <div class="mo-bar ${m.roi>=0?'pos':'neg'}" style="height:${h}px"></div>
-      <div class="mo-lbl">${m.month}</div>
-      <div class="mo-val ${m.roi>=0?'pos':'neg'}">${pct(m.roi)}</div>
-    </div>`;
-  }).join('') + '</div>';
+  el.innerHTML = _monthlyChartSVG(monthly);
 }
 
 function renderEdgeTiers(p) {
@@ -632,6 +647,12 @@ function renderRLPerformance(rl) {
     rlClv.textContent = pct(rl.avg_clv);
     rlClv.style.color = rl.avg_clv >= 0 ? 'var(--green)' : 'var(--red)';
     rlCln.textContent = `n=${rl.clv_count} picks`;
+    // Populate odds-note CLV inline text
+    const rlClvNote = document.getElementById('rl-clv-note');
+    if (rlClvNote) {
+      rlClvNote.textContent = pct(rl.avg_clv);
+      rlClvNote.style.color = rl.avg_clv >= 0 ? 'var(--green)' : 'var(--red)';
+    }
   }
 
   // Home / Away split

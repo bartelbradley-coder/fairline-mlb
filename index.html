@@ -1493,6 +1493,20 @@ function pickCardHTML(p, isTopPick = false) {
   }
   const otherMarketsHTML = buildOtherMarketsHTML();
 
+  // ── RL / O/U signal badges (shown in card header when expandable has value) ──
+  const _rl   = p.run_line || {};
+  const _tot  = p.total    || {};
+  const _rlEdge  = (_rl.edge  != null && _rl.edge  >= 0.03) ? _rl.edge  : null;
+  const _ouLean  = _tot.lean || null;
+  const _ouEdge  = _ouLean === 'OVER'
+    ? (_tot.over_edge  ?? _tot.lean_edge)
+    : (_tot.under_edge ?? _tot.lean_edge);
+  const _ouEdgeV = (_ouEdge != null && _ouEdge >= 0.03) ? _ouEdge : null;
+  const omBadgesHTML = [
+    _rlEdge  != null ? `<span class="om-signal-badge rl-badge">RL&thinsp;${(_rlEdge*100).toFixed(1)}%</span>`              : '',
+    _ouEdgeV != null ? `<span class="om-signal-badge ou-badge">${_ouLean}&thinsp;${(_ouEdgeV*100).toFixed(1)}%</span>` : '',
+  ].join('');
+
   // Mobile analysis toggle
   const analysisHTML = (factorsHTML || narrativeHTML) ? `
     <button class="analysis-toggle" onclick="this.classList.toggle('open');document.getElementById('${cardId}').classList.toggle('open')">Model Analysis</button>
@@ -1517,7 +1531,7 @@ function pickCardHTML(p, isTopPick = false) {
         <button class="copy-btn" data-copy-id="${cardId}" onclick="copyPick('${cardId}')">📋 Copy</button>
       </div>
       <div class="pick-type-row" style="margin-top:6px">
-        <div class="pick-tier">⭐ ${tierText} · MONEYLINE</div>
+        <div class="pick-tier">⭐ ${tierText} · MONEYLINE${omBadgesHTML ? '&ensp;' + omBadgesHTML : ''}</div>
         <div class="pick-badge ${tierClass}">✓ ${tierClass === 'marginal' ? 'MARGINAL' : 'VALUE'}</div>
       </div>
       ${spHTML}
