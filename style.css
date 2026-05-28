@@ -489,3 +489,80 @@ footer a:hover { color: var(--text-2); }
 /* Details expandable body */
 .details-body { display: none; padding-top: 14px; }
 .details-body.open { display: block; }
+
+/* ── Performance charts ──────────────────────────────────────────────────── */
+.perf-charts-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  align-items: flex-start;
+}
+.pchart-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px 10px;
+  flex: 1;
+  min-width: 160px;
+}
+.pchart-title {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.pchart-sub {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-4);
+}
+.pchart-bars {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+  height: 60px;
+}
+.pchart-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  flex: 1;
+}
+.pchart-bar-wrap {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  height: 44px;
+}
+.pchart-bar {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  min-height: 2px;
+  transition: height 0.3s;
+}
+.pchart-bar-lbl {
+  font-size: 9px;
+  color: var(--text-4);
+  text-align: center;
+}
+.pchart-bar-val {
+  font-size: 8px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+.pchart-clv-avg {
+  font-size: 10px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+/* ROI pill highlight */
+.stat-pill.roi-pill .stat-val {
+  font-size: 18px;
+}

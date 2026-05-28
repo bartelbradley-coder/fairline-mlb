@@ -635,6 +635,7 @@
 
   <!-- Record strip (includes season stats, streak, sparkline) -->
   <div class="record-strip" id="record-strip"></div>
+  <div id="perf-charts"></div>
 
   <!-- Model info strip (always-visible) -->
   <div class="model-info-strip">
@@ -932,18 +933,80 @@ function refreshPersonalTracker() {
 async function loadPicks() {
   try {
     const v = Date.now();
-    const [todayRes, histRes] = await Promise.all([
+    const [todayRes, histRes, perfRes] = await Promise.all([
       fetch('data/today.json?v=' + v),
       fetch('data/history.json?v=' + v),
+      fetch('data/performance.json?v=' + v),
     ]);
     const data = todayRes.ok ? await todayRes.json() : null;
     const hist = histRes.ok ? await histRes.json() : null;
+    const perf = perfRes.ok ? await perfRes.json() : null;
     _histRef = hist;
     if (data) render(data, hist);
     else renderEmptyState(null, hist);
+    if (perf) renderPerfCharts(perf);
   } catch (e) {
     renderEmptyState(null, null);
   }
+}
+
+function renderPerfCharts(perf) {
+  const container = document.getElementById('perf-charts');
+  if (!container) return;
+
+  // ── Month-by-month ROI bar chart ────────────────────────────────────────
+  const months = perf.season_roi_by_month || [];
+  let monthChart = '';
+  if (months.length > 0) {
+    const maxAbs = Math.max(...months.map(m => Math.abs(m.roi || 0)), 0.01);
+    const bars = months.map(m => {
+      const roi = m.roi || 0;
+      const pct = Math.min(100, (Math.abs(roi) / maxAbs) * 100);
+      const col = roi >= 0 ? 'var(--green)' : 'var(--red)';
+      const roiStr = (roi >= 0 ? '+' : '') + (roi * 100).toFixed(1) + '%';
+      return `<div class="pchart-bar-col">
+        <div class="pchart-bar-wrap">
+          <div class="pchart-bar" style="height:${pct.toFixed(1)}%;background:${col}"></div>
+        </div>
+        <div class="pchart-bar-lbl">${m.month}</div>
+        <div class="pchart-bar-val" style="color:${col}">${roiStr}</div>
+      </div>`;
+    }).join('');
+    monthChart = `<div class="pchart-section">
+      <div class="pchart-title">Monthly ROI</div>
+      <div class="pchart-bars">${bars}</div>
+    </div>`;
+  }
+
+  // ── CLV rolling sparkline ───────────────────────────────────────────────
+  const clvArr = perf.clv_series || [];
+  let clvChart = '';
+  if (clvArr.length >= 3) {
+    const W = 180, H = 44, PAD = 4;
+    const min = Math.min(...clvArr), max = Math.max(...clvArr);
+    const range = max - min || 0.01;
+    const pts = clvArr.map((v, i) => {
+      const x = PAD + (i / (clvArr.length - 1)) * (W - PAD * 2);
+      const y = H - PAD - ((v - min) / range) * (H - PAD * 2);
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    const zeroY = H - PAD - ((0 - min) / range) * (H - PAD * 2);
+    const avgClv = clvArr.reduce((s, v) => s + v, 0) / clvArr.length;
+    const avgCol = avgClv >= 0 ? 'var(--green)' : 'var(--red)';
+    const avgStr = (avgClv >= 0 ? '+' : '') + (avgClv * 100).toFixed(2) + '%';
+    clvChart = `<div class="pchart-section">
+      <div class="pchart-title">CLV Trend <span class="pchart-sub">(last ${clvArr.length} bets)</span></div>
+      <svg width="${W}" height="${H}" style="display:block;overflow:visible">
+        <line x1="${PAD}" y1="${zeroY.toFixed(1)}" x2="${W-PAD}" y2="${zeroY.toFixed(1)}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+        <polyline points="${pts}" fill="none" stroke="${avgCol}" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
+      <div class="pchart-clv-avg" style="color:${avgCol}">Avg CLV: ${avgStr}</div>
+    </div>`;
+  }
+
+  container.innerHTML = (monthChart || clvChart)
+    ? `<div class="perf-charts-row">${monthChart}${clvChart}</div>`
+    : '';
 }
 
 function renderEmptyState(data, hist, marginal = []) {
@@ -1721,6 +1784,14 @@ function render(data, hist) {
         <div class="stat-lbl">Last 30</div>
         <div class="stat-val ${u30 >= 0 ? 'green' : 'red'}">${data.last30.wins}–${data.last30.losses}</div>
         <div class="stat-sub">${u30 >= 0 ? '+' : ''}${u30.toFixed(1)}u</div>
+      </div>`;
+    }
+    if (data.season && data.season.roi != null) {
+      const roi = data.season.roi;
+      stripHTML += `<div class="stat-pill roi-pill">
+        <div class="stat-lbl">Season ROI</div>
+        <div class="stat-val ${roi >= 0 ? 'green' : 'red'}">${roi >= 0 ? '+' : ''}${(roi * 100).toFixed(1)}%</div>
+        <div class="stat-sub">${data.season.bets || ''} bets</div>
       </div>`;
     }
     if (data.avg_clv != null) {

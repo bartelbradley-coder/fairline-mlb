@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "generated_at": "10:30 AM CT \u00b7 May 28",
+  "generated_at": "10:34 AM CT \u00b7 May 28",
   "picks": [
     {
       "game": "LAA @ DET",
@@ -206,7 +206,7 @@
         "pick_bp_xfip": 4.35,
         "opp_bp_xfip": 4.35
       },
-      "narrative": "Playing on the road, TOR's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices TOR at 48.0% to win; Pinnacle implies 45.8% (+114) \u2014 a 2.3-point gap. Rest advantage: TOR is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
+      "narrative": "Playing on the road, TOR carries a clear pitching edge (Patrick Corbin at 4.14 xFIP vs. Chris Bassitt at 4.73) that outweighs the home-field headwind the market prices in. Model prices TOR at 48.0% to win; Pinnacle implies 45.8% (+114) \u2014 a 2.3-point gap. Rest advantage: TOR is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
         "spread": "1.5",
         "model_prob": 0.6802,
@@ -281,7 +281,7 @@
         "pick_bp_xfip": 4.35,
         "opp_bp_xfip": 4.35
       },
-      "narrative": "Payton Tolle (3.33 xFIP) has a quality edge over Chris Sale (2.50), yet the market has over-discounted ATL: model prices ATL at 57.7% to win; Pinnacle implies 55.4% (-130) \u2014 a 2.3-point gap. Stuff quality reinforces the xFIP edge: Chris Sale generates a 13.8% swinging-strike rate \u2014 well above average by MLB standards and a strong predictor of beating contact-based ERA expectations.",
+      "narrative": "Despite a marginal combined-signal starter disadvantage, ATL holds positive EV \u2014 the market overweights the pitching matchup relative to the full signal set: model prices ATL at 57.7% to win; Pinnacle implies 55.4% (-130) \u2014 a 2.3-point gap. Stuff quality reinforces the xFIP edge: Chris Sale generates a 13.8% swinging-strike rate \u2014 well above average by MLB standards and a strong predictor of beating contact-based ERA expectations.",
       "run_line": {
         "spread": "1.5",
         "model_prob": 0.8073,
