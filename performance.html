@@ -538,7 +538,10 @@ function renderCLV(p) {
 }
 
 function renderMonthly(p) {
-  const monthly = (p && p.season_roi_by_month) || [];
+  const MONTH_ORDER = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthly = [...((p && p.season_roi_by_month) || [])].sort((a, b) =>
+    MONTH_ORDER.indexOf(a.month) - MONTH_ORDER.indexOf(b.month)
+  );
   const el = document.getElementById('monthly-section');
   if (monthly.length === 0) {
     el.innerHTML = '<div style="color:var(--text-4);font-size:11px;padding:12px 0;line-height:1.7">Monthly ROI will appear here as 2026 picks settle.<br><span style="color:var(--text-3)">Backtested 2022–2024: +0.7% → +9.1% → +10.4%.</span></div>';

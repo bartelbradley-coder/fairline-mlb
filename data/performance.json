@@ -1,5 +1,5 @@
 {
-  "updated_at": "10:23 PM CT \u00b7 May 27",
+  "updated_at": "10:44 PM CT \u00b7 May 27",
   "season": {
     "wins": 166,
     "losses": 138,
@@ -48,12 +48,6 @@
   ],
   "season_roi_by_month": [
     {
-      "month": "May",
-      "roi": 0.3348,
-      "units": 26.11,
-      "bets": 78
-    },
-    {
       "month": "Mar",
       "roi": -0.033,
       "units": -1.32,
@@ -64,6 +58,12 @@
       "roi": 0.1712,
       "units": 31.85,
       "bets": 186
+    },
+    {
+      "month": "May",
+      "roi": 0.3348,
+      "units": 26.11,
+      "bets": 78
     }
   ],
   "edge_tiers": [

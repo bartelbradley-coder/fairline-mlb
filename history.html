@@ -187,18 +187,8 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
 .edge-bar-row { margin-bottom: 9px; }
 .edge-bar-row:last-child { margin-bottom: 0; }
 
-/* Calendar heatmap */
-.calendar-wrap { display:flex; gap:3px; overflow-x:auto; padding-bottom:4px; }
-.cal-week { display:flex; flex-direction:column; gap:3px; }
-.cal-day { width:14px; height:14px; border-radius:2px; cursor:default; transition:opacity 0.15s; }
-.cal-day:hover { opacity:0.75; }
-.cal-day.no-picks { background:rgba(255,255,255,0.04); }
-.cal-day.win      { background:var(--green); }
-.cal-day.loss     { background:var(--red); }
-.cal-day.break-even { background:rgba(255,255,255,0.15); }
-.cal-legend { display:flex; align-items:center; gap:10px; margin-top:8px; font-size:9px; color:var(--text-4); }
-.cal-legend-item { display:flex; align-items:center; gap:4px; }
-.cal-legend-swatch { width:10px; height:10px; border-radius:2px; }
+/* Daily P&L bar chart */
+.calendar-wrap { display:block; }
 
 /* RL picks section */
 .rl-toggle-btn { width:100%; text-align:left; padding:12px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; color:var(--text-2); font-size:12px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:space-between; margin-bottom:0; transition:background 0.15s; }
@@ -368,16 +358,11 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
     </div>
   </div>
 
-  <!-- Calendar heatmap (#9) -->
+  <!-- Daily P&L bar chart -->
   <div class="section" id="calendar-section" style="display:none">
-    <div class="sec-lbl">Daily P&amp;L — Last 12 Weeks</div>
+    <div class="sec-lbl">Daily P&amp;L — 2026 Season</div>
     <div class="card" style="padding:16px 20px">
       <div class="calendar-wrap" id="calendar-wrap"></div>
-      <div class="cal-legend">
-        <span class="cal-legend-item"><span class="cal-legend-swatch" style="background:var(--green)"></span>Profitable day</span>
-        <span class="cal-legend-item"><span class="cal-legend-swatch" style="background:var(--red)"></span>Loss day</span>
-        <span class="cal-legend-item"><span class="cal-legend-swatch" style="background:rgba(255,255,255,0.04)"></span>No picks</span>
-      </div>
     </div>
   </div>
 
@@ -718,7 +703,10 @@ function renderEdgeTiers(p) {
 }
 
 function renderMonthly(p) {
-  const monthly = (p && p.season_roi_by_month) ? p.season_roi_by_month : [];
+  const MONTH_ORDER = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthly = [...((p && p.season_roi_by_month) || [])].sort((a, b) =>
+    MONTH_ORDER.indexOf(a.month) - MONTH_ORDER.indexOf(b.month)
+  );
   if (monthly.length === 0) return;
   document.getElementById('monthly-section').style.display = 'block';
   const maxAbs = Math.max(...monthly.map(m => Math.abs(m.roi)), 0.01);
@@ -1093,45 +1081,65 @@ function renderCalibration(rows) {
   </div>`;
 }
 
-// ── Calendar Heatmap (#9) ─────────────────────────────────────────────────────
+// ── Daily P&L Bar Chart ───────────────────────────────────────────────────────
 function renderCalendar(rows) {
   const settled = rows.filter(r => r.result === 'W' || r.result === 'L');
   if (settled.length === 0) return;
   document.getElementById('calendar-section').style.display = 'block';
 
-  // Daily P&L map
+  // Aggregate P&L by date — only days with picks, in date order
   const dayMap = {};
   for (const r of settled) {
     if (!r.date) continue;
     dayMap[r.date] = (dayMap[r.date] || 0) + (r.pnl_u || 0);
   }
+  const days = Object.keys(dayMap).sort().map(ds => ({
+    ds,
+    pnl: dayMap[ds],
+    lbl: (() => { try { return new Date(ds + 'T12:00:00').toLocaleDateString('en-US', {month:'short', day:'numeric'}); } catch(e){ return ds; } })()
+  }));
+  if (days.length === 0) return;
 
-  // Build 12 weeks ending today
-  const today = new Date();
-  today.setHours(12, 0, 0, 0);
-  const days = [];
-  for (let i = 83; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const ds = d.toISOString().slice(0, 10);
-    const pnl = dayMap[ds];
-    const lbl = d.toLocaleDateString('en-US', {month:'short', day:'numeric'});
-    let cls = 'no-picks';
-    if (pnl != null) cls = pnl > 0.05 ? 'win' : pnl < -0.05 ? 'loss' : 'break-even';
-    days.push({ ds, pnl, lbl, cls });
-  }
+  const W = 800, H = 110, padT = 6, padB = 28, padL = 4, padR = 4;
+  const innerW = W - padL - padR;
+  const innerH = H - padT - padB;
 
-  // Group into weeks (columns of 7)
-  const weeks = [];
-  for (let i = 0; i < days.length; i += 7) {
-    weeks.push(days.slice(i, i + 7));
-  }
+  const maxAbs   = Math.max(...days.map(d => Math.abs(d.pnl)), 0.5);
+  const scaleY   = v => padT + innerH * (1 - (v + maxAbs) / (2 * maxAbs));
+  const zeroYf   = scaleY(0).toFixed(1);
+  const spacing  = innerW / days.length;
+  const barW     = Math.max(2, Math.min(16, spacing * 0.72));
+  const labelEvery = Math.max(1, Math.ceil(days.length / 14));
 
-  const wrap = document.getElementById('calendar-wrap');
-  wrap.innerHTML = weeks.map(week => `
-    <div class="cal-week">
-      ${week.map(d => `<div class="cal-day ${d.cls}" title="${d.lbl}${d.pnl != null ? ': ' + (d.pnl>=0?'+':'') + d.pnl.toFixed(1) + 'u' : ''}"></div>`).join('')}
-    </div>`).join('');
+  const totalPnl  = days.reduce((s, d) => s + d.pnl, 0);
+  const profitDays = days.filter(d => d.pnl > 0.05).length;
+  const lossDays   = days.filter(d => d.pnl < -0.05).length;
+
+  let barsHTML = '', labelsHTML = '';
+  days.forEach((d, i) => {
+    const cx     = padL + (i + 0.5) * spacing;
+    const y0     = parseFloat(zeroYf);
+    const y1     = scaleY(d.pnl);
+    const top    = Math.min(y0, y1);
+    const height = Math.max(2, Math.abs(y0 - y1));
+    const col    = d.pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    barsHTML += `<rect x="${(cx - barW/2).toFixed(1)}" y="${top.toFixed(1)}" width="${barW.toFixed(1)}" height="${height.toFixed(1)}" fill="${col}" fill-opacity="0.85" rx="1.5"><title>${d.lbl}: ${d.pnl >= 0 ? '+' : ''}${d.pnl.toFixed(1)}u</title></rect>`;
+    if (i % labelEvery === 0 || i === days.length - 1) {
+      labelsHTML += `<text x="${cx.toFixed(1)}" y="${(H - 8).toFixed(1)}" text-anchor="middle" font-size="8" fill="rgba(148,163,184,0.55)">${d.lbl}</text>`;
+    }
+  });
+
+  const totalCol = totalPnl >= 0 ? 'var(--green)' : 'var(--red)';
+  document.getElementById('calendar-wrap').innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="display:block;width:100%;height:${H}px">
+      <line x1="${padL}" y1="${zeroYf}" x2="${W - padR}" y2="${zeroYf}" stroke="rgba(255,255,255,0.18)" stroke-width="1" stroke-dasharray="4 3"/>
+      ${barsHTML}
+      ${labelsHTML}
+    </svg>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;font-size:10px;color:var(--text-4);flex-wrap:wrap;gap:6px">
+      <span>${days.length} days · <span style="color:var(--green)">${profitDays} profitable</span> · <span style="color:var(--red)">${lossDays} losing</span></span>
+      <span>Season total: <strong style="color:${totalCol}">${totalPnl >= 0 ? '+' : ''}${totalPnl.toFixed(1)}u</strong></span>
+    </div>`;
 }
 
 // ── Month filter injection ────────────────────────────────────────────────────
