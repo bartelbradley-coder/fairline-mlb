@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "generated_at": "10:08 AM CT \u00b7 May 28",
+  "generated_at": "10:18 AM CT \u00b7 May 28",
   "picks": [
     {
       "game": "LAA @ DET",
@@ -41,14 +41,14 @@
       "raw_stats": {
         "pick_xfip": 4.241,
         "opp_xfip": 4.613,
-        "pick_oaa": 0,
-        "opp_oaa": 0,
+        "pick_oaa": -15,
+        "opp_oaa": -18,
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
         "opp_bp_xfip": 4.35
       },
-      "narrative": "The market is underpricing LAA's run-production profile: the Poisson RS/RA framework sees a win-probability gap the moneyline doesn't reflect \u2014 model prices LAA at 51.8% to win; Pinnacle implies 45.9% (+114) \u2014 a 5.9-point gap. Scheduling angle: Jack Flaherty takes the mound on 0 days rest \u2014 short-rest starts historically carry a 0.2\u20130.4 ERA increase, a performance drag not always visible in moneyline pricing.",
+      "narrative": "The market is underpricing LAA's run-production profile: the Poisson RS/RA framework sees a win-probability gap the moneyline doesn't reflect \u2014 model prices LAA at 51.8% to win; Pinnacle implies 45.9% (+114) \u2014 a 5.9-point gap. Scheduling angle adds to the edge: today is a day game and the opponent played last night \u2014 a day-game-after-night-game setup that creates measurable fatigue for their roster and bullpen.",
       "run_line": {
         "spread": "1.5",
         "model_prob": 0.7467,
@@ -120,8 +120,8 @@
       "raw_stats": {
         "pick_xfip": 2.39,
         "opp_xfip": 4.187,
-        "pick_oaa": 0,
-        "opp_oaa": 0,
+        "pick_oaa": 1,
+        "opp_oaa": -8,
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
@@ -200,13 +200,13 @@
         "pick_xfip": 4.14,
         "opp_xfip": 4.728,
         "pick_oaa": 0,
-        "opp_oaa": 0,
+        "opp_oaa": -14,
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
         "opp_bp_xfip": 4.35
       },
-      "narrative": "Playing on the road, TOR's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices TOR at 48.0% to win; Pinnacle implies 45.8% (+114) \u2014 a 2.3-point gap. Scheduling angle: Chris Bassitt takes the mound on 0 days rest \u2014 short-rest starts historically carry a 0.2\u20130.4 ERA increase, a performance drag not always visible in moneyline pricing.",
+      "narrative": "Playing on the road, TOR's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices TOR at 48.0% to win; Pinnacle implies 45.8% (+114) \u2014 a 2.3-point gap. Rest advantage: TOR is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
         "spread": "1.5",
         "model_prob": 0.6802,
@@ -274,8 +274,8 @@
       "raw_stats": {
         "pick_xfip": 2.496,
         "opp_xfip": 3.334,
-        "pick_oaa": 0,
-        "opp_oaa": 0,
+        "pick_oaa": 14,
+        "opp_oaa": 15,
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
@@ -349,14 +349,14 @@
       "raw_stats": {
         "pick_xfip": 4.436,
         "opp_xfip": 2.985,
-        "pick_oaa": 0,
+        "pick_oaa": 25,
         "opp_oaa": 0,
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
         "opp_bp_xfip": 4.35
       },
-      "narrative": "Defensive efficiency leads the model's signals: a +0 OAA differential translates to roughly 0.0 fewer runs allowed per game \u2014 a systematic edge moneylines price more slowly than run lines. Model prices CHC at 41.2% to win; Pinnacle implies 39.7% (+147) \u2014 a 1.5-point gap. Scheduling angle: Paul Skenes takes the mound on 0 days rest \u2014 short-rest starts historically carry a 0.2\u20130.4 ERA increase, a performance drag not always visible in moneyline pricing.",
+      "narrative": "Defensive efficiency leads the model's signals: a +25 OAA differential translates to roughly 1.9 fewer runs allowed per game \u2014 a systematic edge moneylines price more slowly than run lines. Model prices CHC at 41.2% to win; Pinnacle implies 39.7% (+147) \u2014 a 1.5-point gap. Rest advantage: CHC is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
         "spread": "1.5",
         "model_prob": 0.5876,
@@ -424,14 +424,14 @@
       "raw_stats": {
         "pick_xfip": 4.457,
         "opp_xfip": 3.681,
-        "pick_oaa": 0,
-        "opp_oaa": 0,
+        "pick_oaa": 5,
+        "opp_oaa": 4,
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
         "opp_bp_xfip": 4.35
       },
-      "narrative": "Playing on the road, HOU's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices HOU at 45.0% to win; Pinnacle implies 44.1% (+124) \u2014 a 0.9-point gap. Scheduling angle: Nathan Eovaldi takes the mound on 0 days rest \u2014 short-rest starts historically carry a 0.2\u20130.4 ERA increase, a performance drag not always visible in moneyline pricing.",
+      "narrative": "Playing on the road, HOU's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices HOU at 45.0% to win; Pinnacle implies 44.1% (+124) \u2014 a 0.9-point gap. Rest advantage: HOU is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
         "spread": "1.5",
         "model_prob": 0.6469,
