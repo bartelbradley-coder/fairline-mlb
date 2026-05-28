@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "generated_at": "12:30 PM CT \u00b7 May 28",
+  "generated_at": "1:00 PM CT \u00b7 May 28",
   "picks": [
     {
       "game": "LAA @ DET",
@@ -11,8 +11,8 @@
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T17:10:00Z",
       "temp_f": 71.2,
-      "wind_speed_mph": 11.6,
-      "wind_dir_degrees": 40.0,
+      "wind_speed_mph": 11.1,
+      "wind_dir_degrees": 45.0,
       "is_domed": false,
       "model_prob": 0.5178,
       "market_prob": 0.4586,
@@ -81,9 +81,9 @@
       "meta": "SP: Davis Martin",
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T18:10:00Z",
-      "temp_f": 63.5,
-      "wind_speed_mph": 12.7,
-      "wind_dir_degrees": 14.0,
+      "temp_f": 62.9,
+      "wind_speed_mph": 13.8,
+      "wind_dir_degrees": 17.0,
       "is_domed": false,
       "model_prob": 0.6213,
       "market_prob": 0.5848,
@@ -160,9 +160,9 @@
       "meta": "SP: Patrick Corbin",
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T22:35:00Z",
-      "temp_f": 60.0,
-      "wind_speed_mph": 5.8,
-      "wind_dir_degrees": 337.0,
+      "temp_f": 59.9,
+      "wind_speed_mph": 6.1,
+      "wind_dir_degrees": 332.0,
       "is_domed": false,
       "model_prob": 0.4804,
       "market_prob": 0.4577,
@@ -239,8 +239,8 @@
       "meta": "SP: Chris Sale",
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T20:10:00Z",
-      "temp_f": 65.0,
-      "wind_speed_mph": 11.4,
+      "temp_f": 64.9,
+      "wind_speed_mph": 10.6,
       "wind_dir_degrees": 324.0,
       "is_domed": false,
       "model_prob": 0.577,
@@ -314,9 +314,9 @@
       "meta": "SP: Colin Rea",
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T22:40:00Z",
-      "temp_f": 60.5,
-      "wind_speed_mph": 3.8,
-      "wind_dir_degrees": 332.0,
+      "temp_f": 60.3,
+      "wind_speed_mph": 4.3,
+      "wind_dir_degrees": 354.0,
       "is_domed": false,
       "model_prob": 0.4119,
       "market_prob": 0.3968,
@@ -379,6 +379,81 @@
         "under_edge": -0.0364,
         "pinnacle_over_prob": 0.4852,
         "pinnacle_under_prob": 0.5148
+      }
+    },
+    {
+      "game": "ATL @ BOS",
+      "pick": "BOS",
+      "side": "HOME",
+      "pick_type": "MONEYLINE",
+      "meta": "SP: Payton Tolle",
+      "posted_at": "1:00 PM CT",
+      "game_time": "2026-05-28T20:10:00Z",
+      "temp_f": 64.9,
+      "wind_speed_mph": 10.6,
+      "wind_dir_degrees": 324.0,
+      "is_domed": false,
+      "model_prob": 0.4593,
+      "market_prob": 0.4457,
+      "edge": 0.0048,
+      "ev_per_100": 1.05,
+      "odds": 120,
+      "best_odds": 120,
+      "best_book": "pinnacle",
+      "fair_odds": "+118",
+      "break_even": 0.4545,
+      "kelly_units": 0.01,
+      "line_open": 120,
+      "line_current": 120,
+      "sharp_movement": false,
+      "steam_move": false,
+      "model_total": null,
+      "market_total": null,
+      "pitcher": "Payton Tolle",
+      "opp_pitcher": "Chris Sale",
+      "factors": [
+        {
+          "label": "Starter Advantage",
+          "value": 0.015
+        },
+        {
+          "label": "Home Field",
+          "value": 0.008
+        }
+      ],
+      "raw_stats": {
+        "pick_xfip": 3.338,
+        "opp_xfip": 2.499,
+        "pick_oaa": 15,
+        "opp_oaa": 14,
+        "pick_bp_pitches": 0,
+        "opp_bp_pitches": 0,
+        "pick_bp_xfip": 4.35,
+        "opp_bp_xfip": 4.35
+      },
+      "narrative": "The market is mispricing a significant starter advantage: Payton Tolle (3.34 xFIP, with a 12.5% swinging-strike rate (above-average)) has a measurable edge over Chris Sale (2.50) \u2014 model prices BOS at 45.9% to win; Pinnacle implies 44.6% (+120) \u2014 a 1.4-point gap. Stuff quality reinforces the xFIP edge: Payton Tolle generates a 12.5% swinging-strike rate \u2014 well above average by MLB standards and a strong predictor of beating contact-based ERA expectations.",
+      "run_line": {
+        "spread": "-1.5",
+        "model_prob": 0.2394,
+        "fair_odds": "+318",
+        "book_odds": null,
+        "edge": null
+      },
+      "total": {
+        "line": 6.7,
+        "model_total": 6.99,
+        "over_prob": 0.4755,
+        "under_prob": 0.5245,
+        "lean": "UNDER",
+        "lean_edge": 0.0007,
+        "over_odds": 104,
+        "under_odds": 103,
+        "over_book": "pinnacle",
+        "under_book": "draftkings",
+        "over_edge": -0.0147,
+        "under_edge": 0.0319,
+        "pinnacle_over_prob": 0.4762,
+        "pinnacle_under_prob": 0.5238
       }
     },
     {
@@ -457,8 +532,8 @@
       }
     }
   ],
-  "signal_count": 6,
-  "games_today": 6,
+  "signal_count": 7,
+  "games_today": 7,
   "yesterday_picks": [
     {
       "game": "MIA @ TOR",
