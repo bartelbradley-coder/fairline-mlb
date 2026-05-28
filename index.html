@@ -176,27 +176,6 @@
 }
 .sparkline-pill .sp-lbl { font-size: 8px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-4); }
 
-/* Glossary */
-.glossary-toggle {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11px; color: var(--text-4); cursor: pointer;
-  margin-bottom: 16px; user-select: none;
-  padding: 5px 10px; border-radius: 6px;
-  border: 1px solid var(--border); background: var(--bg-card);
-}
-.glossary-toggle:hover { color: var(--text-3); }
-.glossary-toggle .gt-arrow { transition: transform 0.2s; }
-.glossary-toggle.open .gt-arrow { transform: rotate(90deg); }
-.glossary-panel {
-  display: none;
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px;
-}
-.gl-item { }
-.gl-term { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--indigo-lt); margin-bottom: 2px; }
-.gl-def  { font-size: 11px; color: var(--text-3); line-height: 1.5; }
-@media (max-width: 600px) { .glossary-panel { grid-template-columns: 1fr; } }
 
 /* Yesterday's results */
 .yest-section { margin-top: 28px; }
@@ -694,9 +673,8 @@
 
   <!-- Model info strip (always-visible) -->
   <div class="model-info-strip">
-    <strong>Edge</strong> = model win probability minus Pinnacle's no-vig market probability.
-    Only picks ≥ 2% edge are shown. <strong>Picks post daily by 9:30 AM CT.</strong>
-    Starting pitcher info is captured at model run time — always verify current starters before betting.
+    <strong>Picks post daily by 9:30 AM CT.</strong>
+    Starting pitcher info and odds are captured at model run time — always verify current starters and lines before betting.
     <span id="games-scanned-strip"></span>
   </div>
 
@@ -718,23 +696,6 @@
     <div class="pt-title">📋 Your Action Today</div>
     <div class="pt-summary" id="pt-summary"></div>
     <div id="pt-rows"></div>
-  </div>
-
-  <!-- GLOSSARY -->
-  <div class="section" style="margin-bottom:16px">
-    <div class="glossary-toggle" id="glossary-toggle">
-      <span class="gt-arrow">▶</span> How to read these picks
-    </div>
-    <div class="glossary-panel" id="glossary-panel" style="display:none">
-      <div class="gl-item"><div class="gl-term">Model Prob</div><div class="gl-def">The model's estimate of the true win probability for this team, blended 75% model / 25% market.</div></div>
-      <div class="gl-item"><div class="gl-term">Market Prob</div><div class="gl-def">Pinnacle's no-vig implied probability — the sharpest publicly available market price, used as the benchmark.</div></div>
-      <div class="gl-item"><div class="gl-term">Edge</div><div class="gl-def">Model Prob minus Market Prob. Positive edge means the model thinks this team is underpriced. Only picks ≥ 2% edge are shown.</div></div>
-      <div class="gl-item"><div class="gl-term">Fair Odds</div><div class="gl-def">What the American moneyline odds would be if the market priced the game at the model's probability with zero vig.</div></div>
-      <div class="gl-item"><div class="gl-term">Break-Even</div><div class="gl-def">The win rate you need to profit at these odds long-term. If Model Prob > Break-Even, there's positive expected value.</div></div>
-      <div class="gl-item"><div class="gl-term">Half-Kelly</div><div class="gl-def">Recommended bet size using the Kelly Criterion at 50% fractional scaling on a 10-unit bankroll. Reduces variance vs. full Kelly.</div></div>
-      <div class="gl-item"><div class="gl-term">CLV</div><div class="gl-def">Closing Line Value — how much the line moved toward our pick after we logged it. Positive CLV is the gold-standard signal of real edge.</div></div>
-      <div class="gl-item"><div class="gl-term">Dog play</div><div class="gl-def">Betting an underdog (positive odds). Higher variance but higher upside — these are where sharp models often find the most value.</div></div>
-    </div>
   </div>
 
   <!-- TODAY'S PICKS -->
@@ -1265,30 +1226,6 @@ function decimalToML(dec) {
   if (dec >= 2) return '+' + Math.round((dec - 1) * 100);
   return String(Math.round(-100 / (dec - 1)));
 }
-function parlaySection(picks) {
-  if (picks.length < 2) return '';
-  const combined = picks.reduce((prod, p) => prod * mlToDecimal(p.odds), 1);
-  const parlayML = decimalToML(combined);
-  const payout100 = Math.round((combined - 1) * 100);
-  const legLines  = picks.map(p =>
-    `<span style="color:var(--text-2)">${p.pick}</span> <span style="color:var(--amber)">${formatOdds(p.odds)}</span>`
-  ).join(' <span style="color:var(--text-4)">+</span> ');
-  return `<div class="parlay-section">
-    <div class="parlay-header">🎲 If You Parlayed All ${picks.length} Picks</div>
-    <div class="parlay-row">
-      <div>
-        <div style="font-size:9px;color:var(--text-4);margin-bottom:2px">Combined odds</div>
-        <div class="parlay-odds">${parlayML}</div>
-      </div>
-      <div class="parlay-detail">
-        ${legLines}<br>
-        <span style="color:var(--text-4)">$100 bet wins</span> <strong style="color:var(--green)">$${payout100}</strong>
-        · $200 wins <strong style="color:var(--green)">$${payout100 * 2}</strong>
-      </div>
-    </div>
-    <div class="parlay-warn">⚠️ Parlays concentrate variance. Half-Kelly sizing on each pick individually is the mathematically sound approach — this is for reference only.</div>
-  </div>`;
-}
 
 // ── Historical context lookup ─────────────────────────────────────────────────
 // Returns a function: pick → HTML string (or null if not enough data)
@@ -1487,7 +1424,7 @@ function pickCardHTML(p, isTopPick = false) {
   const oddsRowHTML  = `
     <div class="book-odds-row">
       <span class="bor-label">Lines</span>
-      <div class="bor-books">
+      <div class="bor-books" title="Odds captured at model run time — check your book for the current line before betting">
         ${pinnacleOdds ? `<div class="bor-book bor-pinn"><span class="bor-bname">Pinnacle</span> <span class="bor-bval">${pinnacleOdds}</span></div>` : ''}
         <div class="bor-book"><span class="bor-bname">${bestBookName || 'Best avail.'}</span> <span class="bor-bval best">${bestOdds} ✓</span></div>
         ${lineMovementHTML()}
@@ -2049,8 +1986,7 @@ function render(data, hist) {
 
     document.getElementById('picks-container').innerHTML =
       shareAllHTML +
-      `<div class="${gridClass}">` + picksHTML + '</div>' +
-      parlaySection(main);
+      `<div class="${gridClass}">` + picksHTML + '</div>';
     refreshKellyUSD();
     refreshBetButtons();
     refreshPersonalTracker();
@@ -2184,13 +2120,6 @@ function buildYesterdayHTML(yest) {
 loadPicks();
 startAutoRefresh();
 
-// Glossary toggle
-document.getElementById('glossary-toggle').addEventListener('click', function() {
-  const panel = document.getElementById('glossary-panel');
-  const open = panel.style.display !== 'none';
-  panel.style.display = open ? 'none' : 'grid';
-  this.classList.toggle('open', !open);
-});
 </script>
 </body>
 </html>
