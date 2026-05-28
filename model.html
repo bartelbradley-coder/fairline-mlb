@@ -578,6 +578,69 @@ body { background: #0b0f1a; color: #e2e8f0; font-family: 'Inter', sans-serif; fo
   </div>
 </div>
 
+<!-- OTHER MARKETS -->
+<div class="section">
+  <div class="sec-lbl">Other Markets — Run Line &amp; Over/Under Calibration</div>
+  <div class="math-grid">
+
+    <div class="math-block ci">
+      <div class="math-hdr">🏃  Run Line Calibration</div>
+      <div class="f-lbl">Platt scaling — RL-specific constants, fitted OOS 2022–2024</div>
+      <div class="fbox"><span class="v">p_rl_cal</span> <span class="op">=</span> <span class="fn">σ</span>(<span class="v">A_rl</span> <span class="op">·</span> <span class="fn">logit</span>(<span class="v">p_rl_raw</span>) <span class="op">+</span> <span class="v">B_rl</span>)
+
+         <span class="op">=</span> <span class="n">1</span> <span class="op">/</span> (<span class="n">1</span> <span class="op">+</span> <span class="fn">exp</span>(<span class="op">−</span>(<span class="hl">0.8188</span> <span class="op">·</span> <span class="fn">logit</span>(<span class="v">p_rl_raw</span>)
+                          <span class="op">−</span> <span class="hl">0.1035</span>)))</div>
+      <div class="f-lbl">Parameter interpretation</div>
+      <div class="fbox"><span class="hl">A_rl</span> <span class="op">=</span> <span class="n">0.8188</span>  <span class="cm">// &lt; 1: slight overconfidence;
+               //   less shrinkage than ML model</span>
+<span class="hl">B_rl</span> <span class="op">=</span> <span class="op">−</span><span class="n">0.1035</span> <span class="cm">// small away-team correction</span></div>
+      <div class="f-lbl">Backtest results — 7,237 games, OOS 2022–2024</div>
+      <div class="fbox">Home cover rate:  <span class="n">35.7%</span> actual vs <span class="n">35.6%</span> model
+Direction acc.:   <span class="n">64.7%</span>  <span class="cm">(better side predicted)</span>
+
+Away <span class="op">+</span><span class="n">1.5</span>, <span class="op">≥</span><span class="n">5%</span> edge, <span class="op">−</span><span class="n">130</span> juice:
+  Model ROI:   <span class="v">+22.3%</span>   <span class="cm">// vs +13.8% blind baseline</span>
+  Win rate:    <span class="v">67.2%</span>    <span class="cm">// vs 65.5% at ≥0% edge</span>
+
+Away <span class="op">+</span><span class="n">1.5</span> win rate vs model edge:
+  <span class="op">≥</span> <span class="n">0%</span> edge <span class="op">→</span> <span class="n">65.5%</span>
+  <span class="op">≥</span> <span class="n">5%</span> edge <span class="op">→</span> <span class="n">67.2%</span>
+  <span class="op">≥</span> <span class="n">8%</span> edge <span class="op">→</span> <span class="n">68.4%</span>
+  <span class="op">≥</span><span class="n">10%</span> edge <span class="op">→</span> <span class="n">69.6%</span>   <span class="cm">// genuine discriminatory power</span></div>
+      <div class="math-note">RL edge = p_rl_cal − p_nv_Pinnacle_RL. Bet flagged when edge ≥ 2%. CLV tracked separately via Pinnacle spreads market snapshot at 3:30 PM PT. Home −1.5 volume is low (&lt;40 bets at ≥8% edge over 3 seasons) — treated as a specialty bet requiring high model confidence.</div>
+    </div>
+
+    <div class="math-block cv">
+      <div class="math-hdr">📊  Over/Under Calibration</div>
+      <div class="f-lbl">Platt scaling — O/U constants, fitted OOS 2022–2024</div>
+      <div class="fbox"><span class="v">p_over_cal</span> <span class="op">=</span> <span class="fn">σ</span>(<span class="v">A_ou</span> <span class="op">·</span> <span class="fn">logit</span>(<span class="v">p_over_raw</span>) <span class="op">+</span> <span class="v">B_ou</span>)
+
+           <span class="op">=</span> <span class="n">1</span> <span class="op">/</span> (<span class="n">1</span> <span class="op">+</span> <span class="fn">exp</span>(<span class="op">−</span>(<span class="hl">0.5268</span> <span class="op">·</span> <span class="fn">logit</span>(<span class="v">p_over_raw</span>)
+                             <span class="op">−</span> <span class="hl">0.2020</span>)))</div>
+      <div class="f-lbl">Parameter interpretation</div>
+      <div class="fbox"><span class="hl">A_ou</span> <span class="op">=</span> <span class="n">0.5268</span>  <span class="cm">// heavy shrinkage toward 50% —
+               //   model significantly over-expresses
+               //   confidence on totals</span>
+<span class="hl">B_ou</span> <span class="op">=</span> <span class="op">−</span><span class="n">0.2020</span> <span class="cm">// corrects systematic over-prediction
+               //   on high-scoring games</span></div>
+      <div class="f-lbl">Status — informational, not separately bet</div>
+      <div class="fbox">Synthetic-line ROI <span class="op">@</span> <span class="op">≥</span><span class="n">0%</span> edge:  <span class="v">+3.0%</span>
+Synthetic-line ROI <span class="op">@</span> <span class="op">≥</span><span class="n">2%</span> edge: <span class="op">−</span><span class="n">1.4%</span>
+
+Bias by total line:
+  <span class="op">&lt;</span> <span class="n">7.5</span> runs:  <span class="op">−</span><span class="n">1.06</span> run underestimate
+  <span class="op">≥</span> <span class="n">10.0</span> runs: <span class="op">+</span><span class="n">0.81</span> run overestimate
+
+<span class="cm">// O/U market prices now captured live (real
+// over/under odds shown in Other Markets card).
+// Standalone O/U bets deferred until live
+// edge evidence accumulates over several weeks.</span></div>
+      <div class="math-note">Real O/U book prices (best execution + Pinnacle no-vig benchmark) are fetched daily and displayed in each pick card's Other Markets section. The heavy Platt shrinkage (A=0.527 vs A=0.585 for ML) reveals the Poisson model has weaker calibration on run totals — likely due to left-tail inflation (low-scoring games more common than Poisson predicts at high-k values).</div>
+    </div>
+
+  </div>
+</div>
+
 <!-- FOOTER -->
 <div class="footer">
   <div class="footer-l">

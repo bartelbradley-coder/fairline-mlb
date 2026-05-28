@@ -199,6 +199,18 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
 .cal-legend { display:flex; align-items:center; gap:10px; margin-top:8px; font-size:9px; color:var(--text-4); }
 .cal-legend-item { display:flex; align-items:center; gap:4px; }
 .cal-legend-swatch { width:10px; height:10px; border-radius:2px; }
+
+/* RL picks section */
+.rl-toggle-btn { width:100%; text-align:left; padding:12px 16px; background:var(--bg-card); border:1px solid var(--border); border-radius:10px; color:var(--text-2); font-size:12px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:space-between; margin-bottom:0; transition:background 0.15s; }
+.rl-toggle-btn:hover { background:rgba(255,255,255,0.04); }
+.rl-toggle-btn .chevron { font-size:14px; transition:transform 0.2s; }
+.rl-toggle-btn.open .chevron { transform:rotate(180deg); }
+.rl-body { display:none; margin-top:8px; }
+.rl-body.open { display:block; }
+.rl-table { width:100%; border-collapse:collapse; }
+.rl-table th { font-size:8.5px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-4); padding:8px 10px; text-align:left; border-bottom:1px solid var(--border); }
+.rl-table td { padding:9px 10px; border-bottom:1px solid rgba(255,255,255,0.03); font-size:12px; color:var(--text-3); }
+.rl-table tr:last-child td { border-bottom:none; }
 </style>
 </head>
 <body>
@@ -440,6 +452,20 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
     </div>
   </div>
 
+  <!-- Run Line Picks -->
+  <div class="section" id="rl-section">
+    <div class="sec-lbl">Run Line Results — Live 2026 + CLV Tracked</div>
+    <button class="rl-toggle-btn" id="rl-toggle-btn" onclick="toggleRL()">
+      <span>Run Line Pick History <span id="rl-count" style="color:var(--text-4);font-weight:400"></span></span>
+      <span class="chevron">▾</span>
+    </button>
+    <div class="rl-body" id="rl-body">
+      <div class="card" style="padding:0;overflow:hidden;margin-top:0;border-radius:0 0 10px 10px;border-top:none" id="rl-table-wrap">
+        <div class="loading" style="padding:20px">Loading…</div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <footer>
@@ -465,14 +491,78 @@ function pct(v, d=1) {
   return (v >= 0 ? '+' : '') + (v * 100).toFixed(d) + '%';
 }
 
+function toggleRL() {
+  const btn  = document.getElementById('rl-toggle-btn');
+  const body = document.getElementById('rl-body');
+  btn.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+function renderRLPicks(rl) {
+  const picks = (rl && rl.recent_picks) || [];
+  const countEl = document.getElementById('rl-count');
+
+  // Update season headline in the toggle button
+  const s = (rl && rl.season) || {};
+  if (s.bets > 0) {
+    countEl.textContent = `· ${s.wins}W–${s.losses}L · ${pct(s.roi)} ROI`;
+  } else {
+    countEl.textContent = '· accumulates as RL picks settle';
+  }
+
+  const wrap = document.getElementById('rl-table-wrap');
+  if (picks.length === 0) {
+    wrap.innerHTML = `<div style="text-align:center;padding:40px 20px;color:var(--text-4)">
+      <div style="font-size:24px;margin-bottom:10px">🏃</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:16px;color:var(--text-3);margin-bottom:6px">No Run Line Picks Yet</div>
+      <div style="font-size:11px;line-height:1.7">RL picks are logged starting with the 2026 season.<br>
+      Check back after the first batch of RL value bets settle.<br>
+      <span style="color:var(--text-3)">Backtested 2022–2024: away +1.5 ≥5% edge → +22.3% ROI at −130 juice.</span></div>
+    </div>`;
+    return;
+  }
+
+  const trHTML = picks.map(r => {
+    const resultCls = r.result === 'W' ? 'result-w' : r.result === 'L' ? 'result-l' : r.result ? '' : '';
+    const pnlCls = (r.pnl || 0) >= 0 ? 'pnl-pos' : 'pnl-neg';
+    const clvCls = r.rl_clv == null ? '' : r.rl_clv >= 0 ? 'clv-pos' : 'clv-neg';
+    const edgeStr = r.rl_edge != null ? (r.rl_edge >= 0 ? '+' : '') + (r.rl_edge * 100).toFixed(1) + '%' : '—';
+    const oddsStr = r.rl_odds != null ? (r.rl_odds > 0 ? '+' : '') + r.rl_odds : '—';
+    const clvStr  = r.rl_clv != null ? pct(r.rl_clv) : '—';
+    const pnlStr  = r.pnl != null ? (r.pnl >= 0 ? '+' : '') + r.pnl.toFixed(1) + 'u' : '—';
+    const dateStr = r.date ? (() => { try { return new Date(r.date + 'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}); } catch(e){ return r.date; } })() : '—';
+    return `<tr>
+      <td style="color:var(--text-4);font-family:'JetBrains Mono',monospace;font-size:11px">${dateStr}</td>
+      <td style="color:var(--text-2);font-weight:500">${r.game || '—'}</td>
+      <td>${r.team || '—'} <span style="color:var(--text-4);font-size:10px">${r.spread || ''}</span></td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px">${oddsStr}</td>
+      <td style="color:var(--amber)">${edgeStr}</td>
+      <td><span class="${resultCls}">${r.result || '—'}</span></td>
+      <td class="${clvCls}">${clvStr}</td>
+      <td class="${pnlCls}">${pnlStr}</td>
+    </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <table class="rl-table">
+      <thead><tr>
+        <th>Date</th><th>Game</th><th>Pick</th><th>Odds</th><th>Edge</th>
+        <th>Result</th><th>CLV</th><th>P&amp;L</th>
+      </tr></thead>
+      <tbody>${trHTML}</tbody>
+    </table>`;
+}
+
 async function loadAll() {
   try {
-    const [hRes, pRes] = await Promise.all([
-      fetch('data/history.json?v='     + Date.now()),
-      fetch('data/performance.json?v=' + Date.now()),
+    const [hRes, pRes, rlRes] = await Promise.all([
+      fetch('data/history.json?v='        + Date.now()),
+      fetch('data/performance.json?v='    + Date.now()),
+      fetch('data/rl_performance.json?v=' + Date.now()),
     ]);
-    const h = hRes.ok ? await hRes.json() : null;
-    const p = pRes.ok ? await pRes.json() : null;
+    const h  = hRes.ok  ? await hRes.json()  : null;
+    const p  = pRes.ok  ? await pRes.json()  : null;
+    const rl = rlRes.ok ? await rlRes.json() : null;
 
     if (h && h.updated_at) {
       document.getElementById('last-updated').textContent = 'Updated ' + h.updated_at;
@@ -495,6 +585,7 @@ async function loadAll() {
     renderBacktest();
     injectMonthFilter(allRows);
     renderTable(allRows);
+    renderRLPicks(rl);
   } catch (e) {
     renderEmpty();
   }
