@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FairLine MLB — Performance Dashboard</title>
+<title>FairLine MLB — Model Performance</title>
 <meta name="description" content="Live 2026 performance: record, ROI, CLV, bankroll growth, and model vs. naive strategy comparison for FairLine MLB.">
 <meta property="og:title" content="FairLine MLB — Performance Dashboard">
 <meta property="og:description" content="Live 2026 results: 166W-138L, +18.6% ROI, +0.46% avg CLV. Full transparency.">
@@ -127,8 +127,22 @@
 
 <div class="page">
 
-  <div class="page-title">Performance Dashboard</div>
-  <div class="page-subtitle">Live 2026 season · every pick logged with result, CLV, and P&amp;L · full transparency</div>
+  <div class="page-title">Model Performance</div>
+  <div class="page-subtitle">Overall model statistics — ROI, win rate, CLV trends, and edge-tier breakdown.</div>
+
+  <!-- Live metrics note + cards -->
+  <div class="live-metrics-note">
+    <span>📊 Live results reflect posted picks only. Backtested validation is shown separately below.</span>
+  </div>
+  <div class="live-metrics-row" id="live-metrics-row">
+    <div class="lm-card"><div class="lm-lbl">Record</div><div class="lm-val" id="lm-record">—</div></div>
+    <div class="lm-card"><div class="lm-lbl">Units</div><div class="lm-val green" id="lm-units">—</div></div>
+    <div class="lm-card"><div class="lm-lbl">ROI</div><div class="lm-val green" id="lm-roi">—</div></div>
+    <div class="lm-card"><div class="lm-lbl">Win Rate</div><div class="lm-val" id="lm-winrate">—</div></div>
+    <div class="lm-card"><div class="lm-lbl">Avg CLV</div><div class="lm-val green" id="lm-clv">—</div></div>
+    <div class="lm-card"><div class="lm-lbl">Picks Logged</div><div class="lm-val" id="lm-bets">—</div></div>
+    <div class="lm-card"><div class="lm-lbl">Last Updated</div><div class="lm-val" id="lm-updated">—</div></div>
+  </div>
 
   <!-- Headline stats -->
   <div class="headline-stats" id="headline-stats">
@@ -282,6 +296,9 @@
   </div>
 
   <!-- Backtest -->
+  <div class="results-section backtest-section">
+  <div class="section-badge backtest-badge-lg">BACKTEST</div>
+  <div class="section-sub">Historical model validation using prior seasons. Not live betting results.</div>
   <div class="section">
     <div class="sec-lbl">Backtested Model Validation — Out-of-Sample 2022–2024 · Not Live Results</div>
     <div class="card">
@@ -304,13 +321,14 @@
       </div>
     </div>
   </div>
+  </div><!-- end backtest-section -->
 
 </div>
 
 <footer>
   FairLine MLB · Quantitative Win Probability Model · Dual-Poisson + 18 Log-Odds Adjustments + Platt Calibration<br>
-  For informational purposes only. Gambling involves risk — never bet more than you can afford to lose. Past model performance does not guarantee future results. 18+ only.<br>
-  <a href="model.html">Model Overview</a> · <a href="history.html">Full Pick History</a> · <a href="index.html">Today's Picks</a>
+  <div class="site-disclaimer">For informational and educational purposes only. Not financial advice. Sports betting involves risk — past model performance does not guarantee future results. Always verify odds, starters, lineups, and bet availability before placing a wager. Never bet more than you can afford to lose. Must be of legal gambling age and located in a legal betting jurisdiction. Bet responsibly.</div>
+  <a href="model.html">Model Overview</a> · <a href="history.html">Results &amp; Pick History</a> · <a href="index.html">Today's Picks</a>
 </footer>
 
 <script>
@@ -338,6 +356,21 @@ async function loadAll() {
       document.getElementById('last-updated').textContent = 'Updated ' + p.updated_at;
     }
 
+    // Populate live metrics row
+    if (p && p.season) {
+      const s = p.season;
+      document.getElementById('lm-record').textContent = s.wins + 'W–' + s.losses + 'L';
+      const u = s.units || 0;
+      document.getElementById('lm-units').textContent = (u >= 0 ? '+' : '') + u.toFixed(1) + 'u';
+      const roi = s.roi || 0;
+      document.getElementById('lm-roi').textContent = (roi >= 0 ? '+' : '') + (roi * 100).toFixed(1) + '%';
+      const wr = (s.wins + s.losses) > 0 ? s.wins / (s.wins + s.losses) : 0;
+      document.getElementById('lm-winrate').textContent = (wr * 100).toFixed(1) + '%';
+      if (p.avg_clv != null) document.getElementById('lm-clv').textContent = (p.avg_clv >= 0 ? '+' : '') + (p.avg_clv * 100).toFixed(2) + '%';
+      if (s.bets) document.getElementById('lm-bets').textContent = s.bets;
+      if (p.updated_at) document.getElementById('lm-updated').textContent = p.updated_at;
+    }
+
     renderHeadline(p, h);
     renderInsight(p);
     renderBankrollChart(h);
@@ -348,6 +381,12 @@ async function loadAll() {
     renderRLPerformance(rl);
     renderBacktest();
   } catch(e) {
+    document.getElementById('headline-stats').innerHTML = `
+      <div class="state-card error-state" style="grid-column:1/-1">
+        <div class="state-icon">⚠️</div>
+        <div class="state-title">Unable to load performance data.</div>
+        <div class="state-sub">Please refresh the page or check back later.</div>
+      </div>`;
     renderBacktest();
   }
 }

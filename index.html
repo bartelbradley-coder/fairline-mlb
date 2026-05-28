@@ -626,7 +626,46 @@
   </div>
 </nav>
 
-<div class="page">
+<!-- HERO -->
+<section class="hero-section">
+  <div class="page" style="padding-top:0;padding-bottom:0;margin-bottom:0">
+    <div class="hero-inner">
+      <div class="hero-badge">⚾ MLB · 2026 Season</div>
+      <h1 class="hero-headline">Sharp-market MLB picks from a transparent fair-line model.</h1>
+      <p class="hero-sub">FairLine MLB projects each game's true win probability, converts it to fair odds, and compares it to the no-vig market to identify positive-edge opportunities. Every posted pick is tracked with result, CLV, units, and ROI.</p>
+      <div class="hero-ctas">
+        <a href="#picks" class="hero-btn-primary">View Today's Picks</a>
+        <a href="model.html" class="hero-btn-secondary">See Model Methodology</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="page" id="picks">
+
+  <!-- TRUST STRIP -->
+  <div class="trust-strip">
+    <div class="trust-card">
+      <div class="trust-label">Model Type</div>
+      <div class="trust-val">Dual-Poisson + log-odds</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-label">Market Benchmark</div>
+      <div class="trust-val">No-vig Pinnacle probability</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-label">Pick Filter</div>
+      <div class="trust-val">Positive-edge threshold</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-label">Tracking</div>
+      <div class="trust-val">Every posted pick logged</div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-label">Validation</div>
+      <div class="trust-val">Live results separated from backtests</div>
+    </div>
+  </div>
 
   <div class="page-header">
     <div class="page-title" id="page-date">Today's Value Bets</div>
@@ -635,7 +674,24 @@
 
   <!-- Record strip (includes season stats, streak, sparkline) -->
   <div class="record-strip" id="record-strip"></div>
+  <div class="freshness-row" id="freshness-row" style="display:none">
+    <span class="freshness-item" id="fr-model-run"></span>
+    <span class="freshness-sep">·</span>
+    <span class="freshness-item" id="fr-odds"></span>
+    <span class="freshness-sep">·</span>
+    <span class="freshness-item" id="fr-starters"></span>
+  </div>
   <div id="perf-charts"></div>
+
+  <!-- Market-informed model clarification -->
+  <section class="methodology-note">
+    <div class="mn-icon">ℹ️</div>
+    <div class="mn-body">
+      <div class="mn-title">FairLine is a market-informed model</div>
+      <p class="mn-text">Raw team strength, pitching, lineup, park, weather, and situational signals generate the baseline projection. Market information is used as a stabilizing input to reduce extreme outputs and align with betting market run environments. After calibration, the final FairLine probability is compared against the no-vig market probability to identify remaining pricing gaps.</p>
+      <p class="mn-note">Because the market is used as both a stabilizing input and a comparison benchmark, FairLine should be understood as a market-informed fair-line model rather than a fully market-independent projection.</p>
+    </div>
+  </section>
 
   <!-- Model info strip (always-visible) -->
   <div class="model-info-strip">
@@ -686,7 +742,11 @@
   <div class="section">
     <div class="sec-lbl">Value Bets</div>
     <div id="picks-container">
-      <div class="loading">Loading picks…</div>
+      <div class="state-card loading-state" id="loading-placeholder">
+        <div class="state-icon">⏳</div>
+        <div class="state-title">Loading today's model picks…</div>
+        <div class="state-sub">Fetching picks and odds data.</div>
+      </div>
     </div>
   </div>
 
@@ -702,11 +762,69 @@
     <div class="card" style="padding:0;overflow:hidden" id="yesterday-card"></div>
   </div>
 
+  <!-- TRANSPARENCY STANDARDS -->
+  <section class="transparency-section">
+    <div class="ts-header">
+      <span class="ts-icon">🔒</span>
+      <span class="ts-title">Transparency Standards</span>
+    </div>
+    <ul class="ts-list">
+      <li>Every posted pick is logged before first pitch.</li>
+      <li>Model probability, market probability, odds, edge, stake, and timestamp are stored at posting.</li>
+      <li>Results are not deleted after losses.</li>
+      <li>Closing-line value is tracked where available.</li>
+      <li>Live results are reported separately from historical backtests.</li>
+      <li>Past performance does not guarantee future results.</li>
+    </ul>
+  </section>
+
+  <!-- INLINE DISCLAIMER -->
+  <p class="inline-disclaimer">⚠️ For informational purposes only. Sports betting involves risk. Verify all odds and availability before wagering.</p>
+
+  <!-- FAQ -->
+  <section class="faq-section" id="faq">
+    <h2 class="faq-heading">Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details class="faq-item">
+        <summary class="faq-q">What is a fair line?</summary>
+        <div class="faq-a">A fair line (or fair odds) is the theoretical price at which neither side of a bet has an edge — the true implied probability converted to American odds with no bookmaker margin. FairLine computes this from its model probability.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What does edge mean?</summary>
+        <div class="faq-a">Edge is the difference between the model's estimated win probability and the market's implied probability (after removing the vig). A positive edge means the model believes the bet is priced better than the market suggests.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What is no-vig market probability?</summary>
+        <div class="faq-a">Bookmakers add a margin (vig or juice) to odds so both sides sum to more than 100%. No-vig probability removes that margin, giving the market's true implied probability for each side. FairLine uses Pinnacle's no-vig line as the market benchmark.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Why compare to the no-vig market?</summary>
+        <div class="faq-a">Pinnacle accepts sharp money and typically offers the most efficient lines in the market. Beating Pinnacle's no-vig line consistently is the gold standard for demonstrating model edge. It's a much higher bar than beating soft-book lines.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What is closing-line value (CLV)?</summary>
+        <div class="faq-a">CLV measures how the odds at bet time compared to the final closing line before the game. Positive CLV means bets were placed at better prices than the market settled on — a strong signal that the model is identifying genuine edge rather than getting lucky results.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">What is Kelly sizing?</summary>
+        <div class="faq-a">Kelly Criterion is a formula that sizes bets proportional to your edge and odds. FairLine uses Half-Kelly (50% of full Kelly) to reduce variance while still betting larger on higher-edge plays. Stake sizes are shown as a percentage of a 10-unit bankroll.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">Are these guaranteed picks?</summary>
+        <div class="faq-a">No. Sports betting always involves risk and variance. The model identifies positive expected value based on historical patterns and market signals — not certainty. Never bet more than you can afford to lose.</div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-q">How are live results different from backtests?</summary>
+        <div class="faq-a">Live results are picks posted on the site before first pitch and tracked in real time. Backtests are historical simulations on past data and are inherently subject to overfitting. FairLine keeps these clearly separated — live performance is the only real validation.</div>
+      </details>
+    </div>
+  </section>
+
 </div>
 
 <footer>
   FairLine MLB · Quantitative Win Probability Model · Dual-Poisson + 18 Log-Odds Adjustments + Platt Calibration<br>
-  For informational purposes only. Gambling involves risk — never bet more than you can afford to lose. Past model performance does not guarantee future results. 18+ only.<br>
+  <div class="site-disclaimer">For informational and educational purposes only. Not financial advice. Sports betting involves risk — past model performance does not guarantee future results. Always verify odds, starters, lineups, and bet availability before placing a wager. Never bet more than you can afford to lose. Must be of legal gambling age and located in a legal betting jurisdiction. Bet responsibly.</div>
   <a href="model.html">Model Overview</a> · <a href="history.html">Results &amp; Track Record</a>
 </footer>
 
@@ -946,7 +1064,12 @@ async function loadPicks() {
     else renderEmptyState(null, hist);
     if (perf) renderPerfCharts(perf);
   } catch (e) {
-    renderEmptyState(null, null);
+    document.getElementById('picks-container').innerHTML = `
+      <div class="state-card error-state">
+        <div class="state-icon">⚠️</div>
+        <div class="state-title">Unable to load today's picks.</div>
+        <div class="state-sub">Please refresh the page or check back later.</div>
+      </div>`;
   }
 }
 
@@ -1044,10 +1167,10 @@ function renderEmptyState(data, hist, marginal = []) {
   }
 
   document.getElementById('picks-container').innerHTML = `
-    <div class="no-picks-yet">
-      <div class="np-icon">⏰</div>
-      <div class="np-title">Picks Posted by 9:30 AM CT</div>
-      <div class="np-sub">The model runs each morning after lineups and odds are available.<br>Check back after 9:30 AM Central Time.</div>
+    <div class="state-card empty-state">
+      <div class="state-icon">📊</div>
+      <div class="state-title">No picks clear the edge threshold today.</div>
+      <div class="state-sub">Check back after the next model update. The model runs at 10:08 AM and 10:30 AM CT.</div>
       ${nearMissHTML}
       ${yestHTML}
       ${stripHTML}
@@ -1685,6 +1808,33 @@ function pickCardHTML(p, isTopPick = false) {
       ${postedHTML}
     </div>`;
 
+  // Confidence / warning flags
+  const flags = [];
+  if (p.pitcher && p.pitcher.trim()) flags.push({ cls: 'flag-ok', text: '✓ Starter confirmed' });
+  if (p.meta && p.meta.includes('lineup_confirmed')) flags.push({ cls: 'flag-ok', text: '✓ Lineup confirmed' });
+  if ((p.wind_speed_mph || 0) >= 15 && !p.is_domed) flags.push({ cls: 'flag-warn', text: '⚡ Weather risk' });
+  if (p.raw_stats && (p.raw_stats.pick_bp_pitches || 0) >= 200) flags.push({ cls: 'flag-warn', text: '🔥 BP fatigue' });
+  if ((p.edge || 0) < 0.03) flags.push({ cls: 'flag-caution', text: '⚠️ Thin edge' });
+  if ((p.edge || 0) >= 0.08) flags.push({ cls: 'flag-strong', text: '🔥 Strong edge' });
+  const flagsHTML = flags.length > 0
+    ? `<div class="pick-flags">${flags.map(f => `<span class="pick-flag ${f.cls}">${f.text}</span>`).join('')}</div>`
+    : '';
+
+  // Playable threshold + key info line
+  const fairOddsStr = p.fair_odds || '—';
+  const modelProbStr = modelPct ? modelPct + '%' : '—';
+  const mktProbStr   = mktPct   ? mktPct   + '%' : '—';
+  const keyInfoHTML = `
+    <div class="pick-key-info">
+      <span class="pki-item"><span class="pki-lbl">Model</span>&nbsp;<span class="pki-val">${modelProbStr}</span></span>
+      <span class="pki-sep">·</span>
+      <span class="pki-item"><span class="pki-lbl">Market</span>&nbsp;<span class="pki-val">${mktProbStr}</span></span>
+      <span class="pki-sep">·</span>
+      <span class="pki-item"><span class="pki-lbl">Fair</span>&nbsp;<span class="pki-val">${formatOdds(parseInt(fairOddsStr) || null)}</span></span>
+      <span class="pki-sep">·</span>
+      <span class="pki-item"><span class="pki-lbl">Playable to</span>&nbsp;<span class="pki-val pki-threshold">${fairOddsStr}</span></span>
+    </div>`;
+
   // ── Header row: tier · matchup · time + value badge ───────────────────────
   const tierLabelCls = tierClass === 'strong' ? '' : tierClass === 'value' ? 'value-label' : 'marginal-label';
   const tierStarHTML = tierClass === 'marginal' ? '' : '<span class="uc-tier-star">⭐</span>';
@@ -1725,9 +1875,11 @@ function pickCardHTML(p, isTopPick = false) {
     <div class="pick-card ${tierClass}${isTopPick ? ' top-pick' : ''}${isOver ? ' card-stale' : ''}">
       ${topPickBannerHTML}
       ${headerRowHTML}
+      ${flagsHTML}
       ${spHTML}
       ${betHTML}
       ${previewHTML}
+      ${keyInfoHTML}
       ${marketsTableHTML}
       ${actionRowHTML}
       ${detailsBodyHTML}
@@ -1755,6 +1907,17 @@ function render(data, hist) {
 
   if (data.generated_at) {
     document.getElementById('last-updated').textContent = 'Updated ' + data.generated_at;
+  }
+
+  // Freshness row
+  if (data.generated_at) {
+    const fr = document.getElementById('freshness-row');
+    if (fr) {
+      document.getElementById('fr-model-run').textContent  = 'Last model run: ' + data.generated_at + ' CT';
+      document.getElementById('fr-odds').textContent       = 'Odds snapshot: ' + data.generated_at + ' CT';
+      document.getElementById('fr-starters').textContent   = 'Starters/lineups as of: ' + data.generated_at + ' CT';
+      fr.style.display = 'flex';
+    }
   }
   if (data.signal_count != null) {
     document.getElementById('signal-count').textContent = data.signal_count;

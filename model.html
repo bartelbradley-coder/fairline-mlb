@@ -218,6 +218,16 @@ body { background: #0b0f1a; color: #e2e8f0; font-family: 'Inter', sans-serif; fo
   </div>
 </div>
 
+<!-- MARKET-INFORMED MODEL NOTE -->
+<div style="display:flex;gap:12px;align-items:flex-start;background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.15);border-radius:10px;padding:16px 18px;margin-bottom:22px">
+  <div style="font-size:18px;flex-shrink:0;margin-top:2px">ℹ️</div>
+  <div>
+    <div style="font-size:12px;font-weight:700;color:#818cf8;margin-bottom:6px">FairLine is a market-informed model</div>
+    <p style="font-size:11.5px;color:#475569;line-height:1.65;margin-bottom:6px">Raw team strength, pitching, lineup, park, weather, and situational signals generate the baseline projection. Market information — specifically the book O/U total and Pinnacle no-vig probability — is used as a stabilizing input (via the <code style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#c7d2fe">book_total_constraint</code> factor, α₁₆) to reduce extreme run-total outputs and align the model with the sharp betting market's run environment. After Platt calibration, the final FairLine probability is compared against the no-vig Pinnacle market probability to identify remaining pricing gaps where the model and market diverge.</p>
+    <p style="font-size:10.5px;color:#334155;font-style:italic;line-height:1.5;margin:0">Because the market is used as both a stabilizing input and a comparison benchmark, FairLine should be understood as a market-informed fair-line model rather than a fully market-independent projection. This is disclosed transparently; the model still identifies genuine pricing gaps in approximately 15–25% of games per day.</p>
+  </div>
+</div>
+
 <!-- PIPELINE -->
 <div class="section">
   <div class="sec-lbl">Inference Pipeline — Input → Transform → Output at Each Stage</div>
@@ -645,7 +655,13 @@ Bias by total line:
 <div class="footer">
   <div class="footer-l">
     FAIRLINE MLB · Dual-Poisson Win Probability Engine · 23 Live Signals · 18 Log-Odds Adjustments · Platt Calibration · Half-Kelly Sizing · CLV Tracked<br>
-    Sources: MLB Stats API · FanGraphs · Baseball Savant · Open-Meteo · UmpScoreCards · Pinnacle (Odds API)
+    Sources: MLB Stats API · FanGraphs · Baseball Savant · Open-Meteo · UmpScoreCards · Pinnacle (Odds API)<br>
+    <span style="font-size:9px;color:#1e293b">For informational and educational purposes only. Not financial advice. Sports betting involves risk — past model performance does not guarantee future results. Never bet more than you can afford to lose. 18+ only. Bet responsibly.</span>
+  </div>
+  <div class="footer-r">
+    <a href="index.html" style="color:#1e293b;text-decoration:none;font-size:11px;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">Today's Picks</a> ·
+    <a href="history.html" style="color:#1e293b;text-decoration:none;font-size:11px;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">Results</a> ·
+    <a href="performance.html" style="color:#1e293b;text-decoration:none;font-size:11px;font-family:'Inter',sans-serif;font-weight:400;letter-spacing:0">Performance</a>
   </div>
 </div>
 
