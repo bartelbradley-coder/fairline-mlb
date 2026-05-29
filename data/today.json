@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "generated_at": "9:30 PM CT \u00b7 May 28",
+  "generated_at": "10:01 PM CT \u00b7 May 28",
   "picks": [
     {
       "game": "LAA @ DET",
@@ -160,9 +160,9 @@
       "meta": "SP: Patrick Corbin",
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T22:35:00Z",
-      "temp_f": 64.3,
-      "wind_speed_mph": 9.9,
-      "wind_dir_degrees": 357.0,
+      "temp_f": 65.0,
+      "wind_speed_mph": 2.1,
+      "wind_dir_degrees": 319.0,
       "is_domed": false,
       "model_prob": 0.4804,
       "market_prob": 0.4577,
@@ -314,9 +314,9 @@
       "meta": "SP: Colin Rea",
       "posted_at": "10:05 AM CT",
       "game_time": "2026-05-28T22:40:00Z",
-      "temp_f": 62.2,
-      "wind_speed_mph": 5.0,
-      "wind_dir_degrees": 347.0,
+      "temp_f": 63.1,
+      "wind_speed_mph": 4.3,
+      "wind_dir_degrees": 354.0,
       "is_domed": false,
       "model_prob": 0.4119,
       "market_prob": 0.3968,
