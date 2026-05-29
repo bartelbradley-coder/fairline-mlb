@@ -408,7 +408,9 @@ function renderTodayPerfBanner(picks, scores) {
 
 // ── Today's settled picks — client-side merge ──────────────────────────────
 function computeTodaySettled(picks, scores) {
-  const today = new Date().toISOString().slice(0, 10);
+  // Use p.date (set by the Python pipeline in local CT time) — never derive the
+  // date from JS new Date().toISOString() which returns UTC and rolls to the
+  // next calendar day after ~6 PM CT in summer.
   return picks.map(p => {
     const g = scores[p.game];
     if (!g || g.status !== 'final') return null;
@@ -419,7 +421,7 @@ function computeTodaySettled(picks, scores) {
       ? (odds > 0 ? odds / 100 : 100 / Math.abs(odds))
       : -1.0;
     return {
-      date: today, game: p.game, pick: p.pick, side: p.side,
+      date: p.date, game: p.game, pick: p.pick, side: p.side,
       odds, edge: p.edge, model_prob: p.model_prob,
       result: pickWon ? 'W' : 'L',
       pnl_u: Math.round(pnl_u * 1000) / 1000,
@@ -495,7 +497,10 @@ async function loadAll() {
     // and will appear in history.json after the settle runs, so mirror that.
     const todayPicksFilt = today && today.picks ? today.picks : [];
     const todaySettled  = computeTodaySettled(todayPicksFilt, scores);
-    const todayDate     = new Date().toISOString().slice(0, 10);
+    // Derive today's date from the picks themselves (pipeline sets this in local CT time).
+    const todayDate     = todayPicksFilt.length > 0
+      ? String(todayPicksFilt[0].date)
+      : todaySettled.length > 0 ? String(todaySettled[0].date) : '';
     const alreadyInRows = new Set(
       (h && h.rows || []).filter(r => String(r.date) === todayDate)
                           .map(r => `${r.game}|${(r.side||'').toUpperCase()}`)
