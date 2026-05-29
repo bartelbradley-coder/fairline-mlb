@@ -1,7 +1,91 @@
 {
-  "updated_at": "10:01 PM CT \u00b7 May 28",
-  "total_bets": 316,
+  "updated_at": "10:30 PM CT \u00b7 May 28",
+  "total_bets": 322,
   "rows": [
+    {
+      "date": "2026-05-28",
+      "game": "LAA @ DET",
+      "pick": "LAA",
+      "side": "AWAY",
+      "pitcher": "Grayson Rodriguez",
+      "pick_type": "ML",
+      "odds": 114,
+      "edge": 0.0505,
+      "model_prob": 0.5178,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 1.14
+    },
+    {
+      "date": "2026-05-28",
+      "game": "MIN @ CHW",
+      "pick": "CHW",
+      "side": "HOME",
+      "pitcher": "Davis Martin",
+      "pick_type": "ML",
+      "odds": -148,
+      "edge": 0.0245,
+      "model_prob": 0.6213,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 0.68
+    },
+    {
+      "date": "2026-05-28",
+      "game": "ATL @ BOS",
+      "pick": "ATL",
+      "side": "AWAY",
+      "pitcher": "Chris Sale",
+      "pick_type": "ML",
+      "odds": -130,
+      "edge": 0.0118,
+      "model_prob": 0.577,
+      "result": "W",
+      "clv": -0.0409,
+      "pnl_u": 0.77
+    },
+    {
+      "date": "2026-05-28",
+      "game": "TOR @ BAL",
+      "pick": "TOR",
+      "side": "AWAY",
+      "pitcher": "Patrick Corbin",
+      "pick_type": "ML",
+      "odds": 114,
+      "edge": 0.0131,
+      "model_prob": 0.4804,
+      "result": "W",
+      "clv": 0.0021,
+      "pnl_u": 1.14
+    },
+    {
+      "date": "2026-05-28",
+      "game": "CHC @ PIT",
+      "pick": "CHC",
+      "side": "AWAY",
+      "pitcher": "Colin Rea",
+      "pick_type": "ML",
+      "odds": 147,
+      "edge": 0.007,
+      "model_prob": 0.4119,
+      "result": "W",
+      "clv": -0.0015,
+      "pnl_u": 1.47
+    },
+    {
+      "date": "2026-05-28",
+      "game": "HOU @ TEX",
+      "pick": "HOU",
+      "side": "AWAY",
+      "pitcher": "Spencer Arrighetti",
+      "pick_type": "ML",
+      "odds": 124,
+      "edge": 0.0035,
+      "model_prob": 0.4499,
+      "result": "W",
+      "clv": 0.0066,
+      "pnl_u": 1.24
+    },
     {
       "date": "2026-05-27",
       "game": "MIA @ TOR",
@@ -4743,6 +4827,12 @@
     51.48,
     52.44,
     51.44,
-    50.44
+    50.44,
+    51.58,
+    52.26,
+    53.03,
+    54.17,
+    55.64,
+    56.88
   ]
 }

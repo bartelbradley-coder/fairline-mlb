@@ -1,23 +1,21 @@
 {
-  "updated_at": "10:01 PM CT \u00b7 May 28",
+  "updated_at": "10:30 PM CT \u00b7 May 28",
   "season": {
-    "wins": 325,
+    "wins": 329,
     "losses": 169,
-    "units": 199.19,
-    "bets": 494,
-    "roi": 0.4032,
-    "win_rate": 0.6579
+    "units": 202.35,
+    "bets": 498,
+    "roi": 0.4063,
+    "win_rate": 0.6606
   },
   "last20": {
-    "wins": 17,
-    "losses": 3,
-    "units": 14.2
+    "wins": 18,
+    "losses": 2,
+    "units": 16.16
   },
   "avg_clv": 0.0053,
-  "clv_count": 494,
+  "clv_count": 496,
   "clv_series": [
-    0.2754,
-    -0.0104,
     -0.0212,
     0.2361,
     -0.0211,
@@ -45,60 +43,62 @@
     0.0809,
     0.0183,
     0.0089,
-    0.0379
+    0.0379,
+    0.0014,
+    0.0054
   ],
   "edge_tiers": [
     {
       "label": "8%+",
       "class": "et-strong",
-      "bets": 391,
-      "wins": 271,
+      "bets": 392,
+      "wins": 272,
       "losses": 120,
-      "win_rate": 0.6931,
-      "roi": 0.5194,
-      "units": 203.09
-    },
-    {
-      "label": "5\u20138%",
-      "class": "et-value",
-      "bets": 52,
-      "wins": 24,
-      "losses": 28,
-      "win_rate": 0.4615,
-      "roi": -0.1131,
-      "units": -5.88
+      "win_rate": 0.6939,
+      "roi": 0.5196,
+      "units": 203.67
     },
     {
       "label": "2\u20135%",
       "class": "et-all",
-      "bets": 51,
-      "wins": 30,
+      "bets": 53,
+      "wins": 32,
       "losses": 21,
-      "win_rate": 0.5882,
-      "roi": 0.0387,
-      "units": 1.98
+      "win_rate": 0.6038,
+      "roi": 0.0583,
+      "units": 3.09
+    },
+    {
+      "label": "5\u20138%",
+      "class": "et-value",
+      "bets": 53,
+      "wins": 25,
+      "losses": 28,
+      "win_rate": 0.4717,
+      "roi": -0.0831,
+      "units": -4.4
     }
   ],
   "side_split": [
     {
       "side": "HOME",
       "spread": "-1.5",
-      "bets": 46,
-      "wins": 28,
+      "bets": 47,
+      "wins": 29,
       "losses": 18,
-      "win_rate": 0.6087,
-      "roi": 0.4054,
-      "units": 18.65
+      "win_rate": 0.617,
+      "roi": 0.4282,
+      "units": 20.13
     },
     {
       "side": "AWAY",
       "spread": "+1.5",
-      "bets": 448,
-      "wins": 297,
+      "bets": 451,
+      "wins": 300,
       "losses": 151,
-      "win_rate": 0.6629,
-      "roi": 0.403,
-      "units": 180.54
+      "win_rate": 0.6652,
+      "roi": 0.4041,
+      "units": 182.23
     }
   ],
   "recent_picks": [
@@ -112,8 +112,8 @@
       "rl_odds": -178,
       "rl_edge": 0.043,
       "rl_clv": 0.0054,
-      "result": "",
-      "pnl": null
+      "result": "W",
+      "pnl": 0.56
     },
     {
       "date": "2026-05-28",
@@ -125,8 +125,8 @@
       "rl_odds": -181,
       "rl_edge": 0.0361,
       "rl_clv": 0.0014,
-      "result": "",
-      "pnl": null
+      "result": "W",
+      "pnl": 0.55
     },
     {
       "date": "2026-05-28",
@@ -138,8 +138,8 @@
       "rl_odds": 148,
       "rl_edge": 0.0791,
       "rl_clv": null,
-      "result": "",
-      "pnl": null
+      "result": "W",
+      "pnl": 1.48
     },
     {
       "date": "2026-05-28",
@@ -151,8 +151,8 @@
       "rl_odds": -175,
       "rl_edge": 0.1103,
       "rl_clv": null,
-      "result": "",
-      "pnl": null
+      "result": "W",
+      "pnl": 0.57
     },
     {
       "date": "2026-05-26",

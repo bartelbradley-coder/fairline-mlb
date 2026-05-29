@@ -1,6 +1,6 @@
 {
   "date": "2026-05-28",
-  "generated_at": "10:01 PM CT \u00b7 May 28",
+  "generated_at": "10:30 PM CT \u00b7 May 28",
   "picks": [
     {
       "game": "LAA @ DET",
@@ -583,16 +583,16 @@
   ],
   "correlated_warning": null,
   "season": {
-    "wins": 169,
+    "wins": 175,
     "losses": 147,
-    "units": 50.42,
-    "bets": 316,
-    "roi": 0.1596
+    "units": 56.86,
+    "bets": 322,
+    "roi": 0.1766
   },
   "last30": {
-    "wins": 17,
-    "losses": 13,
-    "units": 4.63
+    "wins": 19,
+    "losses": 11,
+    "units": 8.98
   },
-  "avg_clv": 0.0046
+  "avg_clv": 0.0045
 }
