@@ -1,5 +1,5 @@
 {
-  "updated_at": "10:31 AM CT \u00b7 May 29",
+  "updated_at": "11:31 AM CT \u00b7 May 29",
   "season": {
     "wins": 329,
     "losses": 169,
@@ -102,6 +102,19 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-05-29",
+      "game": "SD @ WSH",
+      "side": "HOME",
+      "team": "WSH",
+      "spread": "-1.5",
+      "rl_prob": 0.5391,
+      "rl_odds": 176,
+      "rl_edge": 0.1768,
+      "rl_clv": null,
+      "result": "",
+      "pnl": null
+    },
     {
       "date": "2026-05-29",
       "game": "PHI @ LAD",
@@ -299,16 +312,16 @@
     },
     {
       "date": "2026-05-26",
-      "game": "STL @ MIL",
-      "side": "HOME",
-      "team": "MIL",
-      "spread": "-1.5",
-      "rl_prob": 0.4606,
-      "rl_odds": 135,
-      "rl_edge": 0.0351,
-      "rl_clv": 0.0809,
+      "game": "PHI @ SD",
+      "side": "AWAY",
+      "team": "PHI",
+      "spread": "1.5",
+      "rl_prob": 0.6962,
+      "rl_odds": 165,
+      "rl_edge": 0.3188,
+      "rl_clv": 0.0183,
       "result": "W",
-      "pnl": 1.35
+      "pnl": 1.65
     },
     {
       "date": "2026-05-26",
@@ -338,16 +351,16 @@
     },
     {
       "date": "2026-05-26",
-      "game": "PHI @ SD",
-      "side": "AWAY",
-      "team": "PHI",
-      "spread": "1.5",
-      "rl_prob": 0.6962,
-      "rl_odds": 165,
-      "rl_edge": 0.3188,
-      "rl_clv": 0.0183,
+      "game": "STL @ MIL",
+      "side": "HOME",
+      "team": "MIL",
+      "spread": "-1.5",
+      "rl_prob": 0.4606,
+      "rl_odds": 135,
+      "rl_edge": 0.0351,
+      "rl_clv": 0.0809,
       "result": "W",
-      "pnl": 1.65
+      "pnl": 1.35
     },
     {
       "date": "2026-05-26",
@@ -738,19 +751,6 @@
       "rl_clv": null,
       "result": "",
       "pnl": null
-    },
-    {
-      "date": "2026-05-23",
-      "game": "MIN @ BOS",
-      "side": "AWAY",
-      "team": "MIN",
-      "spread": "1.5",
-      "rl_prob": 0.7428,
-      "rl_odds": 155,
-      "rl_edge": 0.3506,
-      "rl_clv": 0.2611,
-      "result": "W",
-      "pnl": 1.55
     }
   ]
 }
