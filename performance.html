@@ -145,6 +145,12 @@
     <div class="lm-card"><div class="lm-lbl">Last Updated</div><div class="lm-val" id="lm-updated">—</div></div>
   </div>
 
+  <!-- Today's picks live status banner -->
+  <div id="today-perf-banner" style="display:none;margin-bottom:16px;padding:10px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;display:none">
+    <div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:6px">Today's Picks</div>
+    <div id="today-perf-rows"></div>
+  </div>
+
   <!-- Headline stats -->
   <div class="headline-stats" id="headline-stats">
     <div class="loading">Loading…</div>
@@ -342,16 +348,78 @@ function fmtU(v) {
   return (v >= 0 ? '+' : '') + v.toFixed(1) + 'u';
 }
 
+// ── ESPN scores helper ────────────────────────────────────────────────────────
+const ESPN_ABBR_MAP_P = { 'CWS': 'CHW' };
+async function fetchESPNScoresP() {
+  try {
+    const r = await fetch('https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard', { cache: 'no-store' });
+    const json = await r.json();
+    const result = {};
+    for (const ev of (json.events || [])) {
+      const comp = (ev.competitions || [])[0];
+      if (!comp) continue;
+      let away, home, awayScore = 0, homeScore = 0;
+      for (const c of (comp.competitors || [])) {
+        const abbr  = ESPN_ABBR_MAP_P[c.team.abbreviation] || c.team.abbreviation;
+        const score = parseInt(c.score || '0', 10) || 0;
+        if (c.homeAway === 'away') { away = abbr; awayScore = score; }
+        else                       { home = abbr; homeScore = score; }
+      }
+      if (!away || !home) continue;
+      const sn = ev.status?.type?.name || '';
+      const status = sn === 'STATUS_FINAL' ? 'final' : sn.includes('IN_PROGRESS') ? 'live' : 'scheduled';
+      result[`${away} @ ${home}`] = { status, awayScore, homeScore };
+    }
+    return result;
+  } catch(e) { return {}; }
+}
+
+function renderTodayPerfBanner(picks, scores) {
+  const banner = document.getElementById('today-perf-banner');
+  const rowsEl = document.getElementById('today-perf-rows');
+  if (!picks || picks.length === 0) return;
+  banner.style.display = 'block';
+
+  const items = picks.map(p => {
+    const g    = scores[p.game];
+    const side = (p.side || '').toUpperCase();
+    let statusHTML = '';
+    if (!g || g.status === 'scheduled') {
+      statusHTML = `<span style="color:var(--text-4);font-size:10px">⏳</span>`;
+    } else if (g.status === 'live') {
+      const sc = `${g.awayScore}–${g.homeScore}`;
+      statusHTML = `<span style="color:var(--green);font-size:10px;font-weight:700">● ${sc}</span>`;
+    } else {
+      const won = side === 'AWAY' ? g.awayScore > g.homeScore : g.homeScore > g.awayScore;
+      const ps  = side === 'AWAY' ? g.awayScore : g.homeScore;
+      const os  = side === 'AWAY' ? g.homeScore : g.awayScore;
+      statusHTML = `<span style="color:${won?'var(--green)':'var(--red)'};font-family:'Oswald',sans-serif;font-size:13px;font-weight:700">${won?'W':'L'} ${ps}–${os}</span>`;
+    }
+    const oddsStr = p.odds > 0 ? `+${p.odds}` : String(p.odds);
+    return `<div style="display:flex;align-items:center;gap:8px;padding:4px 0;font-size:11px">
+      <span style="font-family:'Oswald',sans-serif;font-size:13px;font-weight:600;color:var(--text-2)">${p.pick}</span>
+      <span style="color:var(--amber);font-family:'JetBrains Mono',monospace">${oddsStr}</span>
+      <span style="color:var(--text-4);flex:1">${p.game}</span>
+      ${statusHTML}
+    </div>`;
+  }).join('');
+  rowsEl.innerHTML = items;
+}
+
 async function loadAll() {
   try {
-    const [pRes, hRes, rlRes] = await Promise.all([
-      fetch('data/performance.json?v='    + Date.now()),
-      fetch('data/history.json?v='        + Date.now()),
-      fetch('data/rl_performance.json?v=' + Date.now()),
+    const v = Date.now();
+    const [pRes, hRes, rlRes, todayRes, scores] = await Promise.all([
+      fetch('data/performance.json?v='    + v),
+      fetch('data/history.json?v='        + v),
+      fetch('data/rl_performance.json?v=' + v),
+      fetch('data/today.json?v='          + v),
+      fetchESPNScoresP(),
     ]);
-    const p  = pRes.ok  ? await pRes.json()  : null;
-    const h  = hRes.ok  ? await hRes.json()  : null;
-    const rl = rlRes.ok ? await rlRes.json() : null;
+    const p     = pRes.ok     ? await pRes.json()     : null;
+    const h     = hRes.ok     ? await hRes.json()     : null;
+    const rl    = rlRes.ok    ? await rlRes.json()    : null;
+    const today = todayRes.ok ? await todayRes.json() : null;
 
     if (p && p.updated_at) {
       document.getElementById('last-updated').textContent = 'Updated ' + p.updated_at;
@@ -365,6 +433,10 @@ async function loadAll() {
       document.getElementById('lm-winrate').textContent = (wr * 100).toFixed(1) + '%';
       if (s.bets) document.getElementById('lm-bets').textContent = s.bets;
       if (p.updated_at) document.getElementById('lm-updated').textContent = p.updated_at;
+    }
+
+    if (today && today.picks) {
+      renderTodayPerfBanner(today.picks.filter(pk => (pk.edge || 0) >= 0.02), scores);
     }
 
     renderHeadline(p, h);

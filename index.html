@@ -368,6 +368,35 @@
 /* ── Stale / completed card ── */
 .pick-card.card-stale { opacity: 0.62; }
 
+/* ── Live score section headers ── */
+.picks-section-header {
+  display: flex; align-items: center; gap: 8px;
+  margin: 20px 0 8px; padding: 0 2px;
+}
+.picks-section-header:first-child { margin-top: 0; }
+.psh-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.psh-dot.live   { background: var(--green); animation: pulsedot 1.4s infinite; }
+.psh-dot.upcoming  { background: rgba(255,255,255,0.22); }
+.psh-dot.completed { background: rgba(255,255,255,0.1); }
+.psh-label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+.psh-label.live      { color: var(--green); }
+.psh-label.upcoming  { color: var(--text-3); }
+.psh-label.completed { color: var(--text-4); }
+.psh-count { font-size: 10px; color: var(--text-4); background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 10px; padding: 1px 8px; flex-shrink: 0; }
+.psh-line  { flex: 1; height: 1px; background: var(--border); }
+
+/* ── Result badge (W / L + score) ── */
+.result-badge {
+  font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.06em; padding: 2px 8px; border-radius: 4px; flex-shrink: 0;
+}
+.result-badge-win  { color: var(--green); background: rgba(34,197,94,0.12);   border: 1px solid rgba(34,197,94,0.35); }
+.result-badge-loss { color: var(--red);   background: rgba(239,68,68,0.10);   border: 1px solid rgba(239,68,68,0.28); }
+
+/* ── Card win / loss state ── */
+.pick-card.card-win  { border-left: 3px solid rgba(34,197,94,0.55); }
+.pick-card.card-loss { border-left: 3px solid rgba(239,68,68,0.45); opacity: 0.78; }
+
 /* ── Historical context chip ── */
 .hist-context {
   font-size: 10px; color: var(--text-3); line-height: 1.55;
@@ -998,16 +1027,17 @@ function refreshPersonalTracker() {
 async function loadPicks() {
   try {
     const v = Date.now();
-    const [todayRes, histRes, perfRes] = await Promise.all([
+    const [todayRes, histRes, perfRes, scores] = await Promise.all([
       fetch('data/today.json?v=' + v),
       fetch('data/history.json?v=' + v),
       fetch('data/performance.json?v=' + v),
+      fetchESPNScores(),
     ]);
     const data = todayRes.ok ? await todayRes.json() : null;
     const hist = histRes.ok ? await histRes.json() : null;
     const perf = perfRes.ok ? await perfRes.json() : null;
     _histRef = hist;
-    if (data) render(data, hist);
+    if (data) render(data, hist, scores);
     else renderEmptyState(null, hist);
     if (perf) renderPerfCharts(perf);
   } catch (e) {
@@ -1284,7 +1314,7 @@ function narrativePreview(text) {
 }
 
 // ── Pick card HTML ────────────────────────────────────────────────────────────
-function pickCardHTML(p, isTopPick = false) {
+function pickCardHTML(p, isTopPick = false, gameResult = null) {
   const edgePct  = (p.edge * 100).toFixed(1);
   const barWidth = Math.min(100, (p.edge / 0.12) * 100).toFixed(0);
   const [tierText, tierClass] = tierLabel(p.edge);
@@ -1783,7 +1813,20 @@ function pickCardHTML(p, isTopPick = false) {
     : `<span class="uc-matchup">${p.game || '—'}</span>`;
   const valueBadgeHTML = `<span class="pick-badge ${tierClass}">✓ ${tierClass === 'marginal' ? 'MARGINAL' : 'VALUE'}</span>`;
 
-  const finalBadgeHTML = isOver ? `<span class="final-badge">Final</span>` : '';
+  // Result / status badge — ESPN-sourced when available, time-based fallback
+  let resultBadgeHTML;
+  if (gameResult && gameResult.status === 'final') {
+    const rCls = gameResult.result === 'W' ? 'win' : 'loss';
+    resultBadgeHTML = `<span class="result-badge result-badge-${rCls}" data-result-badge>${gameResult.result} ${gameResult.score}</span>`;
+  } else if (gameResult && gameResult.status === 'live') {
+    resultBadgeHTML = `<span class="live-badge" data-result-badge><span class="live-dot"></span>LIVE</span>`;
+  } else if (isOver) {
+    resultBadgeHTML = `<span class="final-badge" data-result-badge>Final</span>`;
+  } else if (isLive) {
+    resultBadgeHTML = `<span class="live-badge" data-result-badge><span class="live-dot"></span>LIVE</span>`;
+  } else {
+    resultBadgeHTML = `<span data-result-badge style="display:none"></span>`;
+  }
 
   const headerRowHTML = `
     <div class="uc-header-row">
@@ -1792,9 +1835,8 @@ function pickCardHTML(p, isTopPick = false) {
       <span class="uc-tier-dot">·</span>
       ${headerMatchup}
       ${matchLabelHTML}
-      ${finalBadgeHTML}
+      ${resultBadgeHTML}
       ${headerTimeHTML ? `<span class="uc-tier-dot">·</span>${headerTimeHTML}` : ''}
-      ${isLive ? `<span class="live-badge"><span class="live-dot"></span>LIVE</span>` : ''}
       <div class="uc-header-right">${valueBadgeHTML}</div>
     </div>`;
 
@@ -1812,8 +1854,10 @@ function pickCardHTML(p, isTopPick = false) {
     : '';
 
   // ── Assemble card ─────────────────────────────────────────────────────────
+  const resultStateClass = gameResult && gameResult.status === 'final'
+    ? (gameResult.result === 'W' ? ' card-win' : ' card-loss') : '';
   return `
-    <div class="pick-card ${tierClass}${isTopPick ? ' top-pick' : ''}${isOver ? ' card-stale' : ''}">
+    <div id="${cardId}" class="pick-card ${tierClass}${isTopPick ? ' top-pick' : ''}${isOver ? ' card-stale' : ''}${resultStateClass}">
       ${topPickBannerHTML}
       ${headerRowHTML}
       ${spFlagsRowHTML}
@@ -1824,7 +1868,7 @@ function pickCardHTML(p, isTopPick = false) {
 }
 
 // ── Main render ───────────────────────────────────────────────────────────────
-function render(data, hist) {
+function render(data, hist, scores = {}) {
   // Build historical context lookup and start countdown timer (both idempotent)
   _histContextFn = buildHistContextFn((hist && hist.rows) ? hist.rows : []);
   startCountdownTimer();
@@ -1901,21 +1945,11 @@ function render(data, hist) {
     }
   }
 
-  // Today's in-play settled results chip
-  if (hist && hist.rows) {
-    const todayStr   = data.date || new Date().toISOString().slice(0, 10);
-    const todayDone  = hist.rows.filter(r => r.date === todayStr && (r.result === 'W' || r.result === 'L'));
-    if (todayDone.length > 0) {
-      const tW  = todayDone.filter(r => r.result === 'W').length;
-      const tL  = todayDone.length - tW;
-      const tPnl = todayDone.reduce((s, r) => s + (r.pnl_u || 0), 0);
-      const pnlCol = tPnl >= 0 ? 'var(--green)' : 'var(--red)';
-      stripHTML += `<div class="today-chip">
-        <div class="tc-val">${tW}W–${tL}L</div>
-        <div class="tc-lbl">Today · <span style="color:${pnlCol}">${tPnl>=0?'+':''}${tPnl.toFixed(1)}u</span></div>
-      </div>`;
-    }
-  }
+  // Today's in-play results chip — updated live by refreshScoreBadges()
+  stripHTML += `<div class="today-chip" id="today-score-tally" style="display:none">
+    <div class="tc-val">—</div>
+    <div class="tc-lbl">Today</div>
+  </div>`;
 
   // Streak chip
   const streak = computeStreak(hist);
@@ -1954,17 +1988,31 @@ function render(data, hist) {
     renderEmptyState(data, hist, marginal);
   } else {
     _mainPicksRef = main;
-    // Split into strong (≥8%) and value (2–8%) tiers
-    const strong = main.filter(p => p.edge >= 0.08);
-    const value  = main.filter(p => p.edge  < 0.08);
-    // Spotlight only the single top pick when ≥ 8% edge and 2+ total picks
-    const topPick = main[0]; // already sorted by edge desc
+    const topPick = main[0];
     const spotlightTop = main.length >= 2 && topPick.edge >= 0.08;
     const gridClass = main.length === 1 ? 'pick-grid single-pick' : 'pick-grid';
-    // Share-all button (only if 2+ picks)
     const shareAllHTML = main.length >= 2
       ? `<div class="share-all-row"><button class="share-all-btn" onclick="shareAllPicks()">𝕏 Share All ${main.length} Picks</button></div>`
       : '';
+
+    // ── Group picks by live score status ─────────────────────────────────────
+    const liveGroup      = main.filter(p => getPickResult(p, scores)?.status === 'live');
+    const completedGroup = main.filter(p => getPickResult(p, scores)?.status === 'final');
+    const upcomingGroup  = main.filter(p => {
+      const r = getPickResult(p, scores);
+      return !r || r.status === 'scheduled';
+    });
+
+    const useGrouping = liveGroup.length > 0 || completedGroup.length > 0;
+
+    function sectionHeader(type, label, count) {
+      return `<div class="picks-section-header">
+        <span class="psh-dot ${type}"></span>
+        <span class="psh-label ${type}">${label}</span>
+        <span class="psh-count">${count}</span>
+        <span class="psh-line"></span>
+      </div>`;
+    }
 
     function tierHeader(cls, icon, label, edgeTag) {
       return `<div class="tier-header ${cls}">
@@ -1974,25 +2022,44 @@ function render(data, hist) {
       </div>`;
     }
 
-    let picksHTML = '';
-    if (strong.length > 0) {
-      picksHTML += tierHeader('strong-tier', '🔥', 'Strong Value', '8%+ Edge');
-      picksHTML += strong.map(p => pickCardHTML(p, spotlightTop && p === topPick)).join('');
-    }
-    if (value.length > 0) {
-      // Only show the "Value" header when there's also a strong section above it
+    function renderPickGroup(picks) {
+      const strong = picks.filter(p => p.edge >= 0.08);
+      const value  = picks.filter(p => p.edge  < 0.08);
+      let html = '';
       if (strong.length > 0) {
-        picksHTML += tierHeader('value-tier', '✅', 'Value', '2–8% Edge');
+        html += tierHeader('strong-tier', '🔥', 'Strong Value', '8%+ Edge');
+        html += strong.map(p => pickCardHTML(p, spotlightTop && p === topPick, getPickResult(p, scores))).join('');
       }
-      picksHTML += value.map(p => pickCardHTML(p, false)).join('');
+      if (value.length > 0) {
+        if (strong.length > 0) html += tierHeader('value-tier', '✅', 'Value', '2–8% Edge');
+        html += value.map(p => pickCardHTML(p, false, getPickResult(p, scores))).join('');
+      }
+      return html;
+    }
+
+    let picksHTML = '';
+    if (useGrouping) {
+      if (liveGroup.length > 0)
+        picksHTML += sectionHeader('live', 'Live', liveGroup.length) +
+                     `<div class="${gridClass}">` + renderPickGroup(liveGroup) + '</div>';
+      if (upcomingGroup.length > 0)
+        picksHTML += sectionHeader('upcoming', 'Upcoming', upcomingGroup.length) +
+                     `<div class="${gridClass}">` + renderPickGroup(upcomingGroup) + '</div>';
+      if (completedGroup.length > 0)
+        picksHTML += sectionHeader('completed', 'Completed', completedGroup.length) +
+                     `<div class="${gridClass}">` + renderPickGroup(completedGroup) + '</div>';
+    } else {
+      // No live data yet — render flat with tier headers as before
+      picksHTML = renderPickGroup(main);
     }
 
     document.getElementById('picks-container').innerHTML =
       shareAllHTML +
-      `<div class="${gridClass}">` + picksHTML + '</div>';
+      (useGrouping ? picksHTML : `<div class="${gridClass}">` + picksHTML + '</div>');
     refreshKellyUSD();
     refreshBetButtons();
     refreshPersonalTracker();
+    _updateTodayTally(scores);
   }
 
   if (marginal.length > 0) {
@@ -2064,6 +2131,13 @@ function startAutoRefresh() {
     startAutoRefresh();
   }, REFRESH_MS);
   updateRefreshUI();
+
+  // Lightweight score badge refresh every 5 minutes during live hours
+  setInterval(async () => {
+    if (!isLiveHour()) return;
+    const scores = await fetchESPNScores();
+    refreshScoreBadges(scores);
+  }, 5 * 60 * 1000);
 }
 
 function updateRefreshUI() {
@@ -2076,6 +2150,107 @@ function updateRefreshUI() {
   el.className = 'refresh-pill';
   el.innerHTML = `<span class="rp-dot"></span>Refreshes in ${m}:${s.toString().padStart(2,'0')}`;
   setTimeout(updateRefreshUI, 5000);
+}
+
+// ── ESPN scores fetcher ───────────────────────────────────────────────────────
+// Maps ESPN team abbreviations → model abbreviations where they differ
+const ESPN_ABBR_MAP = {
+  'CWS': 'CHW',  // White Sox (ESPN=CWS, model=CHW)
+};
+
+let _espnScores = {}; // cached: { "AWAY @ HOME": { status, awayScore, homeScore } }
+
+async function fetchESPNScores() {
+  try {
+    const r = await fetch(
+      'https://site.api.espn.com/apis/site/v2/sports/baseball/mlb/scoreboard',
+      { cache: 'no-store' }
+    );
+    const json = await r.json();
+    const result = {};
+    for (const ev of (json.events || [])) {
+      const comp = (ev.competitions || [])[0];
+      if (!comp) continue;
+      let away, home, awayScore = 0, homeScore = 0;
+      for (const c of (comp.competitors || [])) {
+        const abbr  = ESPN_ABBR_MAP[c.team.abbreviation] || c.team.abbreviation;
+        const score = parseInt(c.score || '0', 10) || 0;
+        if (c.homeAway === 'away') { away = abbr; awayScore = score; }
+        else                       { home = abbr; homeScore = score; }
+      }
+      if (!away || !home) continue;
+      const sn = ev.status?.type?.name || '';
+      const status = sn === 'STATUS_FINAL'       ? 'final'
+                   : sn.includes('IN_PROGRESS')  ? 'live'
+                   : 'scheduled';
+      result[`${away} @ ${home}`] = { status, awayScore, homeScore };
+    }
+    _espnScores = result;
+    return result;
+  } catch(e) {
+    return _espnScores; // return last known on failure
+  }
+}
+
+// Returns { status, result:'W'|'L', score:'5–3' } or null
+function getPickResult(p, scores) {
+  const g = scores[p.game];
+  if (!g) return null;
+  if (g.status === 'live')      return { status: 'live' };
+  if (g.status === 'scheduled') return { status: 'scheduled' };
+  // final
+  const side    = (p.side || '').toUpperCase();
+  const pickWon = side === 'AWAY' ? g.awayScore > g.homeScore : g.homeScore > g.awayScore;
+  const ps      = side === 'AWAY' ? g.awayScore : g.homeScore;
+  const os      = side === 'AWAY' ? g.homeScore : g.awayScore;
+  return { status: 'final', result: pickWon ? 'W' : 'L', score: `${ps}–${os}` };
+}
+
+// Lightweight DOM update — refreshes result badges and card classes without re-rendering
+function refreshScoreBadges(scores) {
+  for (const [cardId, p] of Object.entries(picksMap)) {
+    const cardEl = document.getElementById(cardId);
+    if (!cardEl) continue;
+    const gr = getPickResult(p, scores);
+    if (!gr) continue;
+
+    // Update result badge (injected with data-result-badge attr)
+    const badge = cardEl.querySelector('[data-result-badge]');
+    if (badge) {
+      if (gr.status === 'final') {
+        badge.textContent = `${gr.result} ${gr.score}`;
+        badge.className = `result-badge result-badge-${gr.result === 'W' ? 'win' : 'loss'}`;
+        badge.style.display = '';
+      } else if (gr.status === 'live') {
+        badge.textContent = '● LIVE';
+        badge.className = 'live-badge';
+        badge.style.display = '';
+      }
+    }
+
+    // Update card border/opacity
+    cardEl.classList.toggle('card-win',  gr.status === 'final' && gr.result === 'W');
+    cardEl.classList.toggle('card-loss', gr.status === 'final' && gr.result === 'L');
+  }
+
+  // Refresh the today tally chip
+  _updateTodayTally(scores);
+}
+
+function _updateTodayTally(scores) {
+  const tally = document.getElementById('today-score-tally');
+  if (!tally) return;
+  const picks = Object.values(picksMap);
+  const results = picks.map(p => getPickResult(p, scores)).filter(Boolean);
+  const done = results.filter(r => r.status === 'final');
+  const wins = done.filter(r => r.result === 'W').length;
+  const losses = done.filter(r => r.result === 'L').length;
+  if (done.length === 0) { tally.style.display = 'none'; return; }
+  tally.style.display = '';
+  tally.querySelector('.tc-val').textContent = `${wins}W–${losses}L`;
+  const pending = picks.length - done.length;
+  tally.querySelector('.tc-lbl').textContent =
+    `Today · ${pending > 0 ? pending + ' pending' : 'all done'}`;
 }
 
 // ── Yesterday top performer callout ──────────────────────────────────────────
