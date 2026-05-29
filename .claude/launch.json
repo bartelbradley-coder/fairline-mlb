@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "fairline-mockups",
+      "name": "fairline-site",
       "runtimeExecutable": "python3",
-      "runtimeArgs": [],
-      "port": 7788
+      "runtimeArgs": ["-m", "http.server", "7790"],
+      "port": 7790
     }
   ]
 }
