@@ -1,6 +1,6 @@
 {
   "date": "2026-05-29",
-  "generated_at": "11:31 AM CT \u00b7 May 29",
+  "generated_at": "12:31 PM CT \u00b7 May 29",
   "picks": [
     {
       "game": "SD @ WSH",
@@ -10,9 +10,9 @@
       "meta": "SP: Paxton Schultz",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T22:45:00Z",
-      "temp_f": 70.2,
-      "wind_speed_mph": 5.6,
-      "wind_dir_degrees": 230.0,
+      "temp_f": 70.0,
+      "wind_speed_mph": 5.7,
+      "wind_dir_degrees": 228.0,
       "is_domed": false,
       "model_prob": 0.621,
       "market_prob": 0.5,
@@ -54,7 +54,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "The market is underpricing WSH's run-production profile: the Poisson RS/RA framework sees a win-probability gap the moneyline doesn't reflect \u2014 model prices WSH at 62.1% to win; Pinnacle implies 50.0% (-104) \u2014 a 12.1-point gap. Home Field reinforces the primary signal \u2014 multi-factor stacks historically produce more durable edges than single-signal plays at equivalent edge percentages.",
       "run_line": {
@@ -89,9 +95,9 @@
       "meta": "SP: Michael Lorenzen",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-30T00:40:00Z",
-      "temp_f": 65.5,
-      "wind_speed_mph": 2.9,
-      "wind_dir_degrees": 32.0,
+      "temp_f": 66.1,
+      "wind_speed_mph": 5.0,
+      "wind_dir_degrees": 18.0,
       "is_domed": false,
       "model_prob": 0.4587,
       "market_prob": 0.3953,
@@ -129,7 +135,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for COL. Model prices COL at 45.9% to win; Pinnacle implies 39.5% (+148) \u2014 a 6.3-point gap.",
       "run_line": {
@@ -165,8 +177,8 @@
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T23:10:00Z",
       "temp_f": 70.5,
-      "wind_speed_mph": 7.8,
-      "wind_dir_degrees": 229.0,
+      "wind_speed_mph": 9.8,
+      "wind_dir_degrees": 235.0,
       "is_domed": false,
       "model_prob": 0.5372,
       "market_prob": 0.4825,
@@ -208,7 +220,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Playing on the road, MIA carries a significant pitching edge (Max Meyer at 3.21 xFIP vs. Freddy Peralta at 4.10) that outweighs the home-field headwind the market prices in. Model prices MIA at 53.7% to win; Pinnacle implies 48.2% (+103) \u2014 a 5.5-point gap. Pitcher stuff quality is an underrated factor here: Max Meyer's 13.8% SwStr% ranks in the top tier for generating swings-and-misses \u2014 a durability signal beyond what the odds reflect.",
       "run_line": {
@@ -243,9 +261,9 @@
       "meta": "SP: Luis Severino",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-30T01:40:00Z",
-      "temp_f": 54.4,
-      "wind_speed_mph": 4.0,
-      "wind_dir_degrees": 254.0,
+      "temp_f": 54.1,
+      "wind_speed_mph": 3.6,
+      "wind_dir_degrees": 240.0,
       "is_domed": false,
       "model_prob": 0.4669,
       "market_prob": 0.4169,
@@ -283,7 +301,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for OAK. Model prices OAK at 46.7% to win; Pinnacle implies 41.7% (+135) \u2014 a 5.0-point gap.",
       "run_line": {
@@ -354,7 +378,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Playing on the road, LAA's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices LAA at 41.8% to win; Pinnacle implies 37.4% (+162) \u2014 a 4.4-point gap.",
       "run_line": {
@@ -389,9 +419,9 @@
       "meta": "SP: Justin Wrobleski",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-30T02:15:00Z",
-      "temp_f": 57.1,
-      "wind_speed_mph": 2.9,
-      "wind_dir_degrees": 141.0,
+      "temp_f": 57.3,
+      "wind_speed_mph": 3.0,
+      "wind_dir_degrees": 144.0,
       "is_domed": false,
       "model_prob": 0.556,
       "market_prob": 0.5164,
@@ -433,7 +463,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for LAD. Model prices LAD at 55.6% to win; Pinnacle implies 51.6% (-111) \u2014 a 4.0-point gap. Defense (OAA) reinforces the primary signal \u2014 multi-factor stacks historically produce more durable edges than single-signal plays at equivalent edge percentages.",
       "run_line": {
@@ -468,9 +504,9 @@
       "meta": "SP: Andre Pallante",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T23:15:00Z",
-      "temp_f": 75.1,
-      "wind_speed_mph": 4.3,
-      "wind_dir_degrees": 133.0,
+      "temp_f": 75.2,
+      "wind_speed_mph": 3.4,
+      "wind_dir_degrees": 148.0,
       "is_domed": false,
       "model_prob": 0.4758,
       "market_prob": 0.44,
@@ -512,7 +548,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for STL. Model prices STL at 47.6% to win; Pinnacle implies 44.0% (+123) \u2014 a 3.6-point gap. Rest advantage: STL is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
@@ -591,7 +633,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for HOU. Model prices HOU at 51.0% to win; Pinnacle implies 47.7% (+106) \u2014 a 3.4-point gap. Starter Advantage reinforces the primary signal \u2014 multi-factor stacks historically produce more durable edges than single-signal plays at equivalent edge percentages.",
       "run_line": {
@@ -662,7 +710,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for TEX. Model prices TEX at 57.5% to win; Pinnacle implies 54.0% (-123) \u2014 a 3.4-point gap.",
       "run_line": {
@@ -697,9 +751,9 @@
       "meta": "SP: Erick Fedde",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T23:40:00Z",
-      "temp_f": 62.6,
-      "wind_speed_mph": 1.8,
-      "wind_dir_degrees": 90.0,
+      "temp_f": 62.8,
+      "wind_speed_mph": 2.0,
+      "wind_dir_degrees": 84.0,
       "is_domed": false,
       "model_prob": 0.5142,
       "market_prob": 0.4836,
@@ -741,7 +795,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Defensive efficiency leads the model's signals: a +20 OAA differential translates to roughly 1.5 fewer runs allowed per game \u2014 a systematic edge moneylines price more slowly than run lines. Model prices CHW at 51.4% to win; Pinnacle implies 48.4% (+103) \u2014 a 3.1-point gap. Rest advantage: CHW is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
@@ -776,9 +836,9 @@
       "meta": "SP: Taj Bradley",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T22:45:00Z",
-      "temp_f": 65.1,
+      "temp_f": 65.2,
       "wind_speed_mph": 2.7,
-      "wind_dir_degrees": 279.0,
+      "wind_dir_degrees": 246.0,
       "is_domed": false,
       "model_prob": 0.4636,
       "market_prob": 0.4438,
@@ -820,7 +880,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Playing on the road, MIN carries a modest pitching edge (Taj Bradley at 3.93 xFIP vs. Jared Jones at 4.20) that outweighs the home-field headwind the market prices in. Model prices MIN at 46.4% to win; Pinnacle implies 44.4% (+121) \u2014 a 2.0-point gap. Rest advantage: MIN is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
@@ -855,9 +921,9 @@
       "meta": "SP: Slade Cecconi",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T23:10:00Z",
-      "temp_f": 64.7,
+      "temp_f": 64.1,
       "wind_speed_mph": 5.1,
-      "wind_dir_degrees": 236.0,
+      "wind_dir_degrees": 214.0,
       "is_domed": false,
       "model_prob": 0.5589,
       "market_prob": 0.5414,
@@ -899,7 +965,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for CLE. Model prices CLE at 55.9% to win; Pinnacle implies 54.1% (-123) \u2014 a 1.7-point gap. Rest advantage: CLE is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
@@ -934,9 +1006,9 @@
       "meta": "SP: Chris Paddack",
       "posted_at": "9:01 AM CT",
       "game_time": "2026-05-29T22:40:00Z",
-      "temp_f": 69.4,
+      "temp_f": 69.6,
       "wind_speed_mph": 4.5,
-      "wind_dir_degrees": 9.0,
+      "wind_dir_degrees": 6.0,
       "is_domed": false,
       "model_prob": 0.452,
       "market_prob": 0.4392,
@@ -970,7 +1042,13 @@
         "pick_bp_pitches": 0,
         "opp_bp_pitches": 0,
         "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
       },
       "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for CIN. Model prices CIN at 45.2% to win; Pinnacle implies 43.9% (+123) \u2014 a 1.3-point gap. Rest advantage: CIN is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
       "run_line": {
