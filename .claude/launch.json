@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "fairline-mockups",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [],
+      "port": 7788
+    }
+  ]
+}
