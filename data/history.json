@@ -1,6 +1,6 @@
 {
-  "updated_at": "10:31 PM CT \u00b7 May 29",
-  "total_bets": 333,
+  "updated_at": "11:00 PM CT \u00b7 May 29",
+  "total_bets": 334,
   "rows": [
     {
       "date": "2026-05-29",
@@ -141,6 +141,20 @@
       "result": "L",
       "clv": null,
       "pnl_u": -1.0
+    },
+    {
+      "date": "2026-05-29",
+      "game": "SF @ COL",
+      "pick": "COL",
+      "side": "HOME",
+      "pitcher": "Michael Lorenzen",
+      "pick_type": "ML",
+      "odds": 148,
+      "edge": 0.0555,
+      "model_prob": 0.4587,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 1.48
     },
     {
       "date": "2026-05-29",
@@ -4998,6 +5012,7 @@
     54.95,
     55.76,
     54.76,
-    55.84
+    56.24,
+    57.32
   ]
 }
