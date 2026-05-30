@@ -1,7 +1,35 @@
 {
-  "updated_at": "8:00 PM CT \u00b7 May 29",
-  "total_bets": 322,
+  "updated_at": "8:30 PM CT \u00b7 May 29",
+  "total_bets": 324,
   "rows": [
+    {
+      "date": "2026-05-29",
+      "game": "ATL @ CIN",
+      "pick": "CIN",
+      "side": "HOME",
+      "pitcher": "Chris Paddack",
+      "pick_type": "ML",
+      "odds": 123,
+      "edge": 0.0036,
+      "model_prob": 0.452,
+      "result": "L",
+      "clv": null,
+      "pnl_u": -1.0
+    },
+    {
+      "date": "2026-05-29",
+      "game": "BOS @ CLE",
+      "pick": "CLE",
+      "side": "HOME",
+      "pitcher": "Slade Cecconi",
+      "pick_type": "ML",
+      "odds": -123,
+      "edge": 0.0073,
+      "model_prob": 0.5589,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 0.81
+    },
     {
       "date": "2026-05-28",
       "game": "LAA @ DET",
@@ -4833,6 +4861,8 @@
     53.03,
     54.17,
     55.64,
-    56.88
+    56.88,
+    55.88,
+    56.69
   ]
 }

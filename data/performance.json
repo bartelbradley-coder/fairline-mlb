@@ -1,16 +1,16 @@
 {
-  "updated_at": "8:00 PM CT \u00b7 May 29",
+  "updated_at": "8:30 PM CT \u00b7 May 29",
   "season": {
-    "wins": 175,
-    "losses": 147,
-    "units": 56.86,
-    "bets": 322,
-    "roi": 0.1766
+    "wins": 176,
+    "losses": 148,
+    "units": 56.67,
+    "bets": 324,
+    "roi": 0.1749
   },
   "last30": {
-    "wins": 19,
-    "losses": 11,
-    "units": 8.98
+    "wins": 20,
+    "losses": 10,
+    "units": 10.79
   },
   "avg_clv": 0.0045,
   "clv_count": 308,
@@ -61,21 +61,21 @@
     },
     {
       "month": "May",
-      "roi": 0.2743,
-      "units": 26.34,
-      "bets": 96
+      "roi": 0.2668,
+      "units": 26.15,
+      "bets": 98
     }
   ],
   "edge_tiers": [
     {
       "label": "2\u20135%",
       "class": "et-all",
-      "bets": 182,
-      "wins": 92,
-      "losses": 90,
-      "win_rate": 0.5055,
-      "roi": 0.0317,
-      "units": 5.78
+      "bets": 184,
+      "wins": 93,
+      "losses": 91,
+      "win_rate": 0.5054,
+      "roi": 0.0304,
+      "units": 5.59
     },
     {
       "label": "5\u20138%",
@@ -101,12 +101,12 @@
   "kelly_roi_tiers": [
     {
       "label": "< 0.5u",
-      "bets": 322,
-      "wins": 175,
-      "losses": 147,
-      "win_rate": 0.5435,
-      "roi": 0.1766,
-      "units": 56.86
+      "bets": 324,
+      "wins": 176,
+      "losses": 148,
+      "win_rate": 0.5432,
+      "roi": 0.1749,
+      "units": 56.67
     }
   ]
 }
