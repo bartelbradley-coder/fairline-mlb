@@ -1,6 +1,6 @@
 {
   "date": "2026-05-29",
-  "generated_at": "7:30 PM CT \u00b7 May 29",
+  "generated_at": "7:32 PM CT \u00b7 May 29",
   "picks": [
     {
       "game": "SD @ WSH",
@@ -999,6 +999,104 @@
       }
     },
     {
+      "game": "ARI @ SEA",
+      "pick": "ARI",
+      "side": "AWAY",
+      "pick_type": "MONEYLINE",
+      "meta": "SP: Zac Gallen",
+      "posted_at": "7:31 PM CT",
+      "game_time": "2026-05-30T02:10:00Z",
+      "temp_f": 72.0,
+      "wind_speed_mph": 0.0,
+      "wind_dir_degrees": 0.0,
+      "is_domed": true,
+      "model_prob": 0.4517,
+      "market_prob": 0.44,
+      "edge": 0.0112,
+      "ev_per_100": 2.54,
+      "odds": 127,
+      "best_odds": 127,
+      "best_book": "Novig",
+      "fair_odds": "+121",
+      "break_even": 0.4405,
+      "kelly_units": 0.03,
+      "line_open": 123,
+      "line_current": 123,
+      "sharp_movement": false,
+      "steam_move": false,
+      "model_total": null,
+      "market_total": null,
+      "book_odds": {
+        "FanDuel": 122,
+        "LowVig": 122,
+        "BetOnline": 122,
+        "Novig": 127,
+        "Bovada": 117,
+        "Pinnacle": 123,
+        "DraftKings": 119,
+        "BetMGM": 118,
+        "BetUS": 122,
+        "ESPN Bet": 120,
+        "BetRivers": 120,
+        "ProphetX": 125,
+        "MyBookie": 118,
+        "Betway": 120,
+        "Hard Rock": 120
+      },
+      "pitcher": "Zac Gallen",
+      "opp_pitcher": "George Kirby",
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": -0.045
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": 0.025
+        }
+      ],
+      "raw_stats": {
+        "pick_xfip": 4.647,
+        "opp_xfip": 3.32,
+        "pick_oaa": 12,
+        "opp_oaa": -21,
+        "pick_bp_pitches": 0,
+        "opp_bp_pitches": 0,
+        "pick_bp_xfip": 4.35,
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
+      },
+      "narrative": "Playing on the road, ARI's model quality signals outweigh the home-field headwind \u2014 the market over-adjusts for the travel disadvantage. Model prices ARI at 45.2% to win; Pinnacle implies 44.0% (+127) \u2014 a 1.2-point gap. Lineup quality adds to the case: today's roster runs 0.162 OPS above ARI's season average \u2014 a full-strength lineup the model incorporates beyond the season-long RS/RA baseline.",
+      "run_line": {
+        "spread": "+1.5",
+        "model_prob": 0.6459,
+        "fair_odds": "-182",
+        "book_odds": -170,
+        "edge": 0.0163
+      },
+      "total": {
+        "line": 7.0,
+        "model_total": 7.95,
+        "over_prob": 0.5083,
+        "under_prob": 0.4917,
+        "lean": "OVER",
+        "lean_edge": -0.0155,
+        "over_odds": 120,
+        "under_odds": 106,
+        "over_book": "Novig",
+        "under_book": "ProphetX",
+        "over_edge": 0.0538,
+        "under_edge": 0.0063,
+        "pinnacle_over_prob": 0.5193,
+        "pinnacle_under_prob": 0.4807
+      }
+    },
+    {
       "game": "MIN @ PIT",
       "pick": "MIN",
       "side": "AWAY",
@@ -1098,104 +1196,6 @@
         "under_edge": -0.0004,
         "pinnacle_over_prob": 0.5069,
         "pinnacle_under_prob": 0.4931
-      }
-    },
-    {
-      "game": "ARI @ SEA",
-      "pick": "SEA",
-      "side": "HOME",
-      "pick_type": "MONEYLINE",
-      "meta": "SP: George Kirby",
-      "posted_at": "1:35 PM CT",
-      "game_time": "2026-05-30T02:10:00Z",
-      "temp_f": 72.0,
-      "wind_speed_mph": 0.0,
-      "wind_dir_degrees": 0.0,
-      "is_domed": true,
-      "model_prob": 0.5721,
-      "market_prob": 0.5638,
-      "edge": 0.0107,
-      "ev_per_100": 1.91,
-      "odds": -128,
-      "best_odds": -128,
-      "best_book": "Novig",
-      "fair_odds": "-134",
-      "break_even": 0.5614,
-      "kelly_units": 0.03,
-      "line_open": -135,
-      "line_current": -135,
-      "sharp_movement": false,
-      "steam_move": false,
-      "model_total": null,
-      "market_total": null,
-      "book_odds": {
-        "FanDuel": -144,
-        "LowVig": -135,
-        "BetOnline": -135,
-        "Novig": -131,
-        "Bovada": -140,
-        "Pinnacle": -133,
-        "DraftKings": -144,
-        "BetMGM": -145,
-        "BetUS": -135,
-        "ESPN Bet": -140,
-        "BetRivers": -155,
-        "ProphetX": -132,
-        "MyBookie": -140,
-        "Betway": -140,
-        "Hard Rock": -145
-      },
-      "pitcher": "George Kirby",
-      "opp_pitcher": "Zac Gallen",
-      "factors": [
-        {
-          "label": "Home Field",
-          "value": 0.045
-        },
-        {
-          "label": "Defense (OAA)",
-          "value": -0.025
-        }
-      ],
-      "raw_stats": {
-        "pick_xfip": 3.319,
-        "opp_xfip": 4.653,
-        "pick_oaa": -21,
-        "opp_oaa": 12,
-        "pick_bp_pitches": 0,
-        "opp_bp_pitches": 0,
-        "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35,
-        "pick_xera": null,
-        "opp_xera": null,
-        "pick_xera_pct": null,
-        "opp_xera_pct": null,
-        "pick_whiff_pct": null,
-        "opp_whiff_pct": null
-      },
-      "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for SEA. Model prices SEA at 57.2% to win; Pinnacle implies 56.4% (-128) \u2014 a 0.8-point gap. Defense (OAA) partially offsets but doesn't erase the primary signal \u2014 multi-factor stacks historically produce more durable edges than single-signal plays at equivalent edge percentages.",
-      "run_line": {
-        "spread": "-1.5",
-        "model_prob": 0.3934,
-        "fair_odds": "+154",
-        "book_odds": 166,
-        "edge": 0.0175
-      },
-      "total": {
-        "line": 7.0,
-        "model_total": 7.83,
-        "over_prob": 0.4994,
-        "under_prob": 0.5006,
-        "lean": "UNDER",
-        "lean_edge": -0.0232,
-        "over_odds": 120,
-        "under_odds": 106,
-        "over_book": "Novig",
-        "under_book": "ProphetX",
-        "over_edge": 0.0449,
-        "under_edge": 0.0152,
-        "pinnacle_over_prob": 0.5206,
-        "pinnacle_under_prob": 0.4794
       }
     },
     {
