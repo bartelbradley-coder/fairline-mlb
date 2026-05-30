@@ -1,6 +1,6 @@
 {
-  "updated_at": "9:00 PM CT \u00b7 May 29",
-  "total_bets": 328,
+  "updated_at": "9:30 PM CT \u00b7 May 29",
+  "total_bets": 331,
   "rows": [
     {
       "date": "2026-05-29",
@@ -12,6 +12,20 @@
       "odds": 123,
       "edge": 0.0036,
       "model_prob": 0.452,
+      "result": "L",
+      "clv": null,
+      "pnl_u": -1.0
+    },
+    {
+      "date": "2026-05-29",
+      "game": "SD @ WSH",
+      "pick": "WSH",
+      "side": "HOME",
+      "pitcher": "Paxton Schultz",
+      "pick_type": "ML",
+      "odds": -104,
+      "edge": 0.1112,
+      "model_prob": 0.621,
       "result": "L",
       "clv": null,
       "pnl_u": -1.0
@@ -60,6 +74,20 @@
     },
     {
       "date": "2026-05-29",
+      "game": "MIA @ MET",
+      "pick": "MIA",
+      "side": "AWAY",
+      "pitcher": "Max Meyer",
+      "pick_type": "ML",
+      "odds": 103,
+      "edge": 0.0446,
+      "model_prob": 0.5372,
+      "result": "L",
+      "clv": null,
+      "pnl_u": -1.0
+    },
+    {
+      "date": "2026-05-29",
       "game": "CHC @ STL",
       "pick": "STL",
       "side": "HOME",
@@ -71,6 +99,20 @@
       "result": "W",
       "clv": null,
       "pnl_u": 1.23
+    },
+    {
+      "date": "2026-05-29",
+      "game": "DET @ CHW",
+      "pick": "CHW",
+      "side": "HOME",
+      "pitcher": "Erick Fedde",
+      "pick_type": "ML",
+      "odds": 103,
+      "edge": 0.0216,
+      "model_prob": 0.5142,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 1.03
     },
     {
       "date": "2026-05-29",
@@ -4920,9 +4962,12 @@
     56.88,
     55.88,
     54.88,
-    55.69,
+    53.88,
     54.69,
-    55.92,
-    57.0
+    53.69,
+    52.69,
+    53.92,
+    54.95,
+    56.03
   ]
 }

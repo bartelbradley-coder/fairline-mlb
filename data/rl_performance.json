@@ -1,17 +1,17 @@
 {
-  "updated_at": "9:00 PM CT \u00b7 May 29",
+  "updated_at": "9:30 PM CT \u00b7 May 29",
   "season": {
     "wins": 330,
-    "losses": 171,
-    "units": 200.94,
-    "bets": 501,
-    "roi": 0.4011,
-    "win_rate": 0.6587
+    "losses": 173,
+    "units": 198.94,
+    "bets": 503,
+    "roi": 0.3955,
+    "win_rate": 0.6561
   },
   "last20": {
-    "wins": 16,
-    "losses": 4,
-    "units": 12.17
+    "wins": 14,
+    "losses": 6,
+    "units": 8.9
   },
   "avg_clv": 0.0053,
   "clv_count": 496,
@@ -51,12 +51,12 @@
     {
       "label": "8%+",
       "class": "et-strong",
-      "bets": 392,
+      "bets": 394,
       "wins": 272,
-      "losses": 120,
-      "win_rate": 0.6939,
-      "roi": 0.5196,
-      "units": 203.67
+      "losses": 122,
+      "win_rate": 0.6904,
+      "roi": 0.5118,
+      "units": 201.67
     },
     {
       "label": "2\u20135%",
@@ -83,22 +83,22 @@
     {
       "side": "HOME",
       "spread": "-1.5",
-      "bets": 48,
+      "bets": 49,
       "wins": 29,
-      "losses": 19,
-      "win_rate": 0.6042,
-      "roi": 0.3985,
-      "units": 19.13
+      "losses": 20,
+      "win_rate": 0.5918,
+      "roi": 0.3699,
+      "units": 18.13
     },
     {
       "side": "AWAY",
       "spread": "+1.5",
-      "bets": 453,
+      "bets": 454,
       "wins": 301,
-      "losses": 152,
-      "win_rate": 0.6645,
-      "roi": 0.4014,
-      "units": 181.81
+      "losses": 153,
+      "win_rate": 0.663,
+      "roi": 0.3983,
+      "units": 180.81
     }
   ],
   "recent_picks": [
@@ -125,8 +125,8 @@
       "rl_odds": 176,
       "rl_edge": 0.1768,
       "rl_clv": null,
-      "result": "",
-      "pnl": null
+      "result": "L",
+      "pnl": -1.0
     },
     {
       "date": "2026-05-29",
@@ -164,8 +164,8 @@
       "rl_odds": -212,
       "rl_edge": 0.094,
       "rl_clv": null,
-      "result": "",
-      "pnl": null
+      "result": "L",
+      "pnl": -1.0
     },
     {
       "date": "2026-05-29",
