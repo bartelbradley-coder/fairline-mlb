@@ -1,6 +1,6 @@
 {
   "date": "2026-05-30",
-  "generated_at": "4:30 PM CT \u00b7 May 30",
+  "generated_at": "4:31 PM CT \u00b7 May 30",
   "picks": [
     {
       "game": "SD @ WSH",
@@ -105,9 +105,9 @@
       "meta": "SP: Anthony Kay",
       "posted_at": "9:21 AM CT",
       "game_time": "2026-05-30T18:10:00Z",
-      "temp_f": null,
-      "wind_speed_mph": null,
-      "wind_dir_degrees": null,
+      "temp_f": 68.1,
+      "wind_speed_mph": 16.2,
+      "wind_dir_degrees": 41.0,
       "is_domed": false,
       "model_prob": 0.553,
       "market_prob": 0.478,
@@ -1157,6 +1157,108 @@
       }
     },
     {
+      "game": "CHC @ STL",
+      "pick": "STL",
+      "side": "HOME",
+      "pick_type": "MONEYLINE",
+      "meta": "SP: Kyle Leahy",
+      "posted_at": "4:31 PM CT",
+      "game_time": "2026-05-30T23:15:00Z",
+      "temp_f": 73.3,
+      "wind_speed_mph": 5.0,
+      "wind_dir_degrees": 122.0,
+      "is_domed": false,
+      "model_prob": 0.4609,
+      "market_prob": 0.4577,
+      "edge": 0.0064,
+      "ev_per_100": 1.4,
+      "odds": 120,
+      "best_odds": 120,
+      "best_book": "Novig",
+      "fair_odds": "+117",
+      "break_even": 0.4545,
+      "kelly_units": 0.01,
+      "line_open": 114,
+      "line_current": 114,
+      "sharp_movement": false,
+      "steam_move": false,
+      "model_total": null,
+      "market_total": null,
+      "book_odds": {
+        "FanDuel": 112,
+        "BetOnline": 115,
+        "LowVig": 115,
+        "DraftKings": 109,
+        "ESPN Bet": 115,
+        "Novig": 120,
+        "BetMGM": 110,
+        "MyBookie": 112,
+        "Betway": 110,
+        "Pinnacle": 114,
+        "ProphetX": 118,
+        "BetUS": 116,
+        "Bovada": 108,
+        "BetRivers": 115,
+        "Hard Rock": 110
+      },
+      "pitcher": "Kyle Leahy",
+      "opp_pitcher": "Ben Brown",
+      "factors": [
+        {
+          "label": "Home Field",
+          "value": 0.02
+        },
+        {
+          "label": "Defense (OAA)",
+          "value": -0.014
+        },
+        {
+          "label": "Starter Advantage",
+          "value": 0.005
+        }
+      ],
+      "raw_stats": {
+        "pick_xfip": 4.741,
+        "opp_xfip": 3.369,
+        "pick_oaa": 8,
+        "opp_oaa": 25,
+        "pick_bp_pitches": 0,
+        "opp_bp_pitches": 0,
+        "pick_bp_xfip": 4.35,
+        "opp_bp_xfip": 4.35,
+        "pick_xera": null,
+        "opp_xera": null,
+        "pick_xera_pct": null,
+        "opp_xera_pct": null,
+        "pick_whiff_pct": null,
+        "opp_whiff_pct": null
+      },
+      "narrative": "Home field is a primary edge factor: 2026 park data and home-game performance generate a log-odds boost the market's flat moneyline underweights for STL. Model prices STL at 46.1% to win; Pinnacle implies 45.8% (+120) \u2014 a 0.3-point gap. Rest advantage: STL is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
+      "run_line": {
+        "spread": "-1.5",
+        "model_prob": 0.2534,
+        "fair_odds": "+295",
+        "book_odds": null,
+        "edge": null
+      },
+      "total": {
+        "line": 8.0,
+        "model_total": 8.27,
+        "over_prob": 0.4573,
+        "under_prob": 0.5427,
+        "lean": "UNDER",
+        "lean_edge": 0.0189,
+        "over_odds": 100,
+        "under_odds": 114,
+        "over_book": "ProphetX",
+        "under_book": "Novig",
+        "over_edge": -0.0427,
+        "under_edge": 0.0754,
+        "pinnacle_over_prob": 0.5,
+        "pinnacle_under_prob": 0.5
+      }
+    },
+    {
       "game": "ARI @ SEA",
       "pick": "SEA",
       "side": "HOME",
@@ -1354,108 +1456,6 @@
         "under_edge": 0.0529,
         "pinnacle_over_prob": 0.4885,
         "pinnacle_under_prob": 0.5115
-      }
-    },
-    {
-      "game": "CHC @ STL",
-      "pick": "CHC",
-      "side": "AWAY",
-      "pick_type": "MONEYLINE",
-      "meta": "SP: Ben Brown",
-      "posted_at": "9:21 AM CT",
-      "game_time": "2026-05-30T23:15:00Z",
-      "temp_f": 73.3,
-      "wind_speed_mph": 5.0,
-      "wind_dir_degrees": 122.0,
-      "is_domed": false,
-      "model_prob": 0.567,
-      "market_prob": 0.5683,
-      "edge": 0.0018,
-      "ev_per_100": 0.32,
-      "odds": -130,
-      "best_odds": -130,
-      "best_book": "ProphetX",
-      "fair_odds": "-131",
-      "break_even": 0.5652,
-      "kelly_units": 0.01,
-      "line_open": -138,
-      "line_current": -138,
-      "sharp_movement": false,
-      "steam_move": false,
-      "model_total": null,
-      "market_total": null,
-      "book_odds": {
-        "FanDuel": -132,
-        "BetOnline": -127,
-        "LowVig": -127,
-        "DraftKings": -132,
-        "ESPN Bet": -135,
-        "Novig": -122,
-        "BetMGM": -135,
-        "MyBookie": -131,
-        "Betway": -130,
-        "Pinnacle": -124,
-        "ProphetX": -123,
-        "BetUS": -127,
-        "Bovada": -130,
-        "BetRivers": -143,
-        "Hard Rock": -135
-      },
-      "pitcher": "Ben Brown",
-      "opp_pitcher": "Kyle Leahy",
-      "factors": [
-        {
-          "label": "Home Field",
-          "value": -0.02
-        },
-        {
-          "label": "Defense (OAA)",
-          "value": 0.014
-        },
-        {
-          "label": "Starter Advantage",
-          "value": -0.005
-        }
-      ],
-      "raw_stats": {
-        "pick_xfip": 3.374,
-        "opp_xfip": 4.739,
-        "pick_oaa": 25,
-        "opp_oaa": 8,
-        "pick_bp_pitches": 0,
-        "opp_bp_pitches": 0,
-        "pick_bp_xfip": 4.35,
-        "opp_bp_xfip": 4.35,
-        "pick_xera": null,
-        "opp_xera": null,
-        "pick_xera_pct": null,
-        "opp_xera_pct": null,
-        "pick_whiff_pct": null,
-        "opp_whiff_pct": null
-      },
-      "narrative": "Playing on the road, CHC carries a significant pitching edge (Ben Brown at 3.37 xFIP vs. Kyle Leahy at 4.74) that outweighs the home-field headwind the market prices in. Model prices CHC at 56.7% to win; Pinnacle implies 56.8% (-130) \u2014 a 0.1-point gap. Rest advantage: CHC is the fresher team \u2014 the opponent played yesterday and carries back-to-back fatigue into a game the moneyline doesn't fully price.",
-      "run_line": {
-        "spread": "1.5",
-        "model_prob": 0.7773,
-        "fair_odds": "-349",
-        "book_odds": null,
-        "edge": null
-      },
-      "total": {
-        "line": 8.0,
-        "model_total": 8.31,
-        "over_prob": 0.4603,
-        "under_prob": 0.5397,
-        "lean": "UNDER",
-        "lean_edge": 0.0159,
-        "over_odds": 116,
-        "under_odds": 113,
-        "over_book": "ProphetX",
-        "under_book": "Novig",
-        "over_edge": -0.0027,
-        "under_edge": 0.0702,
-        "pinnacle_over_prob": 0.5,
-        "pinnacle_under_prob": 0.5
       }
     }
   ],
