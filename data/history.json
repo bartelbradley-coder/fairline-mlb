@@ -1,6 +1,6 @@
 {
-  "updated_at": "11:00 PM CT \u00b7 May 29",
-  "total_bets": 334,
+  "updated_at": "11:30 PM CT \u00b7 May 29",
+  "total_bets": 335,
   "rows": [
     {
       "date": "2026-05-29",
@@ -155,6 +155,20 @@
       "result": "W",
       "clv": null,
       "pnl_u": 1.48
+    },
+    {
+      "date": "2026-05-29",
+      "game": "PHI @ LAD",
+      "pick": "LAD",
+      "side": "HOME",
+      "pitcher": "Justin Wrobleski",
+      "pick_type": "ML",
+      "odds": -111,
+      "edge": 0.0299,
+      "model_prob": 0.556,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 0.9
     },
     {
       "date": "2026-05-29",
@@ -5013,6 +5027,7 @@
     55.76,
     54.76,
     56.24,
-    57.32
+    57.14,
+    58.22
   ]
 }
