@@ -1,5 +1,5 @@
 {
-  "updated_at": "10:31 AM CT \u00b7 May 30",
+  "updated_at": "11:31 AM CT \u00b7 May 30",
   "season": {
     "wins": 332,
     "losses": 173,
@@ -102,6 +102,19 @@
     }
   ],
   "recent_picks": [
+    {
+      "date": "2026-05-30",
+      "game": "MIN @ PIT",
+      "side": "AWAY",
+      "team": "MIN",
+      "spread": "+1.5",
+      "rl_prob": 0.6526,
+      "rl_odds": -164,
+      "rl_edge": 0.0314,
+      "rl_clv": null,
+      "result": "",
+      "pnl": null
+    },
     {
       "date": "2026-05-30",
       "game": "PHI @ LAD",
@@ -738,19 +751,6 @@
       "rl_clv": null,
       "result": "",
       "pnl": null
-    },
-    {
-      "date": "2026-05-23",
-      "game": "SEA @ KC",
-      "side": "AWAY",
-      "team": "SEA",
-      "spread": "1.5",
-      "rl_prob": 0.8149,
-      "rl_odds": 113,
-      "rl_edge": 0.3454,
-      "rl_clv": -0.0298,
-      "result": "L",
-      "pnl": -1.0
     }
   ]
 }
