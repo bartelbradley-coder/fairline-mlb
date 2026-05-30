@@ -1,6 +1,6 @@
 {
-  "updated_at": "9:31 PM CT \u00b7 May 29",
-  "total_bets": 331,
+  "updated_at": "10:00 PM CT \u00b7 May 29",
+  "total_bets": 332,
   "rows": [
     {
       "date": "2026-05-29",
@@ -113,6 +113,20 @@
       "result": "W",
       "clv": null,
       "pnl_u": 1.03
+    },
+    {
+      "date": "2026-05-29",
+      "game": "KC @ TEX",
+      "pick": "TEX",
+      "side": "HOME",
+      "pitcher": "MacKenzie Gore",
+      "pick_type": "ML",
+      "odds": -123,
+      "edge": 0.0229,
+      "model_prob": 0.5745,
+      "result": "W",
+      "clv": null,
+      "pnl_u": 0.81
     },
     {
       "date": "2026-05-29",
@@ -4968,6 +4982,7 @@
     52.69,
     53.92,
     54.95,
-    56.03
+    55.76,
+    56.84
   ]
 }
