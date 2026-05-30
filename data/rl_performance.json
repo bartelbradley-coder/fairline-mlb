@@ -1,5 +1,5 @@
 {
-  "updated_at": "11:31 AM CT \u00b7 May 30",
+  "updated_at": "12:31 PM CT \u00b7 May 30",
   "season": {
     "wins": 332,
     "losses": 173,
@@ -107,7 +107,7 @@
       "game": "MIN @ PIT",
       "side": "AWAY",
       "team": "MIN",
-      "spread": "+1.5",
+      "spread": "1.5",
       "rl_prob": 0.6526,
       "rl_odds": -164,
       "rl_edge": 0.0314,
