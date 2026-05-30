@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FairLine MLB — Results & Pick History</title>
-<meta name="description" content="Live 2026 results, CLV tracking, edge tier breakdown, and full pick history for FairLine MLB.">
-<meta property="og:title" content="FairLine MLB — Results & Pick History">
-<meta property="og:description" content="Every posted pick logged with result, CLV, units, and ROI. Live results separated from backtests. Full transparency.">
+<title>FairLine MLB — Pick History</title>
+<meta name="description" content="Full pick history, P&L curve, calibration, and daily results for FairLine MLB. Every posted pick logged with result, CLV, and units.">
+<meta property="og:title" content="FairLine MLB — Pick History">
+<meta property="og:description" content="Every posted pick logged with result, CLV, units, and ROI. Filterable pick table, P&L curve, calibration chart, and daily breakdown.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://bartelbradley-coder.github.io/fairline-mlb/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -215,8 +215,8 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
   </a>
   <div class="nav-links">
     <a class="nav-link" href="index.html">Today's Picks</a>
-    <a class="nav-link active" href="history.html">Results</a>
-    <a class="nav-link" href="performance.html">Performance</a>
+    <a class="nav-link active" href="history.html">Pick History</a>
+    <a class="nav-link" href="performance.html">Model Dashboard</a>
     <a class="nav-link" href="model.html">Model</a>
   </div>
   <div class="nav-right">
@@ -227,8 +227,8 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
 
 <div class="page">
 
-  <div class="page-title">Results &amp; Pick History</div>
-  <div class="page-subtitle">A complete log of every posted pick — team, odds, stake, result, CLV, and units.</div>
+  <div class="page-title">Pick History</div>
+  <div class="page-subtitle">A complete log of every posted pick — team, odds, stake, result, CLV, and units. Filterable, sortable, and exportable.</div>
 
   <!-- Live section header + compact metrics -->
   <div class="results-section live-section">
@@ -316,80 +316,24 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
     </div>
   </div>
 
-  <!-- Analytics row: CLV + Edge tier -->
+  <!-- CLV Tracking (full-width) -->
   <div class="section">
-    <div class="analytics-row">
-
-      <!-- CLV Tracking -->
-      <div class="card">
-        <div class="card-title">📈 Closing Line Value</div>
-        <div class="card-sub">Last 30 picks · positive = market moved our way</div>
-        <div class="clv-avg-display">
+    <div class="sec-lbl">Closing Line Value — 2026 Season</div>
+    <div class="card">
+      <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap">
+        <div class="clv-avg-display" style="padding:0;flex-shrink:0">
           <div class="clv-avg-num" id="clv-avg-num">—</div>
           <div class="clv-avg-lbl">Average CLV · all 2026 picks</div>
         </div>
-        <div class="clv-chart" id="clv-chart"></div>
-      </div>
-
-      <!-- Edge Tier Breakdown -->
-      <div class="card">
-        <div class="card-title">⚡ Edge Tier Performance</div>
-        <div class="card-sub">2026 season · win rate and ROI by model edge</div>
-        <div id="edge-bars" style="margin-bottom:14px"></div>
-        <table class="edge-table" id="edge-table">
-          <thead><tr><th>Tier</th><th>Bets</th><th>W–L</th><th>Win%</th><th>ROI</th><th>Units</th></tr></thead>
-          <tbody id="edge-tbody"><tr><td colspan="6" style="color:var(--text-4);padding:16px 10px">Loading…</td></tr></tbody>
-        </table>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- Kelly Size ROI Breakdown -->
-  <div class="section" id="kelly-section" style="display:none">
-    <div class="sec-lbl">Kelly Size vs. ROI — Does Bigger Confidence Pay Off?</div>
-    <div class="analytics-row">
-      <div class="card">
-        <div class="card-title">📐 ROI by Recommended Bet Size</div>
-        <div class="card-sub">2026 season · half-Kelly units on a 10u bankroll</div>
-        <table class="kelly-table" id="kelly-table">
-          <thead><tr><th>Kelly Size</th><th>Bets</th><th>W–L</th><th>Win%</th><th>ROI</th><th>Units</th></tr></thead>
-          <tbody id="kelly-tbody"><tr><td colspan="6" style="color:var(--text-4);padding:16px 10px">Loading…</td></tr></tbody>
-        </table>
-        <div style="font-size:10px;color:var(--text-4);margin-top:10px;line-height:1.5">
-          Higher Kelly sizing = model's higher confidence. Positive correlation between size and ROI validates the model's probability estimates.
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">🧠 What Kelly Size Means</div>
-        <div class="card-sub">How the model allocates confidence</div>
-        <div style="display:flex;flex-direction:column;gap:12px;margin-top:4px">
-          <div>
-            <div style="font-size:10px;font-weight:700;color:var(--text-2);margin-bottom:3px">1.5u+ picks</div>
-            <div style="font-size:11px;color:var(--text-3);line-height:1.5">Model and market agree on a substantial pricing gap. Multiple factors align, edge is large and unambiguous.</div>
-          </div>
-          <div>
-            <div style="font-size:10px;font-weight:700;color:var(--text-2);margin-bottom:3px">0.5–1.5u picks</div>
-            <div style="font-size:11px;color:var(--text-3);line-height:1.5">Solid edge with a meaningful signal. Standard-confidence plays that represent the bulk of the model's recommendations.</div>
-          </div>
-          <div>
-            <div style="font-size:10px;font-weight:700;color:var(--text-2);margin-bottom:3px">&lt; 0.5u picks</div>
-            <div style="font-size:11px;color:var(--text-3);line-height:1.5">Modest edge above threshold. Lower confidence — useful for tracking but sized small intentionally.</div>
-          </div>
+        <div style="flex:1;min-width:180px">
+          <div class="card-sub" style="margin-bottom:10px">Last 30 picks · positive = market moved our way after pick was posted</div>
+          <div class="clv-chart" id="clv-chart"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Monthly ROI -->
-  <div class="section" id="monthly-section" style="display:none">
-    <div class="sec-lbl">Monthly ROI — 2026 Season</div>
-    <div class="card" style="padding:16px 20px">
-      <div class="monthly-chart" id="monthly-chart"></div>
-    </div>
-  </div>
-
-  <!-- Calibration chart (#3) -->
+  <!-- Calibration chart -->
   <div class="section" id="calib-section" style="display:none">
     <div class="sec-lbl">Model Calibration — Predicted vs. Actual Win Rate</div>
     <div class="card" style="padding:16px 20px">
@@ -406,30 +350,7 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
     </div>
   </div>
 
-  <!-- Backtested Validation -->
-  <div class="results-section backtest-section">
-  <div class="section-badge backtest-badge-lg">BACKTEST</div>
-  <div class="section-sub">Historical model validation using prior seasons. Not live betting results.</div>
-  <div class="section">
-    <div class="sec-lbl">Backtested Model Validation — Out-of-Sample 2022–2024 · Not Live Results</div>
-    <div class="card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
-        <div>
-          <div class="card-title" style="margin-bottom:4px">Improving Every Out-of-Sample Year</div>
-          <div class="card-sub" style="margin-bottom:0">vs. −4.0% baseline (bet every game, full vig drain) · 7,359 games backtested</div>
-        </div>
-        <div style="font-family:'Oswald',sans-serif;font-size:32px;font-weight:700;color:var(--green)">+10.4%</div>
-      </div>
-      <div id="backtest-chart"></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px">
-        <div class="stat-pill" style="opacity:0.8"><div class="stat-lbl">Sharpe Ratio</div><div class="stat-val amber">1.82</div><div class="stat-sub">backtested · annualized</div></div>
-        <div class="stat-pill" style="opacity:0.8"><div class="stat-lbl">Brier Score</div><div class="stat-val white">0.234</div><div class="stat-sub">vs. 0.250 market</div></div>
-        <div class="stat-pill" style="opacity:0.8"><div class="stat-lbl">Max Drawdown</div><div class="stat-val red">−12.4u</div><div class="stat-sub">backtested</div></div>
-      </div>
-      <div class="backtest-note">All figures above are <strong style="color:var(--text-2)">out-of-sample backtest results</strong> (2022–2024). Each year trained on prior seasons only — no lookahead bias. Live 2026 results appear in the sections above as picks settle.</div>
-    </div>
-  </div>
-  </div><!-- end backtest-section -->
+  <!-- Backtest moved to Model Dashboard (performance.html) -->
 
   <!-- Per-Team Record -->
   <div class="section" id="team-section" style="display:none">
@@ -501,7 +422,7 @@ tr.row-value  td { background: rgba(20,184,166,0.03); }
 <footer>
   <div class="footer-brand">FairLine MLB · Quantitative Win Probability Model · Dual-Poisson + 18 Log-Odds Adjustments + Platt Calibration</div>
   <div class="site-disclaimer">For informational and educational purposes only. Not financial advice. Sports betting involves risk — past model performance does not guarantee future results. Always verify odds, starters, lineups, and bet availability before placing a wager. Never bet more than you can afford to lose. Must be of legal gambling age and located in a legal betting jurisdiction. Bet responsibly.</div>
-  <div class="footer-links"><a href="model.html">Model Overview</a> · <a href="index.html">Today's Picks</a> · <a href="performance.html">Performance</a></div>
+  <div class="footer-links"><a href="model.html">Model Overview</a> · <a href="index.html">Today's Picks</a> · <a href="performance.html">Model Dashboard</a></div>
 </footer>
 
 <script src="fairline-utils.js"></script>
@@ -694,12 +615,10 @@ async function loadAll() {
     renderCalibration(allRows);
     renderCalendar(allRows);
     renderClv(pAugmented);
-    renderEdgeTiers(pAugmented);
-    renderKellyROI(pAugmented);
-    renderMonthly(pAugmented);
+    // Edge tiers, Kelly ROI, Monthly ROI → Model Dashboard (performance.html)
     renderTeamStats(allRows);
     renderPitcherStats(allRows);
-    renderBacktest();
+    // renderBacktest() → moved to Model Dashboard (performance.html)
     injectMonthFilter(allRows);
     renderTable(allRows);
     renderRLPicks(rl);
@@ -720,7 +639,7 @@ function renderEmpty() {
       <div class="state-sub">The pick history table fills in as picks are logged and settled each day.<br>Check back after the first batch of games result.</div>
     </div>`;
   document.getElementById('filters').style.display = 'none';
-  renderBacktest();
+  // Backtest moved to Model Dashboard
 }
 
 function renderSummary(rows) {
@@ -873,7 +792,7 @@ function renderMonthly(p) {
     MONTH_ORDER.indexOf(a.month) - MONTH_ORDER.indexOf(b.month)
   );
   if (monthly.length === 0) return;
-  document.getElementById('monthly-section').style.display = 'block';
+  const _ms = document.getElementById('monthly-section'); if (_ms) _ms.style.display = 'block';
   document.getElementById('monthly-chart').innerHTML = _monthlyChartSVG(monthly);
 }
 
@@ -1334,7 +1253,7 @@ function injectMonthFilter(rows) {
 function renderKellyROI(p) {
   const tiers = (p && p.kelly_roi_tiers) ? p.kelly_roi_tiers : [];
   if (tiers.length === 0) return;
-  document.getElementById('kelly-section').style.display = 'block';
+  const _ks = document.getElementById('kelly-section'); if (_ks) _ks.style.display = 'block';
   document.getElementById('kelly-tbody').innerHTML = tiers.map(t => `
     <tr>
       <td style="font-weight:600;color:var(--text-2)">${t.label}</td>

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FairLine MLB — Model Performance</title>
-<meta name="description" content="Live 2026 performance: record, ROI, CLV, bankroll growth, and model vs. naive strategy comparison for FairLine MLB.">
-<meta property="og:title" content="FairLine MLB — Model Performance">
-<meta property="og:description" content="Live model performance — ROI, win rate, CLV trends, edge-tier breakdown, and bankroll growth. Live results separated from backtests.">
+<title>FairLine MLB — Model Dashboard</title>
+<meta name="description" content="Model Dashboard: bankroll growth, CLV trends, edge-tier ROI, monthly performance, and backtested validation for FairLine MLB.">
+<meta property="og:title" content="FairLine MLB — Model Dashboard">
+<meta property="og:description" content="Model Dashboard — bankroll growth, CLV validation, edge-tier breakdown, strategy comparison, and out-of-sample backtest results.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://bartelbradley-coder.github.io/fairline-mlb/og-image.png">
 <meta property="og:url" content="https://bartelbradley-coder.github.io/fairline-mlb/performance.html">
@@ -116,8 +116,8 @@
   </a>
   <div class="nav-links">
     <a class="nav-link" href="index.html">Today's Picks</a>
-    <a class="nav-link" href="history.html">Results</a>
-    <a class="nav-link active" href="performance.html">Performance</a>
+    <a class="nav-link" href="history.html">Pick History</a>
+    <a class="nav-link active" href="performance.html">Model Dashboard</a>
     <a class="nav-link" href="model.html">Model</a>
   </div>
   <div class="nav-right">
@@ -128,8 +128,8 @@
 
 <div class="page">
 
-  <div class="page-title">Model Performance</div>
-  <div class="page-subtitle">Overall model statistics — ROI, win rate, CLV trends, and edge-tier breakdown.</div>
+  <div class="page-title">Model Dashboard</div>
+  <div class="page-subtitle">High-level model validation — bankroll growth, CLV, edge-tier ROI, strategy comparison, and backtested results.</div>
 
   <!-- Live section header + compact orientation strip -->
   <div class="results-section live-section">
@@ -146,11 +146,7 @@
     <div class="lm-card"><div class="lm-lbl">Last Updated</div><div class="lm-val" id="lm-updated">—</div></div>
   </div>
 
-  <!-- Today's picks live status banner -->
-  <div id="today-perf-banner" style="display:none;margin-bottom:16px;padding:10px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;display:none">
-    <div style="font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-4);margin-bottom:6px">Today's Picks</div>
-    <div id="today-perf-rows"></div>
-  </div>
+  <!-- Today's pick status → see Today's Picks tab -->
 
   <!-- Headline stats -->
   <div class="headline-stats" id="headline-stats">
@@ -336,7 +332,7 @@
 <footer>
   <div class="footer-brand">FairLine MLB · Quantitative Win Probability Model · Dual-Poisson + 18 Log-Odds Adjustments + Platt Calibration</div>
   <div class="site-disclaimer">For informational and educational purposes only. Not financial advice. Sports betting involves risk — past model performance does not guarantee future results. Always verify odds, starters, lineups, and bet availability before placing a wager. Never bet more than you can afford to lose. Must be of legal gambling age and located in a legal betting jurisdiction. Bet responsibly.</div>
-  <div class="footer-links"><a href="model.html">Model Overview</a> · <a href="history.html">Results &amp; Pick History</a> · <a href="index.html">Today's Picks</a></div>
+  <div class="footer-links"><a href="model.html">Model Overview</a> · <a href="history.html">Pick History</a> · <a href="index.html">Today's Picks</a></div>
 </footer>
 
 <script src="fairline-utils.js"></script>
@@ -434,10 +430,7 @@ async function loadAll() {
       if (pAugmented.updated_at) document.getElementById('lm-updated').textContent = pAugmented.updated_at;
     }
 
-    if (today && today.picks) {
-      renderTodayPerfBanner(today.picks.filter(pk => (pk.edge || 0) >= 0.02), scores);
-    }
-
+    // Today's pick status shown on Today's Picks tab — not duplicated here
     renderHeadline(pAugmented, hAugmented);
     renderInsight(pAugmented);
     renderBankrollChart(hAugmented);
